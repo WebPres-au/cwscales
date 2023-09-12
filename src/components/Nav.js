@@ -1,6 +1,7 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
+
 import Image from "next/image";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
@@ -147,9 +148,26 @@ function classNames(...classes) {
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 1) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
-    <div className="bg-white fixed top-0 right-0 left-0 z-40">
+    <div className={`${ isScrolled ? "hidden" : "block" } bg-white fixed top-0 right-0 left-0 z-40 transition delay-0 duration-300 ease-in-out`}>
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-50 lg:hidden" onClose={setOpen}>
