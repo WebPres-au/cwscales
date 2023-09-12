@@ -149,10 +149,10 @@ export default function Navigation() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="bg-white fixed top-0 right-0 left-0 z-50">
+    <div className="bg-white fixed top-0 right-0 left-0 z-40">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
+        <Dialog as="div" className="relative z-50 lg:hidden" onClose={setOpen}>
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -165,7 +165,7 @@ export default function Navigation() {
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
-          <div className="fixed inset-0 z-40 flex">
+          <div className="fixed inset-0 flex">
             <Transition.Child
               as={Fragment}
               enter="transition ease-in-out duration-300 transform"
