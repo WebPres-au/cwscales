@@ -167,7 +167,7 @@ export default function Navigation() {
   }, []);
 
   return (
-    <div className={`${ isScrolled ? "hidden" : "block" } bg-white fixed top-0 right-0 left-0 z-40 transition delay-0 duration-300 ease-in-out`}>
+    <div className={`${ isScrolled ? "hide-show-transition opacity-0" : "hide-show-transition opacity-100" } bg-white fixed top-0 right-0 left-0 z-40 `}>
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-50 lg:hidden" onClose={setOpen}>
