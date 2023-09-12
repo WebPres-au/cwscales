@@ -25,21 +25,21 @@ export default function Hero() {
           <div className="grid">
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg"
                 alt=""
               />
             </div>
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg"
                 alt=""
               />
             </div>
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg"
                 alt=""
               />
@@ -48,21 +48,21 @@ export default function Hero() {
           <div className="grid">
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg"
                 alt=""
               />
             </div>
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg"
                 alt=""
               />
             </div>
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg"
                 alt=""
               />
@@ -71,21 +71,21 @@ export default function Hero() {
           <div className="grid">
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg"
                 alt=""
               />
             </div>
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg"
                 alt=""
               />
             </div>
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg"
                 alt=""
               />
@@ -94,21 +94,21 @@ export default function Hero() {
           <div className="grid">
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg"
                 alt=""
               />
             </div>
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg"
                 alt=""
               />
             </div>
             <div>
               <img
-                className="h-auto max-w-full hover:opacity-60"
+                className="h-auto w-full hover:opacity-60"
                 src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg"
                 alt=""
               />
