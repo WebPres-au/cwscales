@@ -3,7 +3,7 @@ import { ArrowRightIcon } from "@heroicons/react/24/outline";
 export default function Hero() {
   return (
     <div className="relative sm:pt-[110px]">
-      <div className="relative md:fixed w-full md:w-1/2 h-full inset-0">
+      <div className="relative lg:fixed w-full lg:w-1/2 h-screen inset-0">
         <div className="absolute bottom-0 left-0 p-20 z-10 text-white">
           <h1 className="text-8xl">Digital Scales</h1>
           <p className="pt-4">
@@ -20,8 +20,8 @@ export default function Hero() {
           className="object-cover opacity-90 w-full h-full"
         />
       </div>
-      <div className="w-full md:w-1/2 h-full inset-0 ml-auto">
-        <div className="w-full grid grid-cols-1 pt-0 lg:grid-cols-2 inset-0">
+      <div className="w-full lg:w-1/2 h-full inset-0 ml-auto">
+        <div className="w-full grid grid-cols-1 pt-0 xl:grid-cols-2 inset-0">
           <div className="grid">
             <div>
               <img
