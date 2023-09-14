@@ -1,9 +1,7 @@
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
-
-export default function Hero() {
+export default function ContentHero({ content }) {
   return (
     <>
-      <div className="relative">
+      <div className="relative mt-32 -mb-32">
         <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0">
           <div className="absolute bottom-0 left-0 p-20 z-10 text-white">
             <h1 className="text-8xl">Digital Scales</h1>
@@ -22,108 +20,32 @@ export default function Hero() {
           />
         </div>
         <div className="w-full lg:w-1/2 h-full inset-0 ml-auto sm:mt-[0vh] lg:mt-[-100vh]">
-          <div className="w-full grid grid-cols-1 pt-0 xl:grid-cols-2 inset-0">
-            <div className="grid">
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div className="grid">
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div className="grid">
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div className="grid">
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  className="h-auto w-full hover:opacity-60"
-                  src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg"
-                  alt=""
-                />
-              </div>
-            </div>
-          </div>
-          <div className="grid cols-2 bg-gray-600">
-            <button
-              type="button"
-              className="m-auto py-2 inline-flex items-center text-center text-4xl font-semibold text-white"
-            >
-              Button text
-              <ArrowRightIcon className="-mr-0.5 h-10 w-10" aria-hidden="true" />
-            </button>
+          <div className="w-full grid grid-cols-1 gap-0 pt-0 xl:grid-cols-2 inset-0">
+            {content.map((item, index) => {
+              if (index % 3 === 0) {
+                return (
+                  <div key={index} className="grid gap-0">
+                    <div className="bg-gray-700 h-full w-full">
+                      <img
+                        className="h-auto w-full object-cover hover:opacity-60"
+                        src={item.image}
+                        alt={item.name}
+                      />
+                    </div>
+                  </div>
+                );
+              } else {
+                return (
+                  <div key={index} className="bg-gray-700 h-full w-full">
+                    <img
+                      className="bg-gray-700 h-auto w-full object-cover hover:opacity-60"
+                      src={item.image}
+                      alt={item.name}
+                    />
+                  </div>
+                );
+              }
+            })}
           </div>
         </div>
       </div>
