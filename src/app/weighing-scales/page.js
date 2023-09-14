@@ -78,7 +78,13 @@ const sections = [
 export default function Home() {
   return (
     <div>
-      <ContentHero content={sections} />
+      <ContentHero
+        title="Weighing Scales"
+        description="We offer a range of NMI Trade Approved industrial and commercial
+              scales to standardise manufacturing and ensure product consistency
+              for your business."
+        content={sections}
+      />
       <div className="mt-32" />
     </div>
   );
