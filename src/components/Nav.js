@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useState, useEffect } from "react";
-
+import classNames from "@/lib/functions";
 import Image from "next/image";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
@@ -19,14 +19,14 @@ const navigation = {
       name: "Weighing Scales",
       featured: [
         {
-          name: "New Arrivals",
+          name: "Digital Scales",
           href: "#",
           imageSrc: "/scale-1.jpeg",
           imageAlt:
             "Models sitting back to back, wearing Basic Tee in black and bone.",
         },
         {
-          name: "Basic Tees",
+          name: "Table Scales",
           href: "#",
           imageSrc: "/scale-2.jpeg",
           imageAlt:
@@ -38,38 +38,29 @@ const navigation = {
           id: "clothing",
           name: "Clothing",
           items: [
-            { name: "Tops", href: "#" },
-            { name: "Dresses", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Denim", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
+            { name: "Counting Scales", href: "#" },
+            { name: "Crane Scales", href: "#" },
+            { name: "Digital Table Scales", href: "#" },
+            { name: "Electronic Weighing Indicators", href: "#" },
+            { name: "Floor Scales/Pallet Scales", href: "#" },
+            { name: "Food/Portion Scales", href: "#" },
+            { name: "Freight/Parcel Scales", href: "#" },
+            { name: "Household Scales", href: "#" },
+            { name: "Kitchen Scales/Bathroom Scales", href: "#" },
           ],
         },
         {
           id: "accessories",
           name: "Accessories",
           items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Significant Other", href: "#" },
+            { name: "Laboratory Scales", href: "#" },
+            { name: "Medical/Personal Weighing Scales", href: "#" },
+            { name: "Money Scales/Coin Sorters", href: "#" },
+            { name: "Platform Scales", href: "#" },
+            { name: "Retail Scales/Labelling Scales", href: "#" },
+            { name: "Vet/Animal Scales", href: "#" },
+            { name: "Trade Approved Scales", href: "#" },
+            { name: "Browse all", href: "#" },
           ],
         },
       ],
@@ -79,18 +70,16 @@ const navigation = {
       name: "Packaging Equipment",
       featured: [
         {
-          name: "New Arrivals",
+          name: "Multihead Weighers",
           href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg",
+          imageSrc: "/pkg-1.jpeg",
           imageAlt:
             "Drawstring top with elastic loop closure and textured interior padding.",
         },
         {
-          name: "Artwork Tees",
+          name: "Coffee Weigher",
           href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg",
+          imageSrc: "/pkg-2.jpeg",
           imageAlt:
             "Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.",
         },
@@ -100,35 +89,18 @@ const navigation = {
           id: "clothing",
           name: "Clothing",
           items: [
-            { name: "Tops", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
+            { name: "Bagging Machines", href: "#" },
+            { name: "Check Weighers", href: "#" },
+            { name: "Linear Weighers", href: "#" },
           ],
         },
         {
           id: "accessories",
           name: "Accessories",
           items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
+            { name: "Liquid Fillers", href: "#" },
+            { name: "Multihead Weighers", href: "#" },
+            { name: "Browse all", href: "#" },
           ],
         },
       ],
@@ -142,32 +114,34 @@ const navigation = {
   ],
 };
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function Navigation() {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 1) {
+      if (window.scrollY > 128) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
-    <div className={`${ isScrolled ? "hide-show-transition opacity-0" : "hide-show-transition opacity-100" } bg-white fixed top-0 right-0 left-0 z-40 `}>
+    <div
+      className={`${
+        isScrolled
+          ? "hide-show-transition opacity-0"
+          : "hide-show-transition opacity-100"
+      } bg-white pt-2 fixed top-0 right-0 left-0 z-40 `}
+    >
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-50 lg:hidden" onClose={setOpen}>
@@ -239,7 +213,7 @@ export default function Navigation() {
                               key={item.name}
                               className="group relative text-sm"
                             >
-                              <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                              <div className="aspect-h-2 aspect-w-2 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
                                 <img
                                   src={item.imageSrc}
                                   alt={item.imageAlt}
@@ -320,16 +294,16 @@ export default function Navigation() {
               aria-hidden="true"
             />
             <p className="hidden pt-0.5 sm:block flex-1 text-center text-sm font-medium text-black lg:flex-none">
-              <a href="tel:+61401101101">0401101101</a>
+              <a href="tel:+61402980089">0402980089</a>
             </p>
           </div>
 
           {/* Logo */}
-          <a href="#" className="flex">
+          <a href="/" className="flex">
             <span className="sr-only">Business logo</span>
             <Image
               className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              src="/CWS_logo.png"
               alt="Logo for CW Scales"
               width={200}
               height={200}
@@ -342,10 +316,10 @@ export default function Navigation() {
               aria-hidden="true"
             />
             <a
-              href="mailto:example@email.com"
+              href="mailto:louis@cwscales.com.au"
               className="hidden sm:block pt-0.5 text-sm font-medium text-black hover:text-gray-100"
             >
-              example@email.com
+              louis@cwscales.com.au
             </a>
           </div>
         </div>
@@ -363,7 +337,7 @@ export default function Navigation() {
           </form>
           <button
             type="button"
-            className="ml-2 lg:hidden rounded-md bg-white p-2 text-gray-400"
+            className="ml-5 lg:hidden rounded-md bg-white text-gray-400"
             onClick={() => setOpen(true)}
           >
             <span className="sr-only">Open menu</span>
@@ -450,15 +424,15 @@ export default function Navigation() {
                                         </div>
                                       ))}
                                     </div>
-                                    <div className="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
+                                    <div className="row-start-1 grid grid-cols-2 gap-x-8 gap-y-10 text-sm">
                                       {category.sections.map((section) => (
                                         <div key={section.name}>
-                                          <p
+                                          {/* <p
                                             id={`${section.name}-heading`}
                                             className="font-medium text-gray-900"
                                           >
                                             {section.name}
-                                          </p>
+                                          </p> */}
                                           <ul
                                             role="list"
                                             aria-labelledby={`${section.name}-heading`}
