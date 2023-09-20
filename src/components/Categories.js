@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const posts = [
   {
     title: "Digital Weighing Scales",
@@ -39,18 +41,18 @@ export default function Categories() {
             <article
               key={index}
               className={`relative isolate flex flex-col justify-end overflow-hidden bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80 ${
-                index === posts.length - 1 ? "col-span-2 lg:col-span-1" : ""
+                index === 0 ? "col-span-2 lg:col-span-1" : ""
               }`}
             >
-              <img
+              <Image
                 src={post.imageUrl}
                 alt={post.description}
                 className="absolute inset-0 -z-10 h-full w-full object-cover"
+                fill={true}
               />
-              <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40" />
-              <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+              <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/10" />
 
-              <h3 className="mt-3 text-lg font-semibold leading-6 text-white">
+              <h3 className="mt-3 text-lg font-semibold leading-6 text-center text-white">
                 <a href={post.href}>
                   <span className="absolute inset-0" />
                   {post.title}
