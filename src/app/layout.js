@@ -1,7 +1,8 @@
-import Footer from "@/components/Footer";
+import Footer from "@/components/ui/Footer";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import Navigation from "../components/Nav";
+import Navigation from "@/components/ui/Navigation";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Toaster position="bottom-right" toastOptions={{ duration: 3000 }} />
         <Navigation />
         {children}
         <Footer />
