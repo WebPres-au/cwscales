@@ -1,5 +1,8 @@
 "use client";
 
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
 const images = [
   {
     image: "/banner/bakery.jpg",
@@ -40,13 +43,26 @@ const images = [
 ];
 
 export default function Hero() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentImage = images[currentImageIndex];
+
   return (
     <div className="relative bg-gray-900 mt-32">
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-        <img
-          src={images[0].image}
-          alt={images[0].description}
+        <Image
+          src={currentImage.image}
+          alt={currentImage.description}
           className="h-full w-full object-cover object-center"
+          fill={true}
         />
       </div>
       <div
@@ -56,14 +72,14 @@ export default function Hero() {
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-32 text-center sm:py-64 lg:px-0">
         <h1 className="text-4xl font-bold tracking-tight text-white lg:text-6xl">
-          {`Shop ${images[0].name} Products`}
+          {`Shop ${currentImage.name} Products`}
         </h1>
-        <p className="mt-4 text-xl text-white">{images[0].description}</p>
+        <p className="mt-4 text-xl text-white">{currentImage.description}</p>
         <a
-          href={images[0].href}
+          href={currentImage.href}
           className="mt-8 inline-block rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-gray-900 hover:bg-gray-100"
         >
-          {`Shop ${images[0].name}`}
+          {`Shop ${currentImage.name}`}
         </a>
       </div>
     </div>
