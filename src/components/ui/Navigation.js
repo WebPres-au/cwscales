@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useState, useEffect } from "react";
-import classNames from "@/lib/functions";
+import { classNames } from "@/lib/functions";
 import Image from "next/image";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
@@ -111,6 +111,8 @@ const navigation = {
     { name: "Loadcells & Accessories", href: "#" },
     { name: "Repairs & Calibration", href: "#" },
     { name: "Specials", href: "#" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
   ],
 };
 
