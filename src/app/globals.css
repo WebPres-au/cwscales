@@ -3,47 +3,43 @@
 @tailwind utilities;
 
 .margin-top-negative-100vh {
-    margin-top: -100vh;
+  margin-top: -100vh;
 }
 
 .hide-show-transition {
-    transition-delay: 0s;
-    transition-duration: 0.3s;
-    transition-property: all;
-    transition-timing-function: ease-in-out;
+  transition-delay: 0s;
+  transition-duration: 0.3s;
+  transition-property: all;
+  transition-timing-function: ease-in-out;
 }
 
 @media (min-width: 1280px) {
-    .custom-grid-cols-2 {
-        column-count: 2;
-        display: table-cell;
-    }
+  .custom-grid-cols-2 {
+    column-count: 2;
+    display: table-cell;
+  }
 }
 
 .product-info {
-    padding: calc(19.4px + 1.59375vw) calc(19.4px + 1.59375vw) calc(22.4px + 3vw);
+  padding: calc(19.4px + 1.59375vw) calc(19.4px + 1.59375vw) calc(22.4px + 3vw);
 }
 
 .product-info > h2 {
-    font-size: calc(16.2px + .09375vw);
-    line-height: calc(16.2px + .09375vw);
-    margin-bottom: calc(16.4px + 0.1875vw);
-    letter-spacing: -.04em;
-    color: #b1cae5;
-}
-
-.product-info > h2:hover {
-    color: #286DB7;
+  font-size: calc(16.2px + 0.09375vw);
+  line-height: calc(16.2px + 0.09375vw);
+  margin-bottom: calc(16.4px + 0.1875vw);
+  letter-spacing: -0.04em;
+  color: #1db150;
 }
 
 .product-info > h3 {
-    font-size: calc(18px + .9375vw);
-    line-height: calc(18.6px + 1.21875vw);
-    font-weight: 700;
-    margin-bottom: 15px;
+  font-size: calc(18px + 0.9375vw);
+  line-height: calc(18.6px + 1.21875vw);
+  font-weight: 700;
+  margin-bottom: 15px;
 }
 
 .product-info > p {
-    font-size: 16px;
-    line-height: calc(16.6px + .28125vw);
+  font-size: 16px;
+  line-height: calc(16.6px + 0.28125vw);
 }
