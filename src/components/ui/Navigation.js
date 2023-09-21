@@ -21,14 +21,14 @@ const navigation = {
       featured: [
         {
           name: "Digital Scales",
-          href: "#",
+          href: "/product-category/digital-weighing-scales/digital-table-scales",
           imageSrc: "/scale-1.jpeg",
           imageAlt:
             "Models sitting back to back, wearing Basic Tee in black and bone.",
         },
         {
           name: "Table Scales",
-          href: "#",
+          href: "/product-category/digital-weighing-scales/digital-table-scales",
           imageSrc: "/scale-2.jpeg",
           imageAlt:
             "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
@@ -39,29 +39,80 @@ const navigation = {
           id: "clothing",
           name: "Clothing",
           items: [
-            { name: "Counting Scales", href: "#" },
-            { name: "Crane Scales", href: "#" },
-            { name: "Digital Table Scales", href: "#" },
-            { name: "Electronic Weighing Indicators", href: "#" },
-            { name: "Floor Scales/Pallet Scales", href: "#" },
-            { name: "Food/Portion Scales", href: "#" },
-            { name: "Freight/Parcel Scales", href: "#" },
-            { name: "Household Scales", href: "#" },
-            { name: "Kitchen Scales/Bathroom Scales", href: "#" },
+            {
+              name: "Counting Scales",
+              href: "/product-category/digital-weighing-scales/counting-scales",
+            },
+            {
+              name: "Crane Scales",
+              href: "/product-category/digital-weighing-scales/crane-scales",
+            },
+            {
+              name: "Digital Table Scales",
+              href: "/product-category/digital-weighing-scales/digital-table-scales",
+            },
+            {
+              name: "Electronic Weighing Indicators",
+              href: "/product-category/digital-weighing-scales/electronic-weighing-indicators",
+            },
+            {
+              name: "Floor Scales/Pallet Scales",
+              href: "/product-category/digital-weighing-scales/floor-pallet-scales",
+            },
+            {
+              name: "Food/Portion Scales",
+              href: "/product-category/digital-weighing-scales/foodportion-scales",
+            },
+            {
+              name: "Freight/Parcel Scales",
+              href: "/product-category/digital-weighing-scales/freightparcel-scales",
+            },
+            {
+              name: "Household Scales",
+              href: "/product-category/digital-weighing-scales/household-scales",
+            },
+            {
+              name: "Kitchen Scales/Bathroom Scales",
+              href: "/product-category/digital-weighing-scales/household-scales/kitchen-scales-bathroom-scales",
+            },
           ],
         },
         {
           id: "accessories",
           name: "Accessories",
           items: [
-            { name: "Laboratory Scales", href: "#" },
-            { name: "Medical/Personal Weighing Scales", href: "#" },
-            { name: "Money Scales/Coin Sorters", href: "#" },
-            { name: "Platform Scales", href: "#" },
-            { name: "Retail Scales/Labelling Scales", href: "#" },
-            { name: "Vet/Animal Scales", href: "#" },
-            { name: "Trade Approved Scales", href: "#" },
-            { name: "Browse all", href: "#" },
+            {
+              name: "Laboratory Scales",
+              href: "/product-category/digital-weighing-scales/laboratory-scales/",
+            },
+            {
+              name: "Medical/Personal Weighing Scales",
+              href: "/product-category/digital-weighing-scales/medicalpersonal-weighing-scales/",
+            },
+            {
+              name: "Money Scales/Coin Sorters",
+              href: "/product-category/digital-weighing-scales/money-scales-coin-sorters/",
+            },
+            {
+              name: "Platform Scales",
+              href: "/product-category/digital-weighing-scales/platform-scales/",
+            },
+            {
+              name: "Retail Scales/Labelling Scales",
+              href: "/product-category/digital-weighing-scales/retail-scales-labelling-scales",
+            },
+            {
+              name: "Vet/Animal Scales",
+              href: "/product-category/digital-weighing-scales/vetanimal-scales",
+            },
+            {
+              name: "Trade Approved Scales",
+              href: "/product-category/digital-weighing-scales/trade-approved-scales",
+            },
+            {
+              name: "Browse all",
+              href: "/product-category/digital-weighing-scales",
+            },
           ],
         },
       ],
@@ -90,28 +141,53 @@ const navigation = {
           id: "clothing",
           name: "Clothing",
           items: [
-            { name: "Bagging Machines", href: "#" },
-            { name: "Check Weighers", href: "#" },
-            { name: "Linear Weighers", href: "#" },
+            {
+              name: "Bagging Machines",
+              href: "/product-category/packaging-equipment/bagging-machines",
+            },
+            {
+              name: "Check Weighers",
+              href: "/product-category/packaging-equipment/check-weighers",
+            },
+            {
+              name: "Linear Weighers",
+              href: "/product-category/packaging-equipment/linear-weighers",
+            },
           ],
         },
         {
           id: "accessories",
           name: "Accessories",
           items: [
-            { name: "Liquid Fillers", href: "#" },
-            { name: "Multihead Weighers", href: "#" },
-            { name: "Browse all", href: "#" },
+            {
+              name: "Liquid Fillers",
+              href: "/product-category/packaging-equipment/liquid-fillers",
+            },
+            {
+              name: "Multihead Weighers",
+              href: "/product-category/packaging-equipment/multihead-weighers",
+            },
+            {
+              name: "Browse all",
+              href: "/product-category/packaging-equipment",
+            },
           ],
         },
       ],
     },
   ],
   pages: [
-    { name: "Label/Receipt Printers", href: "#" },
-    { name: "Loadcells & Accessories", href: "#" },
-    { name: "Repairs & Calibration", href: "#" },
-    { name: "Specials", href: "#" },
+    {
+      name: "Label/Receipt Printers",
+      href: "/product-category/label-printers-consumables",
+    },
+    {
+      name: "Loadcells & Accessories",
+      href: "/product-category/loadcells-accesories",
+    },
+    { name: "Repairs & Calibration", href: "/service-repairs-calibration" },
+    { name: "Scale Hire", href: "/service-repairs-calibration/scales-hire" },
+    { name: "Specials", href: "/product-category/specials/" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
     { name: "Categories", href: "/product-category" },
