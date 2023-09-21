@@ -22,7 +22,7 @@ export default function ContentHero({ title, description, content }) {
           />
         </div>
         <div className="w-full lg:w-1/2 h-full inset-0 ml-auto sm:mt-[0vh] lg:mt-[-100vh]">
-          <div className="w-full grid grid-cols-1 gap-0 pt-0 xl:grid-cols-2 inset-0">
+          <div className="w-full grid grid-cols-1 gap-0 pt-0 custom-grid-cols-2 inset-0">
             {content.map((item, index) => {
               if (index % 3 === 0) {
                 return (

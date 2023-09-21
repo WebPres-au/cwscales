@@ -12,3 +12,10 @@
     transition-property: all;
     transition-timing-function: ease-in-out;
 }
+
+@media (min-width: 1280px) {
+    .custom-grid-cols-2 {
+        column-count: 2;
+        display: table-cell;
+    }
+}
