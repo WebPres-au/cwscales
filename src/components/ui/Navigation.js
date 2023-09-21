@@ -11,6 +11,7 @@ import {
   PhoneArrowUpRightIcon,
   EnvelopeIcon,
 } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 const navigation = {
   categories: [
@@ -223,7 +224,7 @@ export default function Navigation() {
                                   className="object-cover object-center"
                                 />
                               </div>
-                              <a
+                              <Link
                                 href={item.href}
                                 className="mt-6 block font-medium text-gray-900"
                               >
@@ -232,7 +233,7 @@ export default function Navigation() {
                                   aria-hidden="true"
                                 />
                                 {item.name}
-                              </a>
+                              </Link>
                               <p aria-hidden="true" className="mt-1">
                                 Shop now
                               </p>
@@ -254,12 +255,12 @@ export default function Navigation() {
                             >
                               {section.items.map((item) => (
                                 <li key={item.name} className="flow-root">
-                                  <a
+                                  <Link
                                     href={item.href}
                                     className="-m-2 block p-2 text-gray-500"
                                   >
                                     {item.name}
-                                  </a>
+                                  </Link>
                                 </li>
                               ))}
                             </ul>
@@ -273,12 +274,12 @@ export default function Navigation() {
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                   {navigation.pages.map((page) => (
                     <div key={page.name} className="flow-root">
-                      <a
+                      <Link
                         href={page.href}
                         className="-m-2 block p-2 font-medium text-gray-900"
                       >
                         {page.name}
-                      </a>
+                      </Link>
                     </div>
                   ))}
                 </div>
@@ -302,7 +303,7 @@ export default function Navigation() {
           </div>
 
           {/* Logo */}
-          <a href="/" className="flex">
+          <Link href="/" className="flex">
             <span className="sr-only">Business logo</span>
             <Image
               className="h-8 w-auto"
@@ -311,7 +312,7 @@ export default function Navigation() {
               width={200}
               height={200}
             />
-          </a>
+          </Link>
 
           <div className="flex">
             <EnvelopeIcon
@@ -408,7 +409,7 @@ export default function Navigation() {
                                               className="object-cover object-center"
                                             />
                                           </div>
-                                          <a
+                                          <Link
                                             href={item.href}
                                             className="mt-6 block font-medium text-gray-900"
                                           >
@@ -417,7 +418,7 @@ export default function Navigation() {
                                               aria-hidden="true"
                                             />
                                             {item.name}
-                                          </a>
+                                          </Link>
                                           <p
                                             aria-hidden="true"
                                             className="mt-1"
@@ -446,12 +447,12 @@ export default function Navigation() {
                                                 key={item.name}
                                                 className="flex"
                                               >
-                                                <a
+                                                <Link
                                                   href={item.href}
                                                   className="hover:text-gray-800"
                                                 >
                                                   {item.name}
-                                                </a>
+                                                </Link>
                                               </li>
                                             ))}
                                           </ul>
@@ -469,13 +470,13 @@ export default function Navigation() {
                   ))}
 
                   {navigation.pages.map((page) => (
-                    <a
+                    <Link
                       key={page.name}
                       href={page.href}
                       className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
                     >
                       {page.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </Popover.Group>

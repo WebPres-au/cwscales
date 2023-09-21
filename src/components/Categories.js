@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { categories } from "@/lib/data";
+import Link from "next/link";
 
 export default function Categories() {
   return (
@@ -22,10 +23,10 @@ export default function Categories() {
               <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/10" />
 
               <h3 className="mt-3 text-lg font-semibold leading-6 text-center text-white">
-                <a href={item.href}>
+                <Link href={item.href}>
                   <span className="absolute inset-0" />
                   {item.title}
-                </a>
+                </Link>
               </h3>
             </article>
           ))}
