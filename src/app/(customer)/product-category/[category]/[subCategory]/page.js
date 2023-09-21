@@ -36,8 +36,8 @@ const sections = [
     href: "#",
     image: "/categories/range/freight-scales.jpeg",
   },
-  { name: "Household Scales", href: "#", image: "" },
-  { name: "Kitchen Scales/Bathroom Scales", href: "#", image: "" },
+  // { name: "Household Scales", href: "#", image: "" },
+  // { name: "Kitchen Scales/Bathroom Scales", href: "#", image: "" },
   {
     name: "Laboratory Scales",
     href: "#",
