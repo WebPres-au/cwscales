@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ProductInfo from "./ProductInfo";
 
 export default function ContentHero({ title, description, content }) {
   return (
@@ -36,19 +37,23 @@ export default function ContentHero({ title, description, content }) {
                         alt={item.name}
                       />
                     </div>
+                    <ProductInfo />
                   </div>
                 );
               } else {
                 return (
-                  <div key={index} className="bg-gray-700 h-full w-full">
-                    <Image
-                      className="bg-gray-700 h-auto w-full object-cover hover:opacity-60"
-                      width={400}
-                      height={400}
-                      src={item.image}
-                      alt={item.name}
-                    />
-                  </div>
+                  <>
+                    <div key={index} className="bg-gray-700 h-full w-full">
+                      <Image
+                        className="bg-gray-700 h-auto w-full object-cover hover:opacity-60"
+                        width={400}
+                        height={400}
+                        src={item.image}
+                        alt={item.name}
+                      />
+                    </div>
+                    <ProductInfo />
+                  </>
                 );
               }
             })}

@@ -19,3 +19,31 @@
         display: table-cell;
     }
 }
+
+.product-info {
+    padding: calc(19.4px + 1.59375vw) calc(19.4px + 1.59375vw) calc(22.4px + 3vw);
+}
+
+.product-info > h2 {
+    font-size: calc(16.2px + .09375vw);
+    line-height: calc(16.2px + .09375vw);
+    margin-bottom: calc(16.4px + 0.1875vw);
+    letter-spacing: -.04em;
+    color: #b1cae5;
+}
+
+.product-info > h2:hover {
+    color: #286DB7;
+}
+
+.product-info > h3 {
+    font-size: calc(18px + .9375vw);
+    line-height: calc(18.6px + 1.21875vw);
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.product-info > p {
+    font-size: 16px;
+    line-height: calc(16.6px + .28125vw);
+}
