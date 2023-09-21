@@ -27,32 +27,35 @@ export default function ContentHero({ title, description, content }) {
             {content.map((item, index) => {
               if (index % 3 === 0) {
                 return (
-                  <div key={index} className="grid gap-0">
-                    <div className="bg-gray-700 h-full w-full">
+                  <div key={index} className="grid gap-0 ">
+                    <div className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75">
                       <Image
-                        className="h-auto w-full object-cover hover:opacity-60"
+                        className="h-auto w-full object-cover"
                         width={400}
                         height={400}
                         src={item.image}
                         alt={item.name}
                       />
+                      <ProductInfo />
                     </div>
-                    <ProductInfo />
                   </div>
                 );
               } else {
                 return (
                   <>
-                    <div key={index} className="bg-gray-700 h-full w-full">
+                    <div
+                      key={index}
+                      className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75"
+                    >
                       <Image
-                        className="bg-gray-700 h-auto w-full object-cover hover:opacity-60"
+                        className="h-auto w-full object-cover"
                         width={400}
                         height={400}
                         src={item.image}
                         alt={item.name}
                       />
+                      <ProductInfo />
                     </div>
-                    <ProductInfo />
                   </>
                 );
               }
