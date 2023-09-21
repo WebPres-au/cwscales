@@ -1,5 +1,6 @@
 import ContactForm from "@/components/ContactForm";
 import RepairCTA from "@/components/ui/RepairCTA";
+import PageHeader from "@/components/ui/PageHeader";
 
 export default function Contact() {
   return (
@@ -7,7 +8,7 @@ export default function Contact() {
       <div className="mt-32">
         <PageHeader
           title="Contact Us"
-          description="Get in touch with us today!"
+          description="There are multiple ways to contact Correct Weight Scales, the fastest way is to call us on 0402 980 089 or alternatively fill out the form below."
         />
         <ContactForm />
         <div className="mt-32">
@@ -15,18 +16,5 @@ export default function Contact() {
         </div>
       </div>
     </>
-  );
-}
-
-function PageHeader({ title, description }) {
-  return (
-    <div className="bg-white px-6 py-24 sm:py-32 lg:px-8">
-      <div className="mx-auto max-w-2xl text-center">
-        <h2 className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-          {title}
-        </h2>
-        <p className="mt-6 text-lg leading-8 text-gray-600">{description}</p>
-      </div>
-    </div>
   );
 }
