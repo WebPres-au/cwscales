@@ -1,4 +1,4 @@
-export default function ContentHero({ title, description, content }) {
+export default function ContentHero({ title, description, children }) {
   return (
     <>
       <div className="relative mt-32 -mb-32">
@@ -16,33 +16,7 @@ export default function ContentHero({ title, description, content }) {
           />
         </div>
         <div className="w-full lg:w-1/2 h-full inset-0 ml-auto sm:mt-[0vh] lg:mt-[-100vh]">
-          <div className="w-full grid grid-cols-1 gap-0 pt-0 xl:grid-cols-2 inset-0">
-            {content.map((item, index) => {
-              if (index % 3 === 0) {
-                return (
-                  <div key={index} className="grid gap-0">
-                    <div className="bg-gray-700 h-full w-full">
-                      <img
-                        className="h-auto w-full object-cover hover:opacity-60"
-                        src={item.image}
-                        alt={item.name}
-                      />
-                    </div>
-                  </div>
-                );
-              } else {
-                return (
-                  <div key={index} className="bg-gray-700 h-full w-full">
-                    <img
-                      className="bg-gray-700 h-auto w-full object-cover hover:opacity-60"
-                      src={item.image}
-                      alt={item.name}
-                    />
-                  </div>
-                );
-              }
-            })}
-          </div>
+          {children}
         </div>
       </div>
     </>
