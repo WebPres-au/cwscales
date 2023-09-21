@@ -76,11 +76,11 @@ const sections = [
 ];
 
 export default function CategoryPage({ params }) {
+  const title = params.category.replace(/-/g, " ");
   return (
     <div>
       <ContentHero
-        // title="Weighing Scales"
-        title={params.category}
+        title={title}
         description="We offer a range of NMI Trade Approved industrial and commercial
               scales to standardise manufacturing and ensure product consistency
               for your business."
