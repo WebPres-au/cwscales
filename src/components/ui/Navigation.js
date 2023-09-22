@@ -190,7 +190,6 @@ const navigation = {
     { name: "Specials", href: "/product-category/specials/" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
-    { name: "Categories", href: "/product-category" },
   ],
 };
 
