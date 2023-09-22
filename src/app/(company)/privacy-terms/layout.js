@@ -1,6 +1,6 @@
-const title = "Contact - Correct Weight Scales";
+const title = "Privacy & Terms - Correct Weight Scales";
 const description =
-  "Get in touch today There are multiple ways to contact Correct Weight Scales, the fastest way is to call us on 0402 980 089 or alternatively fill out the form below.";
+  "Information about our privacy policy and terms and conditions. That you can read to learn how we utilise your data when you interact with the website.";
 
 export const metadata = {
   title,
@@ -34,7 +34,7 @@ export const metadata = {
   openGraph: {
     title,
     description,
-    url: "https://cwscales.com.au",
+    url: "https://cwscales.com.au/privacy-terms",
     type: "website",
     images: [
       {
@@ -47,6 +47,6 @@ export const metadata = {
   },
 };
 
-export default function ContactLayout({ children }) {
+export default function PrivacyAndTermsLayout({ children }) {
   return <div>{children}</div>;
 }
