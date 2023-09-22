@@ -160,3 +160,48 @@ export const categories = [
     imageUrl: "/categories/servicing.jpeg",
   },
 ];
+
+export const normalPages = [
+  "",
+  "about-us",
+  "contact",
+  "privacy-terms",
+  "sitemap.xml",
+  "robots.txt",
+];
+
+export const digitalWeighingPages = [
+  "product-category/digital-weighing-scales",
+  "product-category/digital-weighing-scales/counting-scales",
+  "product-category/digital-weighing-scales/crane-scales",
+  "product-category/digital-weighing-scales/digital-table-scales",
+  "product-category/digital-weighing-scales/electronic-weighing-indicators",
+  "product-category/digital-weighing-scales/floor-pallet-scales",
+  "product-category/digital-weighing-scales/foodportion-scales",
+  "product-category/digital-weighing-scales/freightparcel-scales",
+  "product-category/digital-weighing-scales/household-scales",
+  "product-category/digital-weighing-scales/household-scales/kitchen-scales-bathroom-scales",
+  "product-category/digital-weighing-scales/laboratory-scales/",
+  "product-category/digital-weighing-scales/medicalpersonal-weighing-scales/",
+  "product-category/digital-weighing-scales/money-scales-coin-sorters/",
+  "product-category/digital-weighing-scales/platform-scales/",
+  "product-category/digital-weighing-scales/retail-scales-labelling-scales",
+  "product-category/digital-weighing-scales/vetanimal-scales",
+  "product-category/digital-weighing-scales/trade-approved-scales",
+];
+
+export const packagingPages = [
+  "product-category/packaging-equipment",
+  "product-category/packaging-equipment/bagging-machines",
+  "product-category/packaging-equipment/check-weighers",
+  "product-category/packaging-equipment/linear-weighers",
+  "product-category/packaging-equipment/liquid-fillers",
+  "product-category/packaging-equipment/multihead-weighers",
+];
+
+export const extraServices = [
+  "product-category/label-printers-consumables",
+  "product-category/loadcells-accesories",
+  "service-repairs-calibration/",
+  "service-repairs-calibration/scales-hire",
+];
