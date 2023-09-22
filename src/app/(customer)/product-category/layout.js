@@ -68,7 +68,7 @@ export const metadata = {
   openGraph: {
     title,
     description,
-    url: "https://cwscales.com.au",
+    url: "https://cwscales.com.au/product-category/",
     type: "website",
     images: [
       {

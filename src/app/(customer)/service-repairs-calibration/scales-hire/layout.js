@@ -24,7 +24,7 @@ export const metadata = {
   openGraph: {
     title,
     description,
-    url: "https://cwscales.com.au",
+    url: "https://cwscales.com.au/service-repairs-calibration/scales-hire/",
     type: "website",
     images: [
       {
