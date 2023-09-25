@@ -172,7 +172,6 @@ export default function DashboardLayout({ children }) {
         <div className="py-10">
           <main>
             <div className="mx-auto max-w-7xl p-12 sm:px-6 lg:px-8">
-              <div className="mb-16" />
               {children}
             </div>
           </main>
