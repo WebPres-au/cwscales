@@ -79,11 +79,11 @@ export default function ProductList() {
           <div className="min-w-0">
             <div className="flex">
               <img
-                className="h-12 w-12 flex-none rounded-full bg-gray-50"
+                className="h-16 w-16 flex-none rounded-sm bg-gray-50"
                 src={project.imageUrl}
                 alt=""
               />
-              <div className="ml-3">
+              <div className="ml-3 mt-2">
                 <div className="flex items-start">
                   <p className="text-sm font-semibold leading-6 text-gray-900 mr-2">
                     {project.name}
@@ -104,10 +104,6 @@ export default function ProductList() {
                       {project.dueDate}
                     </time>
                   </p>
-                  <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">
-                    <circle cx={1} cy={1} r={1} />
-                  </svg>
-                  <p className="truncate">{project.url}</p>
                 </div>
               </div>
             </div>
@@ -117,7 +113,7 @@ export default function ProductList() {
               href={project.href}
               className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
             >
-              View project<span className="sr-only">, {project.name}</span>
+              View live product<span className="sr-only">, {project.name}</span>
             </a>
             <Menu as="div" className="relative flex-none">
               <Menu.Button className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
