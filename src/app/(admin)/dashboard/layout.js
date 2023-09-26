@@ -5,6 +5,8 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { classNames } from "@/lib/functions";
 import Image from "next/image";
 import LogoutButton from "./LogoutButton";
+import Popover from "@/components/Popover";
+import { useState } from "react";
 
 const user = {
   name: "Tom Cook",
@@ -30,6 +32,9 @@ const navigation = [
 ];
 
 export default function DashboardLayout({ children }) {
+
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  
   return (
     <>
       <div className="min-h-full">
@@ -186,6 +191,7 @@ export default function DashboardLayout({ children }) {
               </div>
               <div className="ml-4 mt-2 flex-shrink-0">
                 <button
+                  onClick={() => setPopoverOpen(true)}
                   type="button"
                   className="relative inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
@@ -197,6 +203,8 @@ export default function DashboardLayout({ children }) {
           {children}
         </div>
       </div>
+
+      <Popover open={popoverOpen} setOpen={setPopoverOpen} />
     </>
   );
 }

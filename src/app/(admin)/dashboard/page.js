@@ -1,7 +1,9 @@
-import { classNames } from "@/lib/functions";
 import KebabMenu from "./KebabMenu";
-import { getSession } from "@/app/supabase-server";
+import { getProducts, getSession } from "@/app/supabase-server";
 import { redirect } from "next/navigation";
+import Image from "next/image";
+import { classNames } from "@/lib/functions";
+
 
 const statuses = {
   Complete: "text-green-700 bg-green-50 ring-green-600/20",
@@ -69,44 +71,57 @@ const projects = [
 export default async function ProductList() {
   const session = await getSession();
 
+  let products = await getProducts();
+
+  // convert comma separated string columns to array
+  products = products.map((product) => {
+    product.tags = product?.tags?.split(",");
+    product.categories = product?.categories?.split(",");
+    product.images = product?.images?.split(",");
+    return product;
+  });
+
   if (!session) {
     return redirect('/auth/login');
   }
 
   return (
     <ul role="list" className="divide-y divide-gray-100">
-      {projects.map((project) => (
+      {products.map((product) => (
         <li
-          key={project.id}
+          key={product.id}
           className="flex items-center justify-between gap-x-6 py-5"
         >
           <div className="min-w-0">
             <div className="flex">
-              <img
-                className="h-16 w-16 flex-none rounded-sm bg-gray-50"
-                src={project.imageUrl}
-                alt=""
-              />
+              {
+                product.images && product.images.length > 0 &&
+                <Image
+                  className="h-16 w-16 flex-none rounded-sm bg-gray-50"
+                  src={product.images[0]}
+                  alt={product.name}
+                  width={64}
+                  height={64}
+                />
+              }
               <div className="ml-3 mt-2">
                 <div className="flex items-start">
                   <p className="text-sm font-semibold leading-6 text-gray-900 mr-2">
-                    {project.name}
+                    {product.name}
                   </p>
-                  <p
-                    className={classNames(
-                      statuses[project.status],
-                      "rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"
-                    )}
-                  >
-                    {project.status}
-                  </p>
+                  <div className="flex gap-1 flex-wrap">
+                  {
+                    product.tags.map((tag) => (
+                      <p className={"rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"} >
+                        {tag}
+                      </p>
+                    ))
+                  }
+                  </div>
                 </div>
                 <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-                  <p className="whitespace-nowrap">
-                    Last edited on{" "}
-                    <time dateTime={project.dueDateTime}>
-                      {project.dueDate}
-                    </time>
+                  <p className="">
+                    {product.short_description}
                   </p>
                 </div>
               </div>
@@ -114,10 +129,10 @@ export default async function ProductList() {
           </div>
           <div className="flex flex-none items-center gap-x-4">
             <a
-              href={project.href}
+              href={product.href}
               className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
             >
-              View live product<span className="sr-only">, {project.name}</span>
+              View live product<span className="sr-only">, {product.name}</span>
             </a>
             <KebabMenu />
           </div>
