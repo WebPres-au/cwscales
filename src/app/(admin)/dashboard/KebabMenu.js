@@ -3,8 +3,9 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
+import { classNames } from "@/lib/functions";
 
-export default function KebabMenu() {
+export default function KebabMenu({product}) {
   return (
     <Menu as="div" className="relative flex-none">
       <Menu.Button className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
@@ -30,7 +31,7 @@ export default function KebabMenu() {
                   "block px-3 py-1 text-sm leading-6 text-gray-900"
                 )}
               >
-                Edit<span className="sr-only">, {project.name}</span>
+                Edit<span className="sr-only">, {product.name}</span>
               </a>
             )}
           </Menu.Item>
@@ -43,7 +44,7 @@ export default function KebabMenu() {
                   "block px-3 py-1 text-sm leading-6 text-gray-900"
                 )}
               >
-                Pause<span className="sr-only">, {project.name}</span>
+                Pause<span className="sr-only">, {product.name}</span>
               </a>
             )}
           </Menu.Item>
@@ -56,7 +57,7 @@ export default function KebabMenu() {
                   "block px-3 py-1 text-sm leading-6 text-gray-900"
                 )}
               >
-                Delete<span className="sr-only">, {project.name}</span>
+                Delete<span className="sr-only">, {product.name}</span>
               </a>
             )}
           </Menu.Item>

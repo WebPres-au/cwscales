@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { LinkIcon, PlusIcon } from "@heroicons/react/20/solid";
@@ -8,6 +8,7 @@ import { classNames } from "@/lib/functions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import SecondPopover from "./SecondPopover";
 
 const photos = [
   {
@@ -42,10 +43,50 @@ export default function Popover({open, setOpen}) {
 
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
+
+  const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
+
   const [chosenCategories, setChosenCategories] = useState([]);
   const [chosenTags, setChosenTags] = useState([]);
 
   const supabase = createClientComponentClient();
+
+
+  const [isAddNewCategoryOpen, setIsAddNewCategoryOpen] = useState(false);
+  const [isAddNewTagOpen, setIsAddNewTagOpen] = useState(false);
+
+  useEffect(() => {
+
+    const getCategories = async () => {
+    try {
+      const { data, error } = await supabase
+      .from('categories')
+      .select();
+      if(error) throw error;
+      setCategories(data);
+    }
+    catch (error) {
+      toast.error(error.message);
+    }
+  }
+
+    const getTags = async () => {
+    try {
+      const { data, error } = await supabase
+      .from('tags')
+      .select();
+      if(error) throw error;
+      setTags(data);
+    }
+    catch (error) {
+      toast.error(error.message);
+    }
+  }
+    getCategories();
+    getTags();
+  }, [])
+
 
   const router = useRouter();
 
@@ -222,6 +263,7 @@ export default function Popover({open, setOpen}) {
                                   ))}
                                   <button
                                     type="button"
+                                    onClick={() => setIsAddNewCategoryOpen(true)}
                                     className="relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                   >
                                     <span className="absolute -inset-2" />
@@ -260,6 +302,7 @@ export default function Popover({open, setOpen}) {
                                   ))}
                                   <button
                                     type="button"
+                                    onClick={() => setIsAddNewTagOpen(true)}
                                     className="relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                   >
                                     <span className="absolute -inset-2" />
@@ -366,12 +409,16 @@ export default function Popover({open, setOpen}) {
                       </button>
                     </div>
                   </form>
+                  <SecondPopover isCategory open={isAddNewCategoryOpen} setOpen={setIsAddNewCategoryOpen} setCategories={setCategories} />
+                  <SecondPopover isTag open={isAddNewTagOpen} setOpen={setIsAddNewTagOpen} setTags={setTags} />
+
                 </Dialog.Panel>
               </Transition.Child>
             </div>
           </div>
         </div>
       </Dialog>
+      
     </Transition.Root>
   );
 }

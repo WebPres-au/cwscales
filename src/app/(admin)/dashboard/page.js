@@ -2,7 +2,6 @@ import KebabMenu from "./KebabMenu";
 import { getProducts, getSession } from "@/app/supabase-server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import { classNames } from "@/lib/functions";
 
 
 const statuses = {
@@ -134,7 +133,7 @@ export default async function ProductList() {
             >
               View live product<span className="sr-only">, {product.name}</span>
             </a>
-            <KebabMenu />
+            <KebabMenu product={product} />
           </div>
         </li>
       ))}
