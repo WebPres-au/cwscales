@@ -72,14 +72,6 @@ export default async function ProductList() {
 
   let products = await getProducts();
 
-  // convert comma separated string columns to array
-  products = products.map((product) => {
-    product.tags = product?.tags?.split(",");
-    product.categories = product?.categories?.split(",");
-    product.images = product?.images?.split(",");
-    return product;
-  });
-
   if (!session) {
     return redirect('/auth/login');
   }
@@ -111,8 +103,8 @@ export default async function ProductList() {
                   <div className="flex gap-1 flex-wrap">
                   {
                     product.tags.map((tag) => (
-                      <p className={"rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"} >
-                        {tag}
+                      <p className={"rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"} key={tag.id}>
+                        {tag.name}
                       </p>
                     ))
                   }

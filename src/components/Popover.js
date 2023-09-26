@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { LinkIcon, PlusIcon } from "@heroicons/react/20/solid";
@@ -10,45 +10,22 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import SecondPopover from "./SecondPopover";
 
-const photos = [
-  {
-    name: "Product photo 1",
-    imageUrl:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    name: "Product photo 2",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
-
-const categories = [
-  { name: "Scales", href: "#" },
-  { name: "Packaging", href: "#" },
-  { name: "Printers", href: "#" },
-  { name: "Loadcells", href: "#" },
-  { name: "Accessories", href: "#" },
-];
-
-const tags = [
-  { name: "Scales", href: "#" },
-  { name: "Packaging", href: "#" },
-  { name: "Printers", href: "#" },
-  { name: "Loadcells", href: "#" },
-  { name: "Accessories", href: "#" },
-];
 
 export default function Popover({open, setOpen}) {
+
+  const imageUploadRef = useRef(null);
 
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
 
+  const [files, setFiles] = useState([]);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
   const [chosenCategories, setChosenCategories] = useState([]);
   const [chosenTags, setChosenTags] = useState([]);
+
+  const [loading, setLoading] = useState(false);
 
   const supabase = createClientComponentClient();
 
@@ -91,37 +68,100 @@ export default function Popover({open, setOpen}) {
   const router = useRouter();
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
-    console.log(e.target.elements);
     try {
-      const { data, error } = await supabase
-      .from('dummyproducts')
-      .insert([
-        { name: productName, description: description, categories: chosenCategories.join(', '), tags: chosenTags.join(', ')},
-      ])
-      .select()
+      // Insert new product to products table
+      const { data: productData, error: productError } = await supabase
+        .from('products')
+        .insert([
+          { name: productName, short_description: description },
+        ]).select();
+  
+      if (productError) throw productError;
+  
+      // The ID of the newly inserted product
+      const productId = productData[0].id;
+  
+      // Preparing the array to insert into product_categories table
+      const categoryInserts = chosenCategories.map(categoryId => ({
+        product_id: productId,
+        category_id: categoryId,
+      }));
 
-      if(error) throw error;
+      // Preparing the array to insert into product_tags table
+      const tagInserts = chosenTags.map(tagId => ({
+        product_id: productId,
+        tag_id: tagId,
+      }));
+  
+      // Inserting categories related to the product in the product_categories table
+      const { error: categoryError } = await supabase
+        .from('product_categories')
+        .insert(categoryInserts);
+  
+      if (categoryError) throw categoryError;
 
+      // Inserting tags related to the product in the product_tags table
+      const { error: tagError } = await supabase
+        .from('product_tags')
+        .insert(tagInserts);
+
+      if (tagError) throw tagError;
+
+       // Uploading images to Supabase Storage and inserting to product_images table
+       const imageInserts = [];
+       for (const { file } of files) {
+         const path = `product_images/${productId}/${file.name}`;
+         const { error: uploadError } = await supabase.storage.from('product-images').upload(path, file);
+         if (uploadError) throw uploadError;
+         imageInserts.push({ product_id: productId, image_path: path });
+       }
+
+       const { error: imageError } = await supabase.from('product_images').insert(imageInserts);
+       if (imageError) throw imageError;
+
+      
+  
       router.refresh();
-
+  
       // reset form values
       setProductName("");
       setDescription("");
       setChosenCategories([]);
       setChosenTags([]);
-
+  
       setOpen(false);
-
+      setLoading(false);
+  
       toast.success("Product added successfully");
-
+  
     } catch (error) {
+      setLoading(false);
       toast.error(error.message);
     }
   };
+  
 
+  const handleFileSelected = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFiles((prev) => [...prev, { file, preview: reader.result }]);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
-
+  const handleOnClosePopover = () => {
+    setOpen(false);
+    setProductName("");
+    setDescription("");
+    setChosenCategories([]);
+    setChosenTags([]);
+    setFiles([]);
+  }
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -215,17 +255,19 @@ export default function Popover({open, setOpen}) {
                               </h3>
                               <div className="mt-2">
                                 <div className="flex space-x-2">
-                                  {photos.map((photo, index) => (
-                                    <img
-                                      key={index}
-                                      className="relative inline-block h-16 w-16 rounded-sm"
-                                      src={photo.imageUrl}
-                                      alt={photo.name}
-                                    />
-                                  ))}
+                                {files.map((photo, index) => (
+                                  <img
+                                    key={index}
+                                    className="relative inline-block h-16 w-16 rounded-sm"
+                                    src={photo.preview}
+                                    alt="Uploaded thumbnail"
+                                  />
+                                ))}
+
                                   <button
                                     type="button"
-                                    className="relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    className="relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" 
+                                    onClick={() => imageUploadRef.current.click()}
                                   >
                                     <span className="absolute -inset-2" />
                                     <span className="sr-only">
@@ -235,6 +277,8 @@ export default function Popover({open, setOpen}) {
                                       className="h-5 w-5"
                                       aria-hidden="true"
                                     />
+                                    <input ref={imageUploadRef} type="file" name="image" hidden onChange={handleFileSelected} accept="image/*"/>
+
                                   </button>
                                 </div>
                               </div>
@@ -249,13 +293,13 @@ export default function Popover({open, setOpen}) {
                                     <p
                                       key={index}
                                       className={classNames(
-                                        chosenCategories.includes(category.name) ? "bg-indigo-100 text-indigo-700" : "bg-gray-100 text-gray-900",
+                                        chosenCategories.includes(category.id) ? "bg-indigo-100 text-indigo-700" : "bg-gray-100 text-gray-900",
                                         "px-2 py-1 mr-2 border border-gray-300 rounded cursor-pointer"
 
                                       )}
-                                      onClick={ chosenCategories.includes(category.name) ? 
-                                        () => setChosenCategories((prev) => prev.filter((chosenCategory) => chosenCategory !== category.name)) 
-                                        : () => setChosenCategories((prev) => [...prev, category.name]) 
+                                      onClick={ chosenCategories.includes(category.id) ? 
+                                        () => setChosenCategories((prev) => prev.filter((chosenCategory) => chosenCategory !== category.id)) 
+                                        : () => setChosenCategories((prev) => [...prev, category.id]) 
                                       }
                                     >
                                       {category.name}
@@ -288,13 +332,13 @@ export default function Popover({open, setOpen}) {
                                     <p
                                     key={index}
                                     className={classNames(
-                                      chosenTags.includes(tag.name) ? "bg-indigo-100 text-indigo-700" : "bg-gray-100 text-gray-900",
+                                      chosenTags.includes(tag.id) ? "bg-indigo-100 text-indigo-700" : "bg-gray-100 text-gray-900",
                                       "px-2 py-1 mr-2 border border-gray-300 rounded cursor-pointer"
 
                                     )}
-                                    onClick={ chosenTags.includes(tag.name) ? 
-                                      () => setChosenTags((prev) => prev.filter((chosenTag) => chosenTag !== tag.name)) 
-                                      : () => setChosenTags((prev) => [...prev, tag.name]) 
+                                    onClick={ chosenTags.includes(tag.id) ? 
+                                      () => setChosenTags((prev) => prev.filter((chosenTag) => chosenTag !== tag.id)) 
+                                      : () => setChosenTags((prev) => [...prev, tag.id]) 
                                     }
                                   >
                                     {tag.name}
@@ -395,15 +439,17 @@ export default function Popover({open, setOpen}) {
                     </div>
                     <div className="flex flex-shrink-0 justify-end px-4 py-4">
                       <button
+                        disabled={loading}
                         type="button"
-                        className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                        onClick={() => setOpen(false)}
+                        className="rounded-md disabled:bg-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                        onClick={handleOnClosePopover}
                       >
                         Cancel
                       </button>
                       <button
+                        disabled={loading}
                         type="submit"
-                        className="ml-4 inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="ml-4 disabled:bg-gray-200 inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Save
                       </button>

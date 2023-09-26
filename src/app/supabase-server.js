@@ -22,11 +22,60 @@ export async function getSession() {
 export const getProducts = async () => {
   const supabase = createServerSupabaseClient();
   const { data, error } = await supabase
-  .from('dummyproducts')
-  .select()
+  .from('products')
+  .select(`
+    *,
+    product_categories (
+      categories (
+        id,
+        name
+      )
+    ),
+    product_tags (
+      tags (
+        id,
+        name
+      )
+    ),
+    product_images (
+      id,
+      image_path
+    )
+  `);
 
   if (error) {
-    console.log(error.message);
+    console.error(error.message);
+    return [];
   }
-  return data ?? [];
+
+  const getSignedUrl = async (image) => {
+    const { data, error } = await supabase
+      .storage
+      .from('product-images')
+      .createSignedUrl(image.image_path, 60);
+    
+    if (error) throw error; // Log error
+  
+    return data.signedUrl;
+  }
+  
+  
+  // Create an array of Promises that resolve to the transformed product objects
+  const transformedDataPromises = data.map(async (product) => {
+    const categories = product.product_categories.map(pc => pc.categories);
+    const tags = product.product_tags.map(pt => pt.tags);
+    
+    // Await all the signed URLs and create the images array
+    const images = await Promise.all(product.product_images.map(getSignedUrl));
+
+    return {
+      ...product,
+      categories,
+      tags,
+      images,
+    };
+  });
+
+  // Wait for all Promises to resolve and return the transformed data
+  return await Promise.all(transformedDataPromises);
 };
