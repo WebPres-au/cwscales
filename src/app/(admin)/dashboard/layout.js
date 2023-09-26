@@ -4,6 +4,7 @@ import { Disclosure, Menu } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { classNames } from "@/lib/functions";
 import Image from "next/image";
+import LogoutButton from "./LogoutButton";
 
 const user = {
   name: "Tom Cook",
@@ -72,7 +73,9 @@ export default function DashboardLayout({ children }) {
                       ))}
                     </div>
                   </div>
-                  <div className="hidden sm:ml-6 sm:flex sm:items-center">
+                  <div className="hidden sm:ml-6 sm:flex sm:items-center gap-4">
+                    <LogoutButton />
+
                     <button
                       type="button"
                       className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -96,6 +99,7 @@ export default function DashboardLayout({ children }) {
                         </Menu.Button>
                       </div>
                     </Menu>
+
                   </div>
                   <div className="-mr-2 flex items-center sm:hidden">
                     {/* Mobile menu button */}
@@ -153,6 +157,9 @@ export default function DashboardLayout({ children }) {
                       <div className="text-sm font-medium text-gray-500">
                         {user.email}
                       </div>
+                    </div>
+                    <div className="mx-auto">
+                      <LogoutButton />
                     </div>
                     <button
                       type="button"

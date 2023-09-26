@@ -8,7 +8,7 @@ export default function Layout({ children }) {
   const pageName = usePathname();
 
   const isAdmin =
-    pageName.startsWith("/admin") || pageName.startsWith("/dashboard");
+    pageName.startsWith("/auth") || pageName.startsWith("/dashboard");
 
   return (
     <div>
