@@ -3,7 +3,6 @@ import { getProducts, getSession } from "@/app/supabase-server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 
-
 const statuses = {
   Complete: "text-green-700 bg-green-50 ring-green-600/20",
   "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
@@ -73,7 +72,7 @@ export default async function ProductList() {
   let products = await getProducts();
 
   if (!session) {
-    return redirect('/auth/login');
+    return redirect("/auth/login");
   }
 
   return (
@@ -85,8 +84,7 @@ export default async function ProductList() {
         >
           <div className="min-w-0">
             <div className="flex">
-              {
-                product.images && product.images.length > 0 &&
+              {product.images && product.images.length > 0 && (
                 <Image
                   className="h-16 w-16 flex-none rounded-sm bg-gray-50"
                   src={product.images[0]}
@@ -94,26 +92,27 @@ export default async function ProductList() {
                   width={64}
                   height={64}
                 />
-              }
+              )}
               <div className="ml-3 mt-2">
                 <div className="flex items-start">
                   <p className="text-sm font-semibold leading-6 text-gray-900 mr-2">
                     {product.name}
                   </p>
                   <div className="flex gap-1 flex-wrap">
-                  {
-                    product.tags.map((tag) => (
-                      <p className={"rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"} key={tag.id}>
+                    {product.tags.map((tag) => (
+                      <p
+                        className={
+                          "rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"
+                        }
+                        key={tag.id}
+                      >
                         {tag.name}
                       </p>
-                    ))
-                  }
+                    ))}
                   </div>
                 </div>
                 <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-                  <p className="">
-                    {product.short_description}
-                  </p>
+                  <p className="">{product.short_description}</p>
                 </div>
               </div>
             </div>
@@ -123,7 +122,7 @@ export default async function ProductList() {
               href={product.href}
               className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
             >
-              View live product<span className="sr-only">, {product.name}</span>
+              View product<span className="sr-only">, {product.name}</span>
             </a>
             <KebabMenu product={product} />
           </div>
