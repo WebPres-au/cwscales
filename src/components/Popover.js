@@ -26,8 +26,8 @@ export default function Popover({ open, setOpen, intialProduct}) {
 
   const [existingImages, setExistingImages] = useState(intialProduct?.images ?? []);
 
-  const [chosenCategories, setChosenCategories] = useState(intialProduct?.categories?.map(item => item.id) ?? []);
-  const [chosenTags, setChosenTags] = useState(intialProduct?.tags?.map(item => item.id) ??[]);
+  const [chosenCategories, setChosenCategories] = useState(intialProduct?.categories?.map(item => item?.id) ?? []);
+  const [chosenTags, setChosenTags] = useState(intialProduct?.tags?.map(item => item?.id) ??[]);
 
   const [loading, setLoading] = useState(false);
 
