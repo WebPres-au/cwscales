@@ -65,7 +65,7 @@ export const getProducts = async () => {
     const tags = product.product_tags.map(pt => pt.tags);
     
     // Await all the signed URLs and create the images array
-    const images = await Promise.all(product.product_images.map(getSignedUrl));
+    const images = await Promise.all(product.product_images.map(async (image) => {return {...image, signedUrl: await getSignedUrl(image)}}));
 
     return {
       ...product,

@@ -87,7 +87,7 @@ export default async function ProductList() {
               {product.images && product.images.length > 0 && (
                 <Image
                   className="h-16 w-16 flex-none rounded-sm bg-gray-50"
-                  src={product.images[0]}
+                  src={product.images[0].signedUrl}
                   alt={product.name}
                   width={64}
                   height={64}
@@ -99,6 +99,14 @@ export default async function ProductList() {
                     {product.name}
                   </p>
                   <div className="flex gap-1 flex-wrap">
+                    <p
+                      className={
+                        "rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"
+                      }
+                      key={"status"}
+                    >
+                      {product.isPublic? "Public" : "Draft"}
+                    </p>
                     {product.tags.map((tag) => (
                       <p
                         className={

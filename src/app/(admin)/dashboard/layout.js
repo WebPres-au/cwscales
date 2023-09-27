@@ -149,7 +149,7 @@ export default function DashboardLayout({ children }) {
         </div>
       </div>
 
-      <Popover open={popoverOpen} setOpen={setPopoverOpen} />
+      <Popover open={popoverOpen} setOpen={setPopoverOpen} key={'new-product'}/>
     </>
   );
 }

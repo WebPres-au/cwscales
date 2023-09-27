@@ -9,19 +9,25 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import SecondPopover from "./SecondPopover";
+import Image from "next/image";
 
-export default function Popover({ open, setOpen }) {
+export default function Popover({ open, setOpen, intialProduct}) {
+
   const imageUploadRef = useRef(null);
 
-  const [productName, setProductName] = useState("");
-  const [description, setDescription] = useState("");
+  const [productName, setProductName] = useState(intialProduct?.name ?? "");
+  const [description, setDescription] = useState(intialProduct?.short_description ?? "");
 
   const [files, setFiles] = useState([]);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
-  const [chosenCategories, setChosenCategories] = useState([]);
-  const [chosenTags, setChosenTags] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(intialProduct? intialProduct?.isPublic ? "public" : "draft" : "public");
+
+  const [existingImages, setExistingImages] = useState(intialProduct?.images ?? []);
+
+  const [chosenCategories, setChosenCategories] = useState(intialProduct?.categories?.map(item => item.id) ?? []);
+  const [chosenTags, setChosenTags] = useState(intialProduct?.tags?.map(item => item.id) ??[]);
 
   const [loading, setLoading] = useState(false);
 
@@ -63,7 +69,7 @@ export default function Popover({ open, setOpen }) {
       // Insert new product to products table
       const { data: productData, error: productError } = await supabase
         .from("products")
-        .insert([{ name: productName, short_description: description }])
+        .insert([{ name: productName, short_description: description, isPublic: selectedOption === "public" }])
         .select();
 
       if (productError) throw productError;
@@ -131,6 +137,74 @@ export default function Popover({ open, setOpen }) {
     }
   };
 
+  const handleEdit = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    const productId = intialProduct.id;
+    try {
+      // Update product in products table
+      const { data: updatedProductData, error: productError } = await supabase
+        .from("products")
+        .update({
+          name: productName,
+          short_description: description,
+          isPublic: selectedOption === "public",
+        })
+        .eq('id', productId);
+  
+      if (productError) throw productError;
+  
+      // Delete existing categories and tags and insert the updated ones
+      await supabase.from("product_categories").delete().eq('product_id', productId);
+      await supabase.from("product_tags").delete().eq('product_id', productId);
+  
+      // Inserting new categories related to the product in the product_categories table
+      const categoryInserts = chosenCategories.map((categoryId) => ({
+        product_id: productId,
+        category_id: categoryId,
+      }));
+      const { error: categoryError } = await supabase.from("product_categories").insert(categoryInserts);
+      if (categoryError) throw categoryError;
+  
+      // Inserting new tags related to the product in the product_tags table
+      const tagInserts = chosenTags.map((tagId) => ({
+        product_id: productId,
+        tag_id: tagId,
+      }));
+      const { error: tagError } = await supabase.from("product_tags").insert(tagInserts);
+      if (tagError) throw tagError;
+
+      // Uploading images to Supabase Storage and inserting to product_images table
+      const imageInserts = [];
+      for (const { file } of files) {
+        const path = `product_images/${productId}/${file.name}`;
+        const { error: uploadError } = await supabase.storage
+          .from("product-images")
+          .upload(path, file);
+        if (uploadError) throw uploadError;
+        imageInserts.push({ product_id: productId, image_path: path });
+      }
+
+      const { error: imageError } = await supabase
+        .from("product_images")
+        .insert(imageInserts);
+      if (imageError) throw imageError;
+
+      router.refresh();
+
+      setOpen(false);
+      setLoading(false);
+
+      toast.success("Product edited successfully");
+    } catch (error) {
+      setLoading(false);
+      toast.error(error.message);
+    }
+  }
+
+
+  
+
   const handleFileSelected = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -150,6 +224,27 @@ export default function Popover({ open, setOpen }) {
     setChosenTags([]);
     setFiles([]);
   };
+
+  const deleteExistingImage = async (index) => {
+    try {
+      setExistingImages((prev) => prev.filter((_, i) => i !== index));
+      const { error } = await supabase.storage
+        .from("product-images")
+        .remove([intialProduct.images[index].image_path]);
+      if (error) throw error;
+
+      const { error: deleteRecordError } = await supabase
+        .from('product_images')
+        .delete()
+        .eq('id', intialProduct.images[index].id);
+
+      if (deleteRecordError) throw deleteRecordError;
+      
+    } catch (error) {
+      setExistingImages((prev) => [...prev, intialProduct.images[index]]);
+      toast.error(error.message);
+    }
+  }
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -171,7 +266,7 @@ export default function Popover({ open, setOpen }) {
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-3xl">
                   <form
                     className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
-                    onSubmit={handleSubmit}
+                    onSubmit={intialProduct ? handleEdit : handleSubmit}
                   >
                     <div className="h-0 flex-1 overflow-y-auto">
                       <div className="bg-indigo-700 px-4 py-6 sm:px-6">
@@ -250,20 +345,41 @@ export default function Popover({ open, setOpen }) {
                               </h3>
                               <div className="mt-2">
                                 <div className="flex space-x-2">
+                                {intialProduct && intialProduct.images && existingImages.map((photo, index) => (
+                                    <div
+                                      key={index}
+                                      className="relative inline-block h-24 w-24"
+                                    >
+                                      <Image
+                                        src={photo.signedUrl}
+                                        alt="Uploaded thumbnail"
+                                        className="rounded-md bg-gray-100 object-cover h-24 w-24"
+                                        width={96}
+                                        height={96}
+                                      />
+                                      <button type="button" className="absolute top-0 right-0 rounded-tr-md bg-slate-100" onClick={() => deleteExistingImage(index)}  >
+                                        <XMarkIcon className="h-6 w-6 text-red-500" />
+                                      </button>
+                                    </div>
+                                  ))}
                                   {files.map((photo, index) => (
                                     <div
                                       key={index}
                                       className="relative inline-block h-24 w-24"
                                     >
-                                      <img
+                                      <Image
                                         // key={index}
                                         src={photo.preview}
                                         alt="Uploaded thumbnail"
-                                        className="rounded-md bg-gray-100 object-cover"
+                                        className="rounded-md bg-gray-100 object-cover h-24 w-24"
+                                        width={96}
+                                        height={96}
                                       />
-                                      <div className="absolute top-0 right-0 rounded-tr-md bg-slate-100">
+                                      <button type="button" className="absolute top-0 right-0 rounded-tr-md bg-slate-100" onClick={
+                                        () => setFiles((prev) => prev.filter((_, i) => i !== index))
+                                      } >
                                         <XMarkIcon className="h-6 w-6 text-red-500" />
-                                      </div>
+                                      </button>
                                     </div>
                                   ))}
 
@@ -410,7 +526,9 @@ export default function Popover({ open, setOpen }) {
                                       aria-describedby="privacy-public-description"
                                       type="radio"
                                       className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                      defaultChecked
+                                      value="public"
+                                      checked={selectedOption === "public"}
+                                      onChange={() => setSelectedOption("public")}
                                     />
                                   </div>
                                   <div className="pl-7 text-sm leading-6">
@@ -432,22 +550,29 @@ export default function Popover({ open, setOpen }) {
                                   <div className="relative flex items-start">
                                     <div className="absolute flex h-6 items-center">
                                       <input
-                                        id="privacy-private-to-project"
+                                        id="privacy-draft"
                                         name="privacy"
-                                        aria-describedby="privacy-private-to-project-description"
+                                        aria-describedby="privacy-draft-description"
                                         type="radio"
                                         className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                        value="draft"
+                                        checked={
+                                          selectedOption === "draft"
+                                        }
+                                        onChange={() =>
+                                          setSelectedOption("draft")
+                                        }
                                       />
                                     </div>
                                     <div className="pl-7 text-sm leading-6">
                                       <label
-                                        htmlFor="privacy-private-to-project"
+                                        htmlFor="privacy-draft"
                                         className="font-medium text-gray-900"
                                       >
                                         Draft
                                       </label>
                                       <p
-                                        id="privacy-private-to-project-description"
+                                        id="privacy-draft-description"
                                         className="text-gray-500"
                                       >
                                         Draft mode until you publish.
