@@ -59,7 +59,6 @@ export const getProducts = async () => {
     return data.signedUrl;
   }
   
-  
   // Create an array of Promises that resolve to the transformed product objects
   const transformedDataPromises = data.map(async (product) => {
     const categories = product.product_categories.map(pc => pc.categories);
