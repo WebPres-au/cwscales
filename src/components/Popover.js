@@ -3,16 +3,14 @@
 import { Fragment, useEffect, useState, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { LinkIcon, PlusIcon } from "@heroicons/react/20/solid";
+import { PlusIcon } from "@heroicons/react/20/solid";
 import { classNames } from "@/lib/functions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import SecondPopover from "./SecondPopover";
 
-
-export default function Popover({open, setOpen}) {
-
+export default function Popover({ open, setOpen }) {
   const imageUploadRef = useRef(null);
 
   const [productName, setProductName] = useState("");
@@ -29,41 +27,32 @@ export default function Popover({open, setOpen}) {
 
   const supabase = createClientComponentClient();
 
-
   const [isAddNewCategoryOpen, setIsAddNewCategoryOpen] = useState(false);
   const [isAddNewTagOpen, setIsAddNewTagOpen] = useState(false);
 
   useEffect(() => {
-
     const getCategories = async () => {
-    try {
-      const { data, error } = await supabase
-      .from('categories')
-      .select();
-      if(error) throw error;
-      setCategories(data);
-    }
-    catch (error) {
-      toast.error(error.message);
-    }
-  }
+      try {
+        const { data, error } = await supabase.from("categories").select();
+        if (error) throw error;
+        setCategories(data);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
 
     const getTags = async () => {
-    try {
-      const { data, error } = await supabase
-      .from('tags')
-      .select();
-      if(error) throw error;
-      setTags(data);
-    }
-    catch (error) {
-      toast.error(error.message);
-    }
-  }
+      try {
+        const { data, error } = await supabase.from("tags").select();
+        if (error) throw error;
+        setTags(data);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
     getCategories();
     getTags();
-  }, [])
-
+  }, []);
 
   const router = useRouter();
 
@@ -73,75 +62,74 @@ export default function Popover({open, setOpen}) {
     try {
       // Insert new product to products table
       const { data: productData, error: productError } = await supabase
-        .from('products')
-        .insert([
-          { name: productName, short_description: description },
-        ]).select();
-  
+        .from("products")
+        .insert([{ name: productName, short_description: description }])
+        .select();
+
       if (productError) throw productError;
-  
+
       // The ID of the newly inserted product
       const productId = productData[0].id;
-  
+
       // Preparing the array to insert into product_categories table
-      const categoryInserts = chosenCategories.map(categoryId => ({
+      const categoryInserts = chosenCategories.map((categoryId) => ({
         product_id: productId,
         category_id: categoryId,
       }));
 
       // Preparing the array to insert into product_tags table
-      const tagInserts = chosenTags.map(tagId => ({
+      const tagInserts = chosenTags.map((tagId) => ({
         product_id: productId,
         tag_id: tagId,
       }));
-  
+
       // Inserting categories related to the product in the product_categories table
       const { error: categoryError } = await supabase
-        .from('product_categories')
+        .from("product_categories")
         .insert(categoryInserts);
-  
+
       if (categoryError) throw categoryError;
 
       // Inserting tags related to the product in the product_tags table
       const { error: tagError } = await supabase
-        .from('product_tags')
+        .from("product_tags")
         .insert(tagInserts);
 
       if (tagError) throw tagError;
 
-       // Uploading images to Supabase Storage and inserting to product_images table
-       const imageInserts = [];
-       for (const { file } of files) {
-         const path = `product_images/${productId}/${file.name}`;
-         const { error: uploadError } = await supabase.storage.from('product-images').upload(path, file);
-         if (uploadError) throw uploadError;
-         imageInserts.push({ product_id: productId, image_path: path });
-       }
+      // Uploading images to Supabase Storage and inserting to product_images table
+      const imageInserts = [];
+      for (const { file } of files) {
+        const path = `product_images/${productId}/${file.name}`;
+        const { error: uploadError } = await supabase.storage
+          .from("product-images")
+          .upload(path, file);
+        if (uploadError) throw uploadError;
+        imageInserts.push({ product_id: productId, image_path: path });
+      }
 
-       const { error: imageError } = await supabase.from('product_images').insert(imageInserts);
-       if (imageError) throw imageError;
+      const { error: imageError } = await supabase
+        .from("product_images")
+        .insert(imageInserts);
+      if (imageError) throw imageError;
 
-      
-  
       router.refresh();
-  
+
       // reset form values
       setProductName("");
       setDescription("");
       setChosenCategories([]);
       setChosenTags([]);
-  
+
       setOpen(false);
       setLoading(false);
-  
+
       toast.success("Product added successfully");
-  
     } catch (error) {
       setLoading(false);
       toast.error(error.message);
     }
   };
-  
 
   const handleFileSelected = (e) => {
     const file = e.target.files[0];
@@ -161,7 +149,7 @@ export default function Popover({open, setOpen}) {
     setChosenCategories([]);
     setChosenTags([]);
     setFiles([]);
-  }
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -180,8 +168,11 @@ export default function Popover({open, setOpen}) {
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                  <form className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl" onSubmit={handleSubmit}>
+                <Dialog.Panel className="pointer-events-auto w-screen max-w-3xl">
+                  <form
+                    className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
+                    onSubmit={handleSubmit}
+                  >
                     <div className="h-0 flex-1 overflow-y-auto">
                       <div className="bg-indigo-700 px-4 py-6 sm:px-6">
                         <div className="flex items-center justify-between">
@@ -225,7 +216,9 @@ export default function Popover({open, setOpen}) {
                                   name="productName"
                                   id="productName"
                                   value={productName}
-                                  onChange={(e) => setProductName(e.target.value)}
+                                  onChange={(e) =>
+                                    setProductName(e.target.value)
+                                  }
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                               </div>
@@ -243,7 +236,9 @@ export default function Popover({open, setOpen}) {
                                   name="description"
                                   rows={4}
                                   value={description}
-                                  onChange={(e) => setDescription(e.target.value)}
+                                  onChange={(e) =>
+                                    setDescription(e.target.value)
+                                  }
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                   defaultValue={""}
                                 />
@@ -255,19 +250,29 @@ export default function Popover({open, setOpen}) {
                               </h3>
                               <div className="mt-2">
                                 <div className="flex space-x-2">
-                                {files.map((photo, index) => (
-                                  <img
-                                    key={index}
-                                    className="relative inline-block h-16 w-16 rounded-sm"
-                                    src={photo.preview}
-                                    alt="Uploaded thumbnail"
-                                  />
-                                ))}
+                                  {files.map((photo, index) => (
+                                    <div
+                                      key={index}
+                                      className="relative inline-block h-24 w-24"
+                                    >
+                                      <img
+                                        // key={index}
+                                        src={photo.preview}
+                                        alt="Uploaded thumbnail"
+                                        className="rounded-md bg-gray-100 object-cover"
+                                      />
+                                      <div className="absolute top-0 right-0 rounded-tr-md bg-slate-100">
+                                        <XMarkIcon className="h-6 w-6 text-red-500" />
+                                      </div>
+                                    </div>
+                                  ))}
 
                                   <button
                                     type="button"
-                                    className="relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" 
-                                    onClick={() => imageUploadRef.current.click()}
+                                    className="relative inline-flex h-24 w-24 flex-shrink-0 items-center justify-center rounded-md border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    onClick={() =>
+                                      imageUploadRef.current.click()
+                                    }
                                   >
                                     <span className="absolute -inset-2" />
                                     <span className="sr-only">
@@ -277,29 +282,48 @@ export default function Popover({open, setOpen}) {
                                       className="h-5 w-5"
                                       aria-hidden="true"
                                     />
-                                    <input ref={imageUploadRef} type="file" name="image" hidden onChange={handleFileSelected} accept="image/*"/>
-
+                                    <input
+                                      ref={imageUploadRef}
+                                      type="file"
+                                      name="image"
+                                      hidden
+                                      onChange={handleFileSelected}
+                                      accept="image/*"
+                                    />
                                   </button>
                                 </div>
                               </div>
                             </div>
                             <div>
-                              <h3 className="text-sm font-medium leading-6 text-gray-900">
+                              <h3 className="text-sm -mb-2 font-medium leading-6 text-gray-900">
                                 Category
                               </h3>
                               <div className="mt-2">
-                                <div className="flex space-x-2">
+                                <div className="flex flex-wrap space-x-2">
                                   {categories.map((category, index) => (
                                     <p
                                       key={index}
                                       className={classNames(
-                                        chosenCategories.includes(category.id) ? "bg-indigo-100 text-indigo-700" : "bg-gray-100 text-gray-900",
-                                        "px-2 py-1 mr-2 border border-gray-300 rounded cursor-pointer"
-
+                                        chosenCategories.includes(category.id)
+                                          ? "bg-indigo-100 text-indigo-700"
+                                          : "bg-gray-100 text-gray-900",
+                                        "px-2 py-1 mr-2 mt-2 border border-gray-300 rounded cursor-pointer"
                                       )}
-                                      onClick={ chosenCategories.includes(category.id) ? 
-                                        () => setChosenCategories((prev) => prev.filter((chosenCategory) => chosenCategory !== category.id)) 
-                                        : () => setChosenCategories((prev) => [...prev, category.id]) 
+                                      onClick={
+                                        chosenCategories.includes(category.id)
+                                          ? () =>
+                                              setChosenCategories((prev) =>
+                                                prev.filter(
+                                                  (chosenCategory) =>
+                                                    chosenCategory !==
+                                                    category.id
+                                                )
+                                              )
+                                          : () =>
+                                              setChosenCategories((prev) => [
+                                                ...prev,
+                                                category.id,
+                                              ])
                                       }
                                     >
                                       {category.name}
@@ -307,8 +331,10 @@ export default function Popover({open, setOpen}) {
                                   ))}
                                   <button
                                     type="button"
-                                    onClick={() => setIsAddNewCategoryOpen(true)}
-                                    className="relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    onClick={() =>
+                                      setIsAddNewCategoryOpen(true)
+                                    }
+                                    className="relative inline-flex h-8 w-8 mt-2 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                   >
                                     <span className="absolute -inset-2" />
                                     <span className="sr-only">
@@ -323,31 +349,43 @@ export default function Popover({open, setOpen}) {
                               </div>
                             </div>
                             <div>
-                              <h3 className="text-sm font-medium leading-6 text-gray-900">
+                              <h3 className="text-sm -mb-2 font-medium leading-6 text-gray-900">
                                 Tags
                               </h3>
                               <div className="mt-2">
-                                <div className="flex space-x-2">
+                                <div className="flex flex-wrap space-x-2">
                                   {tags.map((tag, index) => (
                                     <p
-                                    key={index}
-                                    className={classNames(
-                                      chosenTags.includes(tag.id) ? "bg-indigo-100 text-indigo-700" : "bg-gray-100 text-gray-900",
-                                      "px-2 py-1 mr-2 border border-gray-300 rounded cursor-pointer"
-
-                                    )}
-                                    onClick={ chosenTags.includes(tag.id) ? 
-                                      () => setChosenTags((prev) => prev.filter((chosenTag) => chosenTag !== tag.id)) 
-                                      : () => setChosenTags((prev) => [...prev, tag.id]) 
-                                    }
-                                  >
-                                    {tag.name}
-                                  </p>
+                                      key={index}
+                                      className={classNames(
+                                        chosenTags.includes(tag.id)
+                                          ? "bg-indigo-100 text-indigo-700"
+                                          : "bg-gray-100 text-gray-900",
+                                        "px-2 py-1 mr-2 mt-2 border border-gray-300 rounded cursor-pointer"
+                                      )}
+                                      onClick={
+                                        chosenTags.includes(tag.id)
+                                          ? () =>
+                                              setChosenTags((prev) =>
+                                                prev.filter(
+                                                  (chosenTag) =>
+                                                    chosenTag !== tag.id
+                                                )
+                                              )
+                                          : () =>
+                                              setChosenTags((prev) => [
+                                                ...prev,
+                                                tag.id,
+                                              ])
+                                      }
+                                    >
+                                      {tag.name}
+                                    </p>
                                   ))}
                                   <button
                                     type="button"
                                     onClick={() => setIsAddNewTagOpen(true)}
-                                    className="relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    className="relative inline-flex h-8 w-8 mt-2 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                   >
                                     <span className="absolute -inset-2" />
                                     <span className="sr-only">Add tag</span>
@@ -420,20 +458,6 @@ export default function Popover({open, setOpen}) {
                               </div>
                             </fieldset>
                           </div>
-                          <div className="pb-6 pt-4">
-                            <div className="flex text-sm">
-                              <a
-                                href="#"
-                                className="group inline-flex items-center font-medium text-indigo-600 hover:text-indigo-900"
-                              >
-                                <LinkIcon
-                                  className="h-5 w-5 text-indigo-500 group-hover:text-indigo-900"
-                                  aria-hidden="true"
-                                />
-                                <span className="ml-2">Copy link</span>
-                              </a>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -455,16 +479,24 @@ export default function Popover({open, setOpen}) {
                       </button>
                     </div>
                   </form>
-                  <SecondPopover isCategory open={isAddNewCategoryOpen} setOpen={setIsAddNewCategoryOpen} setCategories={setCategories} />
-                  <SecondPopover isTag open={isAddNewTagOpen} setOpen={setIsAddNewTagOpen} setTags={setTags} />
-
+                  <SecondPopover
+                    isCategory
+                    open={isAddNewCategoryOpen}
+                    setOpen={setIsAddNewCategoryOpen}
+                    setCategories={setCategories}
+                  />
+                  <SecondPopover
+                    isTag
+                    open={isAddNewTagOpen}
+                    setOpen={setIsAddNewTagOpen}
+                    setTags={setTags}
+                  />
                 </Dialog.Panel>
               </Transition.Child>
             </div>
           </div>
         </div>
       </Dialog>
-      
     </Transition.Root>
   );
 }
