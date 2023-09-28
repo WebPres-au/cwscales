@@ -608,6 +608,7 @@ export default function Popover({ open, setOpen, intialProduct}) {
                     isCategory
                     open={isAddNewCategoryOpen}
                     setOpen={setIsAddNewCategoryOpen}
+                    categories={categories}
                     setCategories={setCategories}
                   />
                   <SecondPopover
