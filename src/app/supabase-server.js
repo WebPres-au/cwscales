@@ -82,6 +82,43 @@ export const getProducts = async () => {
 
 export const getFilteredProducts = async (categoryName) => {
   const supabase = createServerSupabaseClient();
+
+  // 1. Fetch the ID of the category by its name
+  const { data: categoriesData, error: categoriesError } = await supabase
+    .from('categories')
+    .select('id')
+    .eq('snake_case_name', categoryName);
+
+  if (categoriesError || !categoriesData || categoriesData.length === 0) {
+    console.error(categoriesError?.message || `No category found for name: ${categoryName}`);
+    return [];
+  }
+
+  const categoryId = categoriesData[0].id;
+
+  // 2. Recursively fetch all subcategories of the given category using the ID
+  const fetchSubcategories = async (categoryId) => {
+    const { data: subcategoriesData, error: subcategoriesError } = await supabase
+      .from('categories')
+      .select('id')
+      .eq('parent_category', categoryId);
+
+    if (subcategoriesError) {
+      console.error(subcategoriesError.message);
+      return [];
+    }
+
+    let subcategories = subcategoriesData || [];
+    for (const subcategory of subcategoriesData) {
+      const children = await fetchSubcategories(subcategory.id);
+      subcategories = subcategories.concat(children);
+    }
+    return subcategories;
+  };
+
+  const allCategories = [{ id: categoryId }, ...await fetchSubcategories(categoryId)];
+
+  // 3. Fetch all products and their categories, tags and images
   const { data, error } = await supabase
     .from('products')
     .select(`
@@ -139,10 +176,10 @@ export const getFilteredProducts = async (categoryName) => {
   // Wait for all Promises to resolve and get the transformed data
   const transformedData = await Promise.all(transformedDataPromises);
 
-  // Filter products based on the categoryName
+  // 4. Filter products based on the category and its subcategories IDs
   return transformedData.filter(product => 
-    product.categories.some(category => snake_case_string(category.name) === categoryName)
-  );
+      product.categories.some(category => allCategories.map(c => c.id).includes(category.id))
+    );
 };
 
 
@@ -157,3 +194,44 @@ export const getServerCategories = async () => {
     return [];
   }
 };
+
+export const getNavItems = async () => {
+  const supabase = createServerSupabaseClient();
+
+  try {
+    const { data: categories, error } = await supabase
+      .rpc('get_categories');
+
+    if (error) throw error;
+
+    let navigation = {
+      categories: [],
+      pages: []
+    };
+
+    categories.forEach(category => {
+      if (category.subcategories && category.subcategories.length > 0) {
+        navigation.categories.push({
+          name: category.name,
+          subcategories: [
+            ...category.subcategories.map(sub => ({ name: sub.name, href: `/product-category/${snake_case_string(category.name)}/${snake_case_string(sub.name)}` })),
+            { name: "Browse All", href: `/product-category/${snake_case_string(category.name)}`}
+          ],
+        });
+      } else {
+        navigation.pages.push({ name: category.name, href: `/product-category/${snake_case_string(category.name)}` });
+      }
+    });
+
+    navigation.pages.push( 
+    { name: "Repairs & Calibration", href: "/service-repairs-calibration" },
+    { name: "Scale Hire", href: "/service-repairs-calibration/scales-hire" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" }
+    );
+
+    return navigation;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+  }
+}

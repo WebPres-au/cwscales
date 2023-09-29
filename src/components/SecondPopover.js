@@ -2,17 +2,13 @@
 
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { LinkIcon, PlusIcon } from "@heroicons/react/20/solid";
-import { classNames } from "@/lib/functions";
+import { classNames, snake_case_string } from "@/lib/functions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 
 export default function SecondPopover({open, setOpen, categories, setCategories, setTags, isCategory= false, isTag = false}) {
-
-  console.log('isCategory', isCategory);
 
   const [productName, setProductName] = useState("");
   const [parentCategory, setParentCategory] = useState(null);
@@ -31,7 +27,7 @@ export default function SecondPopover({open, setOpen, categories, setCategories,
       const { data, error } = await supabase
       .from('categories')
       .insert([
-        { name: productName, parent_category: parentCategory},
+        { name: productName, parent_category: parentCategory, snake_case_name: snake_case_string(productName)},
       ])
       .select();
       if(error) throw error;

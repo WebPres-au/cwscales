@@ -1,3 +1,4 @@
+import { getFilteredProducts, getServerCategories } from "@/app/supabase-server";
 import ContentHero from "@/components/ContentHero";
 
 const sections = [
@@ -75,8 +76,17 @@ const sections = [
   },
 ];
 
-export default function CategoryPage({ params }) {
-  const title = params.category.replace(/-/g, " ");
+export default async function CategoryPage({ params }) {
+  const categories = await getServerCategories();
+
+  const title = categories.find(category => category.snake_case_name === params.category).name
+  // const title = "Our Range";
+  let products = await getFilteredProducts(params.category);
+  products = products.map(product => { return {...product, image: product?.images[0]?.signedUrl, href:'#'}})
+
+  // remove when there are more products
+  products = [...products, ...products, ...products]
+
   return (
     <div>
       <ContentHero
@@ -84,7 +94,7 @@ export default function CategoryPage({ params }) {
         description="We offer a range of NMI Trade Approved industrial and commercial
               scales to standardise manufacturing and ensure product consistency
               for your business."
-        content={sections}
+        content={products}
       />
       <div className="mt-32" />
     </div>

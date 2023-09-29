@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import ProductInfo from "./ProductInfo";
 
@@ -29,14 +30,16 @@ export default function ContentHero({ title, description, content }) {
                 return (
                   <div key={index} className="grid gap-0 ">
                     <div className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75">
-                      <Image
-                        className="h-auto w-full object-cover"
-                        width={400}
-                        height={400}
-                        src={item.image}
-                        alt={item.name}
-                      />
-                      <ProductInfo />
+                      {item.image && (
+                        <Image
+                          className="h-auto w-full object-cover"
+                          width={400}
+                          height={400}
+                          src={item.image}
+                          alt={item.name}
+                        />
+                      )}
+                      <ProductInfo categoryName={title} product={item} />
                     </div>
                   </div>
                 );
@@ -47,14 +50,16 @@ export default function ContentHero({ title, description, content }) {
                       key={index}
                       className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75"
                     >
-                      <Image
-                        className="h-auto w-full object-cover"
-                        width={400}
-                        height={400}
-                        src={item.image}
-                        alt={item.name}
-                      />
-                      <ProductInfo />
+                      {item.image && (
+                        <Image
+                          className="h-auto w-full object-cover"
+                          width={400}
+                          height={400}
+                          src={item.image}
+                          alt={item.name}
+                        />
+                      )}
+                      <ProductInfo categoryName={title} product={item} />
                     </div>
                   </>
                 );

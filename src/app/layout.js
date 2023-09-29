@@ -1,7 +1,6 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import Layout from "@/components/ui/Layout";
 import SupabaseProvider from './supabase-provider';
 
 const inter = Inter({ subsets: ["latin"] });
@@ -62,7 +61,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <SupabaseProvider>
           <Toaster position="bottom-right" toastOptions={{ duration: 3000 }} />
-          <Layout>{children}</Layout>
+          {children}
         </SupabaseProvider>
       </body>
     </html>

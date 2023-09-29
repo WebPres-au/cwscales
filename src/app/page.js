@@ -1,15 +1,21 @@
 import Banner from "@/components/Banner";
 import Categories from "@/components/Categories";
 import ContactForm from "@/components/ContactForm";
+import Footer from "@/components/ui/Footer";
+import Navigation from "@/components/ui/Navigation";
 
 export default function Home() {
   return (
     <div>
+      <Navigation />
+
       <Banner />
       <Categories />
       <Information />
       <LogoCloud />
       <ContactForm />
+
+      <Footer />
     </div>
   );
 }
