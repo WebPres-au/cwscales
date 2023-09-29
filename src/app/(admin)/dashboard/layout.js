@@ -24,7 +24,7 @@ export default async function DashboardLayout({ children }) {
 
   let navigation = [{ name: "All", href: "/dashboard/"}]
 
-  const categories = await getServerCategories();
+  const categories = await getServerCategories(true);
 
   navigation.push(...categories.map((category) => {return {name: category.name, href: `/dashboard/${snake_case_string(category.name)}`}}));
 
