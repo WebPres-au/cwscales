@@ -84,8 +84,6 @@ export default async function SubCategoryPage({params}) {
   let products = await getFilteredProducts(params.subCategory);
   products = products.map(product => { return {...product, image: product?.images[0]?.signedUrl, href:'#'}})
 
-  // remove when there are more products
-  products = [...products, ...products, ...products]
   return (
     <div>
       <ContentHero
