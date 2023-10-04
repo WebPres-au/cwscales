@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import SupabaseProvider from './supabase-provider';
 
+export const dynamic = 'force-dynamic'
+
 const inter = Inter({ subsets: ["latin"] });
 
 const title =
