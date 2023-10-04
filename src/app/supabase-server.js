@@ -86,7 +86,7 @@ export const getProducts = async () => {
   return await Promise.all(transformedDataPromises);
 };
 
-export const getFilteredProducts = async (categoryName) => {
+export const getFilteredProducts = async (categoryName, includesDrafts = false) => {
   const supabase = createServerSupabaseClient();
 
   // 1. Fetch the ID of the category by its name
@@ -131,25 +131,32 @@ export const getFilteredProducts = async (categoryName) => {
   ];
 
   // 3. Fetch all products and their categories, tags and images
-  const { data, error } = await supabase.from("products").select(`
-      *,
-      product_categories (
-        categories (
-          id,
-          name
-        )
-      ),
-      product_tags (
-        tags (
-          id,
-          name
-        )
-      ),
-      product_images (
-        id,
-        image_path
-      )
-    `);
+
+  let query = supabase.from("products").select(`
+  *,
+  product_categories (
+    categories (
+      id,
+      name
+    )
+  ),
+  product_tags (
+    tags (
+      id,
+      name
+    )
+  ),
+  product_images (
+    id,
+    image_path
+  )
+`)
+
+  if (!includesDrafts) {
+    query = query.eq("isPublic", true)
+  }
+  
+  const { data, error } = await query;
 
   if (error) {
     console.error(error.message);
@@ -193,18 +200,33 @@ export const getFilteredProducts = async (categoryName) => {
 export const getServerCategories = async (hasNoSubcategories = false) => {
   const supabase = createServerSupabaseClient();
   try {
+    let dataWithImages;
     if (hasNoSubcategories) {
       const { data, error } = await supabase
         .from("categories")
         .select()
         .is("parent_category", null);
       if (error) throw error;
-      return data;
+       dataWithImages = data;
     } else {
       const { data, error } = await supabase.from("categories").select();
       if (error) throw error;
-      return data;
+      dataWithImages = data;
     }
+
+    
+
+    dataWithImages = await Promise.all(
+      dataWithImages.map(async (category) => {
+        return {
+          ...category,
+          signedUrl: await getSignedUrl({ image_path: category.image}, "category-images"),
+        };
+      })
+    );
+
+
+    return dataWithImages;
   } catch (error) {
     console.error(error.message);
     return [];

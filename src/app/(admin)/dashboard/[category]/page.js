@@ -9,7 +9,7 @@ export default async function FilteredProductList({params}) {
 
   const session = await getSession();
 
-  let products = await getFilteredProducts(category);
+  let products = await getFilteredProducts(category, true);
 
   if (!session) {
     return redirect("/auth/login");

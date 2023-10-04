@@ -79,7 +79,7 @@ const sections = [
 export default async function CategoryPage({ params }) {
   const categories = await getServerCategories();
 
-  const title = categories.find(category => category.snake_case_name === params.category).name
+  const category = categories.find(category => category.snake_case_name === params.category)
   // const title = "Our Range";
   let products = await getFilteredProducts(params.category);
   products = products.map(product => { return {...product, image: product?.images[0]?.signedUrl, href:'#'}})
@@ -87,10 +87,7 @@ export default async function CategoryPage({ params }) {
   return (
     <div>
       <ContentHero
-        title={title}
-        description="We offer a range of NMI Trade Approved industrial and commercial
-              scales to standardise manufacturing and ensure product consistency
-              for your business."
+        category={category}
         content={products}
       />
       <div className="mt-32" />
