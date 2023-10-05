@@ -2,10 +2,16 @@ import KebabMenu from "../KebabMenu";
 import { getFilteredProducts, getSession } from "@/app/supabase-server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import { classNames } from "@/lib/functions";
 
-export default async function FilteredProductList({params}) {
+const statuses = {
+  Complete: "text-green-700 bg-green-50 ring-green-600/20",
+  "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
+  Archived: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
+};
 
-  const {category} = params;
+export default async function FilteredProductList({ params }) {
+  const { category } = params;
 
   const session = await getSession();
 
@@ -16,7 +22,7 @@ export default async function FilteredProductList({params}) {
   }
 
   return (
-    <ul role="list" className="divide-y divide-gray-100">
+    <ul role="list" className="divide-y mb-32 divide-gray-100">
       {products.map((product) => (
         <li
           key={product.id}
@@ -38,30 +44,33 @@ export default async function FilteredProductList({params}) {
                   <p className="text-sm font-semibold leading-6 text-gray-900 mr-2">
                     {product.name}
                   </p>
-                  <div className="flex gap-1 flex-wrap">
-                    <p
-                      className={
-                        "rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"
-                      }
-                      key={"status"}
-                    >
-                      {product.isPublic? "Public" : "Draft"}
-                    </p>
-                    {product.tags.map((tag) => (
-                      <p
-                        className={
-                          "rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"
-                        }
-                        key={tag.id}
-                      >
-                        {tag.name}
-                      </p>
-                    ))}
+                  <div
+                    className={classNames(
+                      statuses[product.status],
+                      "flex-none rounded-full p-1"
+                    )}
+                  >
+                    <div className="h-1.5 w-1.5 rounded-full bg-current" />
+                  </div>
+                  <div className="hidden text-white sm:block">
+                    {product.status}
                   </div>
                 </div>
-                <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-                  <p className="">{product.short_description}</p>
+                <div className="flex gap-1 flex-wrap">
+                  {product.tags.map((tag) => (
+                    <p
+                      className={
+                        "rounded-md whitespace-nowrap mt-0.5 px-3 py-1 text-xs font-medium ring-1 ring-inset"
+                      }
+                      key={tag.id}
+                    >
+                      {tag.name}
+                    </p>
+                  ))}
                 </div>
+                {/* <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
+                  <p className="">{product.short_description}</p>
+                </div> */}
               </div>
             </div>
           </div>
