@@ -41,7 +41,7 @@ export default function ContentHero({ category, content }) {
             sizes="(max-width: 600px) 100vw, 600px"
           />
         </div>
-        <div className="w-full lg:w-1/2 h-full inset-0 ml-auto sm:mt-[0vh] lg:mt-[-100vh]">
+        <div className="w-full lg:w-1/2 min-h-screen h-full inset-0 ml-auto sm:mt-[0vh] lg:mt-[-100vh]">
           <div
             style={{
               columnCount: columnCount,
