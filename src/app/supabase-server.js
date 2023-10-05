@@ -86,7 +86,10 @@ export const getProducts = async () => {
   return await Promise.all(transformedDataPromises);
 };
 
-export const getFilteredProducts = async (categoryName, includesDrafts = false) => {
+export const getFilteredProducts = async (
+  categoryName,
+  includesDrafts = false
+) => {
   const supabase = createServerSupabaseClient();
 
   // 1. Fetch the ID of the category by its name
@@ -150,12 +153,12 @@ export const getFilteredProducts = async (categoryName, includesDrafts = false) 
     id,
     image_path
   )
-`)
+`);
 
   if (!includesDrafts) {
-    query = query.eq("isPublic", true)
+    query = query.eq("isPublic", true);
   }
-  
+
   const { data, error } = await query;
 
   if (error) {
@@ -207,24 +210,24 @@ export const getServerCategories = async (hasNoSubcategories = false) => {
         .select()
         .is("parent_category", null);
       if (error) throw error;
-       dataWithImages = data;
+      dataWithImages = data;
     } else {
       const { data, error } = await supabase.from("categories").select();
       if (error) throw error;
       dataWithImages = data;
     }
 
-    
-
     dataWithImages = await Promise.all(
       dataWithImages.map(async (category) => {
         return {
           ...category,
-          signedUrl: await getSignedUrl({ image_path: category.image}, "category-images"),
+          signedUrl: await getSignedUrl(
+            { image_path: category.image },
+            "category-images"
+          ),
         };
       })
     );
-
 
     return dataWithImages;
   } catch (error) {
@@ -288,9 +291,9 @@ export const getNavItems = async () => {
 
     navigation.pages.push(
       { name: "Repairs & Calibration", href: "/service-repairs-calibration" },
-      { name: "Scale Hire", href: "/service-repairs-calibration/scales-hire" },
-      { name: "About", href: "/about" },
-      { name: "Contact", href: "/contact" }
+      { name: "Scale Hire", href: "/service-repairs-calibration/scales-hire" }
+      // { name: "About", href: "/about" },
+      // { name: "Contact", href: "/contact" }
     );
 
     return navigation;
