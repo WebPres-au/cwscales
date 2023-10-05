@@ -1,8 +1,8 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { classNames, snake_case_string } from "@/lib/functions";
+import { snake_case_string } from "@/lib/functions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -307,78 +307,78 @@ export default function SecondPopover({
                                   </div>
                                 </div>
                                 <div>
-                                      <label
-                                        htmlFor="description"
-                                        className="block text-sm font-medium leading-6 text-gray-900"
-                                      >
-                                        Description
-                                      </label>
-                                      <div className="mt-2">
-                                        <textarea
-                                          id="description"
-                                          name="description"
-                                          rows={4}
-                                          value={description}
-                                          onChange={(e) =>
-                                            setDescription(e.target.value)
-                                          }
-                                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                          defaultValue={""}
-                                        />
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <h3 className="text-sm font-medium leading-6 text-gray-900">
-                                        Photos
-                                      </h3>
-                                      <div className="mt-2">
-                                        <div className="flex space-x-2">
-                                          {file ? (
-                                            <div className="relative inline-block h-24 w-24">
-                                              <Image
-                                                src={file?.preview}
-                                                alt="Uploaded thumbnail"
-                                                className="rounded-md bg-gray-100 object-cover h-24 w-24"
-                                                width={96}
-                                                height={96}
-                                              />
-                                              <button
-                                                type="button"
-                                                className="absolute top-0 right-0 rounded-tr-md bg-slate-100"
-                                                onClick={() => setFile(null)}
-                                              >
-                                                <XMarkIcon className="h-6 w-6 text-red-500" />
-                                              </button>
-                                            </div>
-                                          ) : (
-                                            <button
-                                              type="button"
-                                              className="relative inline-flex h-24 w-24 flex-shrink-0 items-center justify-center rounded-md border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                              onClick={() =>
-                                                imageUploadRef.current.click()
-                                              }
-                                            >
-                                              <span className="absolute -inset-2" />
-                                              <span className="sr-only">
-                                                Add new photo
-                                              </span>
-                                              <PlusIcon
-                                                className="h-5 w-5"
-                                                aria-hidden="true"
-                                              />
-                                              <input
-                                                ref={imageUploadRef}
-                                                type="file"
-                                                name="image"
-                                                hidden
-                                                onChange={handleFileSelected}
-                                                accept="image/*"
-                                              />
-                                            </button>
-                                          )}
+                                  <label
+                                    htmlFor="description"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                  >
+                                    Description
+                                  </label>
+                                  <div className="mt-2">
+                                    <textarea
+                                      id="description"
+                                      name="description"
+                                      rows={4}
+                                      value={description}
+                                      onChange={(e) =>
+                                        setDescription(e.target.value)
+                                      }
+                                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                      defaultValue={""}
+                                    />
+                                  </div>
+                                </div>
+                                <div>
+                                  <h3 className="text-sm font-medium leading-6 text-gray-900">
+                                    Photos
+                                  </h3>
+                                  <div className="mt-2">
+                                    <div className="flex space-x-2">
+                                      {file ? (
+                                        <div className="relative inline-block h-24 w-24">
+                                          <Image
+                                            src={file?.preview}
+                                            alt="Uploaded thumbnail"
+                                            className="rounded-md bg-gray-100 object-cover h-24 w-24"
+                                            width={96}
+                                            height={96}
+                                          />
+                                          <button
+                                            type="button"
+                                            className="absolute top-0 right-0 rounded-tr-md bg-slate-100"
+                                            onClick={() => setFile(null)}
+                                          >
+                                            <XMarkIcon className="h-6 w-6 text-red-500" />
+                                          </button>
                                         </div>
-                                      </div>
+                                      ) : (
+                                        <button
+                                          type="button"
+                                          className="relative inline-flex h-24 w-24 flex-shrink-0 items-center justify-center rounded-md border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                          onClick={() =>
+                                            imageUploadRef.current.click()
+                                          }
+                                        >
+                                          <span className="absolute -inset-2" />
+                                          <span className="sr-only">
+                                            Add new photo
+                                          </span>
+                                          <PlusIcon
+                                            className="h-5 w-5"
+                                            aria-hidden="true"
+                                          />
+                                          <input
+                                            ref={imageUploadRef}
+                                            type="file"
+                                            name="image"
+                                            hidden
+                                            onChange={handleFileSelected}
+                                            accept="image/*"
+                                          />
+                                        </button>
+                                      )}
                                     </div>
+                                  </div>
+                                </div>
                                 {parentCategory && (
                                   <>
                                     <div class="flex items-center justify-between">
