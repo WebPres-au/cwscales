@@ -142,8 +142,9 @@ export default function Body({ children, navigation }) {
           {children}
         </div>
       </div>
-
-      <Popover open={popoverOpen} setOpen={setPopoverOpen} key={'new-product'}/>
+      {
+        popoverOpen && <Popover open={popoverOpen} setOpen={setPopoverOpen}/>
+      }
     </>
   );
 }

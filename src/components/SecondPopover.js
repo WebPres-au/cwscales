@@ -306,9 +306,7 @@ export default function SecondPopover({
                                     </ul>
                                   </div>
                                 </div>
-                                {parentCategory && (
-                                  <>
-                                    <div>
+                                <div>
                                       <label
                                         htmlFor="description"
                                         className="block text-sm font-medium leading-6 text-gray-900"
@@ -381,6 +379,8 @@ export default function SecondPopover({
                                         </div>
                                       </div>
                                     </div>
+                                {parentCategory && (
+                                  <>
                                     <div class="flex items-center justify-between">
                                       <span class="flex flex-grow flex-col">
                                         <span

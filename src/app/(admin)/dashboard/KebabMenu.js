@@ -99,7 +99,9 @@ export default function KebabMenu({product}) {
         </Menu.Items>
       </Transition>
     </Menu>
-    <Popover open={isEditPopoverOpen} setOpen={setIsEditPopoverOpen} intialProduct={product} key={'edit-product'} />
+    {
+      isEditPopoverOpen && <Popover open={isEditPopoverOpen} setOpen={setIsEditPopoverOpen} intialProduct={product} />
+    }
     </>
   );
 }
