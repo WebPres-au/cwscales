@@ -25,7 +25,7 @@ export const getSignedUrl = async (image, bucket) => {
 
   const { data, error } = await supabase.storage
     .from(bucket)
-    .createSignedUrl(image.image_path, 60);
+    .createSignedUrl(image.image_path, 31536000); // 1 year expiry
 
   if (error) throw error; // Log error
 
