@@ -10,6 +10,7 @@ import {
   XMarkIcon,
   PhoneArrowUpRightIcon,
   EnvelopeIcon,
+  ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
@@ -132,7 +133,7 @@ export default function Navbar({ navigation }) {
                                 {item.name}
                               </Link>
                               <p aria-hidden="true" className="mt-1">
-                                Shop now
+                                Browse now
                               </p>
                             </div>
                           ))}
@@ -274,6 +275,9 @@ export default function Navbar({ navigation }) {
                                 )}
                               >
                                 {category.name}
+                                {category.subcategories.length > 0 && (
+                                  <ChevronDownIcon className="h-4 w-4 ml-1 text-gray-500" />
+                                )}
                               </Popover.Button>
                             </div>
 
@@ -325,7 +329,7 @@ export default function Navbar({ navigation }) {
                                               aria-hidden="true"
                                               className="mt-1"
                                             >
-                                              Shop now
+                                              Browse now
                                             </p>
                                           </div>
                                         ))}
