@@ -9,18 +9,18 @@ import Popover from "@/components/Popover";
 import { useState } from "react";
 import { useParams } from "next/navigation";
 
-
-
 export default function Body({ children, navigation }) {
-
   const params = useParams();
-  const {category} = params;
-  
+  const { category } = params;
+
   const [popoverOpen, setPopoverOpen] = useState(false);
 
   const isRouteActive = (name) => {
-    return (snake_case_string(category) === snake_case_string(name)) || (!category && name === 'All')
-  }
+    return (
+      snake_case_string(category) === snake_case_string(name) ||
+      (!category && name === "All")
+    );
+  };
 
   return (
     <>
@@ -28,7 +28,7 @@ export default function Body({ children, navigation }) {
         <Disclosure as="nav" className="border-b border-gray-200 bg-white">
           {({ open }) => (
             <>
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 justify-between">
                   <div className="flex">
                     <div className="flex flex-shrink-0 items-center">
@@ -58,7 +58,9 @@ export default function Body({ children, navigation }) {
                               : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
                             "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium"
                           )}
-                          aria-current={isRouteActive(item.name) ? "page" : undefined}
+                          aria-current={
+                            isRouteActive(item.name) ? "page" : undefined
+                          }
                         >
                           {item.name}
                         </a>
@@ -89,8 +91,8 @@ export default function Body({ children, navigation }) {
                 </div>
               </div>
 
-              <Disclosure.Panel className="sm:hidden">
-                <div className="space-y-1 pb-3 pt-2">
+              <Disclosure.Panel className="md:hidden">
+                <div className="overflow-x-auto space-y-1 pb-3 pt-2">
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
@@ -102,7 +104,9 @@ export default function Body({ children, navigation }) {
                           : "border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800",
                         "block border-l-4 py-2 pl-3 pr-4 text-base font-medium"
                       )}
-                      aria-current={isRouteActive(item.name) ? "page" : undefined}
+                      aria-current={
+                        isRouteActive(item.name) ? "page" : undefined
+                      }
                     >
                       {item.name}
                     </Disclosure.Button>
@@ -142,9 +146,7 @@ export default function Body({ children, navigation }) {
           {children}
         </div>
       </div>
-      {
-        popoverOpen && <Popover open={popoverOpen} setOpen={setPopoverOpen}/>
-      }
+      {popoverOpen && <Popover open={popoverOpen} setOpen={setPopoverOpen} />}
     </>
   );
 }
