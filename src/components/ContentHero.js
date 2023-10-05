@@ -1,14 +1,29 @@
 "use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import ProductInfo from "./ProductInfo";
 // import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 
 export default function ContentHero({ category, content }) {
+  const [columnCount, setColumnCount] = useState(2);
+
+  useEffect(() => {
+    const updateColumnCount = () => {
+      setColumnCount(window.innerWidth <= 768 ? 1 : 2);
+    };
+
+    window.addEventListener("resize", updateColumnCount);
+    updateColumnCount();
+
+    return () => window.removeEventListener("resize", updateColumnCount);
+  }, []);
+
   if (!category) return <div>loading...</div>;
   return (
     <>
       <div className="relative mt-32 -mb-32">
-        <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0">
+        <div className="absolute lg:sticky w-full lg:w-1/2 h-screen inset-0">
           <div className="absolute bottom-0 left-0 p-20 z-10 text-white">
             <h1 className="capitalize text-3xl sm:text-6xl md:text-8xl">
               {category.name}
@@ -23,10 +38,16 @@ export default function ContentHero({ category, content }) {
             className="object-cover opacity-90 w-full h-full"
             alt=""
             fill={true}
+            sizes="(max-width: 600px) 100vw, 600px"
           />
         </div>
         <div className="w-full lg:w-1/2 h-full inset-0 ml-auto sm:mt-[0vh] lg:mt-[-100vh]">
-          <div style={{ columnCount: 2, columnGap: "0px" }}>
+          <div
+            style={{
+              columnCount: columnCount,
+              columnGap: "0px",
+            }}
+          >
             {content.map((item, index) => (
               <div
                 key={index}
