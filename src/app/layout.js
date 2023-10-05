@@ -1,9 +1,9 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import SupabaseProvider from './supabase-provider';
+import SupabaseProvider from "./supabase-provider";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,6 +13,7 @@ const description =
   "Welcome to Correct Weight Scales! Correct Weight Scales has derived from over 20 years experience in the Weighing and Packaging Industry. We can assist in helping your business weighing applications through the perfect combination of unsurpassed experience and loyal committed customer service that is unfortunately hard";
 
 export const metadata = {
+  metadataBase: new URL(`https://${process.env.VERCEL_URL}`),
   title,
   description,
   keywords: [
@@ -39,7 +40,7 @@ export const metadata = {
     "Household Scales",
     "Manufacturing Weighing Solutions",
     "Food Processing Scales",
-    "WEIGHBRIDGES Melbourne",
+    "Weighbridges Melbourne",
   ],
   openGraph: {
     title,
