@@ -23,7 +23,7 @@ export default function ContentHero({ category, content }) {
   return (
     <>
       <div className="relative mt-32 -mb-32">
-        <div className="absolute lg:sticky w-full lg:w-1/2 h-screen inset-0">
+        <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0">
           <div className="absolute bottom-0 left-0 p-20 z-10 text-white">
             <h1 className="capitalize text-3xl sm:text-6xl md:text-8xl">
               {category.name}
