@@ -26,53 +26,31 @@ export default function ContentHero({ category, content }) {
           />
         </div>
         <div className="w-full lg:w-1/2 h-full inset-0 ml-auto sm:mt-[0vh] lg:mt-[-100vh]">
-          <div className="w-full grid grid-cols-1 gap-0 pt-0 custom-grid-cols-2 inset-0">
-            {content.map((item, index) => {
-              if (index % 3 === 0) {
-                return (
-                  <div key={index} className="grid gap-0 ">
-                    <div className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75">
-                      {item.image && (
-                        <Image
-                          className="h-auto w-full object-cover"
-                          width={400}
-                          height={400}
-                          src={item.image}
-                          alt={item.name}
-                        />
-                      )}
-                      <ProductInfo
-                        categoryName={category.name}
-                        product={item}
-                      />
-                    </div>
-                  </div>
-                );
-              } else {
-                return (
-                  <>
-                    <div
-                      key={index}
-                      className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75"
-                    >
-                      {item.image && (
-                        <Image
-                          className="h-auto w-full object-cover"
-                          width={400}
-                          height={400}
-                          src={item.image}
-                          alt={item.name}
-                        />
-                      )}
-                      <ProductInfo
-                        categoryName={category.name}
-                        product={item}
-                      />
-                    </div>
-                  </>
-                );
-              }
-            })}
+          <div style={{ columnCount: 2, columnGap: "0px" }}>
+            {content.map((item, index) => (
+              <div
+                key={index}
+                style={{ breakInside: "avoid", padding: 0, margin: 0 }}
+              >
+                <div className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75">
+                  {item.image && (
+                    <Image
+                      className="h-auto w-full object-cover"
+                      width={400}
+                      height={400}
+                      src={item.image}
+                      alt={item.name}
+                      style={{ padding: 0, margin: 0 }}
+                    />
+                  )}
+                  <ProductInfo
+                    categoryName={category.name}
+                    product={item}
+                    style={{ padding: 0, margin: 0 }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
