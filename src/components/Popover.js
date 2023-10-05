@@ -447,35 +447,39 @@ export default function Popover({ open, setOpen, intialProduct }) {
                               </h3>
                               <div className="mt-2">
                                 <div className="flex flex-wrap space-x-2">
-                                  {categories.map((category, index) => (
-                                    <p
-                                      key={index}
-                                      className={classNames(
-                                        chosenCategories.includes(category.id)
-                                          ? "bg-indigo-100 text-indigo-700"
-                                          : "bg-gray-100 text-gray-900",
-                                        "px-2 py-1 mr-2 mt-2 border border-gray-300 rounded cursor-pointer"
-                                      )}
-                                      onClick={
-                                        chosenCategories.includes(category.id)
-                                          ? () =>
-                                              setChosenCategories((prev) =>
-                                                prev.filter(
-                                                  (chosenCategory) =>
-                                                    chosenCategory !==
-                                                    category.id
+                                  {[...categories]
+                                    .sort((a, b) =>
+                                      a.name.localeCompare(b.name)
+                                    )
+                                    .map((category, index) => (
+                                      <p
+                                        key={index}
+                                        className={classNames(
+                                          chosenCategories.includes(category.id)
+                                            ? "bg-indigo-100 text-indigo-700"
+                                            : "bg-gray-100 text-gray-900",
+                                          "px-2 py-1 mr-2 mt-2 border border-gray-300 rounded cursor-pointer"
+                                        )}
+                                        onClick={
+                                          chosenCategories.includes(category.id)
+                                            ? () =>
+                                                setChosenCategories((prev) =>
+                                                  prev.filter(
+                                                    (chosenCategory) =>
+                                                      chosenCategory !==
+                                                      category.id
+                                                  )
                                                 )
-                                              )
-                                          : () =>
-                                              setChosenCategories((prev) => [
-                                                ...prev,
-                                                category.id,
-                                              ])
-                                      }
-                                    >
-                                      {category.name}
-                                    </p>
-                                  ))}
+                                            : () =>
+                                                setChosenCategories((prev) => [
+                                                  ...prev,
+                                                  category.id,
+                                                ])
+                                        }
+                                      >
+                                        {category.name}
+                                      </p>
+                                    ))}
                                   <button
                                     type="button"
                                     onClick={() =>
@@ -501,34 +505,38 @@ export default function Popover({ open, setOpen, intialProduct }) {
                               </h3>
                               <div className="mt-2">
                                 <div className="flex flex-wrap space-x-2">
-                                  {tags.map((tag, index) => (
-                                    <p
-                                      key={index}
-                                      className={classNames(
-                                        chosenTags.includes(tag.id)
-                                          ? "bg-indigo-100 text-indigo-700"
-                                          : "bg-gray-100 text-gray-900",
-                                        "px-2 py-1 mr-2 mt-2 border border-gray-300 rounded cursor-pointer"
-                                      )}
-                                      onClick={
-                                        chosenTags.includes(tag.id)
-                                          ? () =>
-                                              setChosenTags((prev) =>
-                                                prev.filter(
-                                                  (chosenTag) =>
-                                                    chosenTag !== tag.id
+                                  {[...tags]
+                                    .sort((a, b) =>
+                                      a.name.localeCompare(b.name)
+                                    )
+                                    .map((tag, index) => (
+                                      <p
+                                        key={index}
+                                        className={classNames(
+                                          chosenTags.includes(tag.id)
+                                            ? "bg-indigo-100 text-indigo-700"
+                                            : "bg-gray-100 text-gray-900",
+                                          "px-2 py-1 mr-2 mt-2 border border-gray-300 rounded cursor-pointer"
+                                        )}
+                                        onClick={
+                                          chosenTags.includes(tag.id)
+                                            ? () =>
+                                                setChosenTags((prev) =>
+                                                  prev.filter(
+                                                    (chosenTag) =>
+                                                      chosenTag !== tag.id
+                                                  )
                                                 )
-                                              )
-                                          : () =>
-                                              setChosenTags((prev) => [
-                                                ...prev,
-                                                tag.id,
-                                              ])
-                                      }
-                                    >
-                                      {tag.name}
-                                    </p>
-                                  ))}
+                                            : () =>
+                                                setChosenTags((prev) => [
+                                                  ...prev,
+                                                  tag.id,
+                                                ])
+                                        }
+                                      >
+                                        {tag.name}
+                                      </p>
+                                    ))}
                                   <button
                                     type="button"
                                     onClick={() => setIsAddNewTagOpen(true)}
