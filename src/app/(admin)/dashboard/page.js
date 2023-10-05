@@ -3,68 +3,68 @@ import { getProducts, getSession } from "@/app/supabase-server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 
-const statuses = {
-  Complete: "text-green-700 bg-green-50 ring-green-600/20",
-  "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
-  Archived: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
-};
-const projects = [
-  {
-    id: 1,
-    imageUrl:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "GraphQL API",
-    href: "#",
-    status: "Complete",
-    url: "/product-details-here",
-    dueDate: "March 17, 2023",
-    dueDateTime: "2023-03-17T00:00Z",
-  },
-  {
-    id: 2,
-    imageUrl:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "New benefits plan",
-    href: "#",
-    status: "In progress",
-    url: "/product-details-here",
-    dueDate: "May 5, 2023",
-    dueDateTime: "2023-05-05T00:00Z",
-  },
-  {
-    id: 3,
-    imageUrl:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Onboarding emails",
-    href: "#",
-    status: "In progress",
-    url: "/product-details-here",
-    dueDate: "May 25, 2023",
-    dueDateTime: "2023-05-25T00:00Z",
-  },
-  {
-    id: 4,
-    imageUrl:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "iOS app",
-    href: "#",
-    status: "In progress",
-    url: "/product-details-herer",
-    dueDate: "June 7, 2023",
-    dueDateTime: "2023-06-07T00:00Z",
-  },
-  {
-    id: 5,
-    imageUrl:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Marketing site redesign",
-    href: "#",
-    status: "Archived",
-    url: "/product-details-here",
-    dueDate: "June 10, 2023",
-    dueDateTime: "2023-06-10T00:00Z",
-  },
-];
+// const statuses = {
+//   Complete: "text-green-700 bg-green-50 ring-green-600/20",
+//   "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
+//   Archived: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
+// };
+// const projects = [
+//   {
+//     id: 1,
+//     imageUrl:
+//       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     name: "GraphQL API",
+//     href: "#",
+//     status: "Complete",
+//     url: "/product-details-here",
+//     dueDate: "March 17, 2023",
+//     dueDateTime: "2023-03-17T00:00Z",
+//   },
+//   {
+//     id: 2,
+//     imageUrl:
+//       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     name: "New benefits plan",
+//     href: "#",
+//     status: "In progress",
+//     url: "/product-details-here",
+//     dueDate: "May 5, 2023",
+//     dueDateTime: "2023-05-05T00:00Z",
+//   },
+//   {
+//     id: 3,
+//     imageUrl:
+//       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     name: "Onboarding emails",
+//     href: "#",
+//     status: "In progress",
+//     url: "/product-details-here",
+//     dueDate: "May 25, 2023",
+//     dueDateTime: "2023-05-25T00:00Z",
+//   },
+//   {
+//     id: 4,
+//     imageUrl:
+//       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     name: "iOS app",
+//     href: "#",
+//     status: "In progress",
+//     url: "/product-details-herer",
+//     dueDate: "June 7, 2023",
+//     dueDateTime: "2023-06-07T00:00Z",
+//   },
+//   {
+//     id: 5,
+//     imageUrl:
+//       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//     name: "Marketing site redesign",
+//     href: "#",
+//     status: "Archived",
+//     url: "/product-details-here",
+//     dueDate: "June 10, 2023",
+//     dueDateTime: "2023-06-10T00:00Z",
+//   },
+// ];
 
 export default async function ProductList() {
   const session = await getSession();
@@ -76,7 +76,7 @@ export default async function ProductList() {
   }
 
   return (
-    <ul role="list" className="divide-y divide-gray-100">
+    <ul role="list" className="divide-y mb-32 divide-gray-100">
       {products.map((product) => (
         <li
           key={product.id}
@@ -105,7 +105,7 @@ export default async function ProductList() {
                       }
                       key={"status"}
                     >
-                      {product.isPublic? "Public" : "Draft"}
+                      {product.isPublic ? "Public" : "Draft"}
                     </p>
                     {product.tags.map((tag) => (
                       <p
