@@ -11,10 +11,12 @@ const statuses = {
 
 export default async function ProductList({searchParams}) {
 
-  const {category} = searchParams;
+  const {category, subcategory} = searchParams;
 
   let products;
-  if (category) {
+  if(subcategory){
+    products = await getFilteredProducts(subcategory, false);
+  } else if (category) {
     products = await getFilteredProducts(category, true);;
   } else {
     products = await getProducts();

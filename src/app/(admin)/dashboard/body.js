@@ -7,21 +7,37 @@ import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import LogoutButton from "./LogoutButton";
 import Popover from "@/components/Popover";
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useCallback, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function Body({ children, navigation }) {
   const searchParams = useSearchParams();
   const category = searchParams.get("category");
+  const subCategory = searchParams.get("subcategory");
 
   const [popoverOpen, setPopoverOpen] = useState(false);
 
   const isRouteActive = (name) => {
     return (
-      snake_case_string(category) === snake_case_string(name) ||
+      snake_case_string(category) === snake_case_string(name) || snake_case_string(subCategory) === snake_case_string(name) ||
       (!category && name === "All")
     );
   };
+
+  const pathname = usePathname()
+
+  const router = useRouter()
+
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(searchParams)
+      params.set(name, value)
+ 
+      return params.toString()
+    },
+    [searchParams]
+  )
 
   return (
     <>
@@ -92,22 +108,34 @@ export default function Body({ children, navigation }) {
                 </div>
               </div>
 
-              <div className="my-4 flex flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8">
-                {/* <h1 className="text-base font-semibold leading-7 text-gray-900">
-                    Sub-Categories
-                  </h1> */}
-                <div className="order-last flex w-full gap-x-4 text-sm font-semibold leading-6 sm:order-none sm:w-auto sm:pl-2 sm:leading-7 overflow-x-auto">
-                  <a href="#" className="text-indigo-600">
-                    sub-category1
-                  </a>
-                  <a href="#" className="text-gray-700">
-                    sub-category2
-                  </a>
-                  <a href="#" className="text-gray-700">
-                    sub-category3
-                  </a>
-                </div>
-              </div>
+              {
+                // show subcategories of current category
+                category &&
+                  navigation.find((item) => isRouteActive(item.name)) && (
+                    <div className="my-4 flex flex-wrap items-center gap-6 px-4 sm:px-6 lg:px-8">
+                      {/* <div className="order-last flex w-full gap-x-4 text-sm font-semibold leading-6 sm:order-none sm:w-auto sm:pl-2 sm:leading-7"> */}
+                        {navigation
+                          .find((item) => isRouteActive(item.name))
+                          .subcategories.map((subcategory) => (
+                            <button onClick={ () =>
+                              router.push(pathname + '?' + createQueryString('subcategory', snake_case_string(subcategory.name)))
+                            } 
+                            
+                            className={
+                              classNames(
+                                isRouteActive(subcategory.name)
+                                  ? "text-indigo-600 border-indigo-500"
+                                  : "text-gray-500 hover:text-gray-700",
+                                "border-b-2 text-sm font-medium"
+                              )
+                            }>
+                              {subcategory.name}
+                            </button>
+                          ))}
+                      {/* </div> */}
+                    </div>
+                  )
+              }
 
               <Disclosure.Panel className="md:hidden">
                 <div className="overflow-x-auto space-y-1 pb-3 pt-2">
