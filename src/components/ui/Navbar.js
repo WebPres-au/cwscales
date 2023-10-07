@@ -34,6 +34,14 @@ export default function Navbar({ navigation }) {
     };
   }, []);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const submitSearch = () => {
+    console.log(searchQuery);
+
+    // should redirect to all products page with search query to filter products
+  }
+
   return (
     <div
       className={`${
@@ -401,14 +409,32 @@ export default function Navbar({ navigation }) {
               </Popover.Group>
 
               {/* Hidden menu and seach */}
-              <div className="flex items-center">
-                <button
-                  type="button"
-                  className="hidden lg:block ml-6 p-2 text-gray-400 hover:text-gray-500"
-                >
-                  <span className="sr-only">Search</span>
-                  <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+              <div className="ml-6 relative w-max">
+                <input
+                  type="text"
+                  name="searchQuery"
+                  id="searchQuery"
+                  value={searchQuery}
+                  onChange={(e) =>
+                    setSearchQuery(e.target.value)
+                  }
+                  onKeyUp={
+                    (e) => {
+                      if (e.key === "Enter") {
+                        submitSearch();
+                      }
+                    }
+                  }
+                  placeholder="Search Products"
+                  className={`
+                  peer cursor-pointer relative z-10 h-10 w-6 bg-transparent pl-3 outline-none focus:w-full focus:cursor-text focus:border-lime-300 focus:pl-10 focus:pr-4
+                  
+                  rounded-md border-0  text-gray-900 shadow-sm ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6`}
+                />
+                <MagnifyingGlassIcon className="
+                absolute inset-y-0 my-auto h-6 w-6 border-r border-transparent peer-focus:stroke-green-600 peer-focus:left-2
+                " aria-hidden="true" />
+
               </div>
             </div>
           </div>
