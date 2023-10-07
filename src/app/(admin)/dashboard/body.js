@@ -7,11 +7,11 @@ import Image from "next/image";
 import LogoutButton from "./LogoutButton";
 import Popover from "@/components/Popover";
 import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function Body({ children, navigation }) {
-  const params = useParams();
-  const { category } = params;
+  const searchParams = useSearchParams();
+  const category = searchParams.get('category')
 
   const [popoverOpen, setPopoverOpen] = useState(false);
 

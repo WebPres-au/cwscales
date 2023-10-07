@@ -135,62 +135,11 @@ export const getFilteredProducts = async (
 
   // 3. Fetch all products and their categories, tags and images
 
-  let query = supabase.from("products").select(`
-  *,
-  product_categories (
-    categories (
-      id,
-      name
-    )
-  ),
-  product_tags (
-    tags (
-      id,
-      name
-    )
-  ),
-  product_images (
-    id,
-    image_path
-  )
-`);
+  let transformedData = await getProducts();
 
-  if (!includesDrafts) {
-    query = query.eq("isPublic", true);
+  if(!includesDrafts) {
+    transformedData = transformedData.filter((product) => product.isPublic);
   }
-
-  const { data, error } = await query;
-
-  if (error) {
-    console.error(error.message);
-    return [];
-  }
-
-  // Create an array of Promises that resolve to the transformed product objects
-  const transformedDataPromises = data.map(async (product) => {
-    const categories = product.product_categories.map((pc) => pc.categories);
-    const tags = product.product_tags.map((pt) => pt.tags);
-
-    // Await all the signed URLs and create the images array
-    const images = await Promise.all(
-      product.product_images.map(async (image) => {
-        return {
-          ...image,
-          signedUrl: await getSignedUrl(image, "product-images"),
-        };
-      })
-    );
-
-    return {
-      ...product,
-      categories,
-      tags,
-      images,
-    };
-  });
-
-  // Wait for all Promises to resolve and get the transformed data
-  const transformedData = await Promise.all(transformedDataPromises);
 
   // 4. Filter products based on the category and its subcategories IDs
   return transformedData.filter((product) =>

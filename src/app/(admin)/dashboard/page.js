@@ -1,6 +1,5 @@
 import KebabMenu from "./KebabMenu";
-import { getProducts, getSession } from "@/app/supabase-server";
-import { redirect } from "next/navigation";
+import { getFilteredProducts, getProducts } from "@/app/supabase-server";
 import Image from "next/image";
 import { classNames } from "@/lib/functions";
 
@@ -10,13 +9,15 @@ const statuses = {
   Archived: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
 };
 
-export default async function ProductList() {
-  const session = await getSession();
+export default async function ProductList({searchParams}) {
 
-  let products = await getProducts();
+  const {category} = searchParams;
 
-  if (!session) {
-    return redirect("/auth/login");
+  let products;
+  if (category) {
+    products = await getFilteredProducts(category, true);;
+  } else {
+    products = await getProducts();
   }
 
   return (
