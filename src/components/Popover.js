@@ -287,7 +287,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
                     onSubmit={intialProduct ? handleEdit : handleSubmit}
                   >
                     <div className="h-0 flex-1 overflow-y-auto">
-                      <div className="bg-indigo-700 px-4 py-6 sm:px-6">
+                      <div className="bg-green-700 px-4 py-6 sm:px-6">
                         <div className="flex items-center justify-between">
                           <Dialog.Title className="text-base font-semibold leading-6 text-white">
                             New Product
@@ -295,7 +295,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
-                              className="relative rounded-md bg-indigo-700 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                              className="relative rounded-md bg-green-700 text-white focus:outline-none focus:ring-2 focus:ring-white"
                               onClick={() => setOpen(false)}
                             >
                               <span className="absolute -inset-2.5" />
@@ -308,7 +308,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
                           </div>
                         </div>
                         <div className="mt-1">
-                          <p className="text-sm text-indigo-300">
+                          <p className="text-sm text-white">
                             Create new product with a good photo and details
                           </p>
                         </div>
@@ -456,7 +456,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
                                         key={index}
                                         className={classNames(
                                           chosenCategories.includes(category.id)
-                                            ? "bg-indigo-100 text-indigo-700"
+                                            ? "bg-green-300 text-black"
                                             : "bg-gray-100 text-gray-900",
                                           "px-2 py-1 mr-2 mt-2 border border-gray-300 rounded cursor-pointer"
                                         )}
@@ -514,7 +514,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
                                         key={index}
                                         className={classNames(
                                           chosenTags.includes(tag.id)
-                                            ? "bg-indigo-100 text-indigo-700"
+                                            ? "bg-green-300 text-black"
                                             : "bg-gray-100 text-gray-900",
                                           "px-2 py-1 mr-2 mt-2 border border-gray-300 rounded cursor-pointer"
                                         )}
@@ -564,7 +564,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
                                       name="privacy"
                                       aria-describedby="privacy-public-description"
                                       type="radio"
-                                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                      className="h-4 w-4 border-gray-300 text-green-600 focus:ring-green-600"
                                       value="public"
                                       checked={selectedOption === "public"}
                                       onChange={() =>
@@ -595,7 +595,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
                                         name="privacy"
                                         aria-describedby="privacy-draft-description"
                                         type="radio"
-                                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                        className="h-4 w-4 border-gray-300 text-red-600 focus:ring-red-600"
                                         value="draft"
                                         checked={selectedOption === "draft"}
                                         onChange={() =>
@@ -637,7 +637,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
                       <button
                         disabled={loading}
                         type="submit"
-                        className="ml-4 disabled:bg-gray-200 inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="ml-4 disabled:bg-gray-200 inline-flex justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-green-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Save
                       </button>
