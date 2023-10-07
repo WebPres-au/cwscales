@@ -77,6 +77,8 @@ export default function Popover({ open, setOpen, intialProduct }) {
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
+    let rollbackData = [];
+
     try {
       // Insert new product to products table
       const { data: productData, error: productError } = await supabase
@@ -88,23 +90,23 @@ export default function Popover({ open, setOpen, intialProduct }) {
             isPublic: selectedOption === "public",
           },
         ])
-        .select();
+        .select().single();
 
       if (productError) throw productError;
 
+      rollbackData.push({
+        action: "insert",
+        table: "products",
+        data: productData,
+      });
+
       // The ID of the newly inserted product
-      const productId = productData[0].id;
+      const productId = productData.id;
 
       // Preparing the array to insert into product_categories table
       const categoryInserts = chosenCategories.map((categoryId) => ({
         product_id: productId,
         category_id: categoryId,
-      }));
-
-      // Preparing the array to insert into product_tags table
-      const tagInserts = chosenTags.map((tagId) => ({
-        product_id: productId,
-        tag_id: tagId,
       }));
 
       // Inserting categories related to the product in the product_categories table
@@ -114,12 +116,30 @@ export default function Popover({ open, setOpen, intialProduct }) {
 
       if (categoryError) throw categoryError;
 
+      rollbackData.push({
+        action: "insert",
+        table: "product_categories",
+        data: categoryInserts,
+      });
+
+      // Preparing the array to insert into product_tags table
+      const tagInserts = chosenTags.map((tagId) => ({
+        product_id: productId,
+        tag_id: tagId,
+      }));
+
       // Inserting tags related to the product in the product_tags table
       const { error: tagError } = await supabase
         .from("product_tags")
         .insert(tagInserts);
 
       if (tagError) throw tagError;
+
+      rollbackData.push({
+        action: "insert",
+        table: "product_tags",
+        data: tagInserts,
+      });
 
       // Uploading images to Supabase Storage and inserting to product_images table
       const imageInserts = [];
@@ -135,7 +155,14 @@ export default function Popover({ open, setOpen, intialProduct }) {
       const { error: imageError } = await supabase
         .from("product_images")
         .insert(imageInserts);
+
       if (imageError) throw imageError;
+
+      rollbackData.push({
+        action: "insert",
+        table: "product_images",
+        data: imageInserts,
+      });
 
       router.refresh();
 
@@ -144,14 +171,23 @@ export default function Popover({ open, setOpen, intialProduct }) {
       setDescription("");
       setChosenCategories([]);
       setChosenTags([]);
-
       setOpen(false);
-      setLoading(false);
-
       toast.success("Product added successfully");
     } catch (error) {
-      setLoading(false);
       toast.error(error.message);
+
+      for (const rb of rollbackData.reverse()) {
+        try {
+          if (rb.action === "insert") {
+            await supabase.from(rb.table).delete().match({ id: rb.data.id });
+          }
+        } catch (rollbackError) {
+          console.error("Error during rollback", rollbackError);
+        }
+      }
+    }
+    finally {
+      setLoading(false);
     }
   };
 
