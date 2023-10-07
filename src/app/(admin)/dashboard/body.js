@@ -3,6 +3,7 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { classNames, snake_case_string } from "@/lib/functions";
+import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import LogoutButton from "./LogoutButton";
 import Popover from "@/components/Popover";
@@ -11,7 +12,7 @@ import { useSearchParams } from "next/navigation";
 
 export default function Body({ children, navigation }) {
   const searchParams = useSearchParams();
-  const category = searchParams.get('category')
+  const category = searchParams.get("category");
 
   const [popoverOpen, setPopoverOpen] = useState(false);
 
@@ -88,6 +89,23 @@ export default function Body({ children, navigation }) {
                       )}
                     </Disclosure.Button>
                   </div>
+                </div>
+              </div>
+
+              <div className="my-4 flex flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8">
+                {/* <h1 className="text-base font-semibold leading-7 text-gray-900">
+                    Sub-Categories
+                  </h1> */}
+                <div className="order-last flex w-full gap-x-4 text-sm font-semibold leading-6 sm:order-none sm:w-auto sm:pl-2 sm:leading-7 overflow-x-auto">
+                  <a href="#" className="text-indigo-600">
+                    sub-category1
+                  </a>
+                  <a href="#" className="text-gray-700">
+                    sub-category2
+                  </a>
+                  <a href="#" className="text-gray-700">
+                    sub-category3
+                  </a>
                 </div>
               </div>
 
