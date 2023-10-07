@@ -23,6 +23,9 @@ export default function Popover({ open, setOpen, intialProduct }) {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
+  const [categorySearch, setCategorySearch] = useState("");
+  const [tagSearch, setTagSearch] = useState("");
+
   const [selectedOption, setSelectedOption] = useState(
     intialProduct ? (intialProduct?.isPublic ? "public" : "draft") : "public"
   );
@@ -444,12 +447,28 @@ export default function Popover({ open, setOpen, intialProduct }) {
                             <div>
                               <h3 className="text-sm -mb-2 font-medium leading-6 text-gray-900">
                                 Category
+                                <input
+                                  type="text"
+                                  name="categorySearch"
+                                  id="categorySearch"
+                                  value={categorySearch}
+                                  onChange={(e) =>
+                                    setCategorySearch(e.target.value)
+                                  }
+                                  placeholder="Search in exisiting categories"
+                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
                               </h3>
                               <div className="mt-2">
                                 <div className="flex flex-wrap space-x-2">
                                   {[...categories]
                                     .sort((a, b) =>
                                       a.name.localeCompare(b.name)
+                                    )
+                                    .filter((category) =>
+                                      category.name
+                                        .toLowerCase()
+                                        .includes(categorySearch.toLowerCase())
                                     )
                                     .map((category, index) => (
                                       <p
@@ -502,12 +521,26 @@ export default function Popover({ open, setOpen, intialProduct }) {
                             <div>
                               <h3 className="text-sm -mb-2 font-medium leading-6 text-gray-900">
                                 Tags
+                                <input
+                                  type="text"
+                                  name="tagSearch"
+                                  id="tagSearch"
+                                  value={tagSearch}
+                                  onChange={(e) => setTagSearch(e.target.value)}
+                                  placeholder="Search in exisiting tags"
+                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
                               </h3>
                               <div className="mt-2">
                                 <div className="flex flex-wrap space-x-2">
                                   {[...tags]
                                     .sort((a, b) =>
                                       a.name.localeCompare(b.name)
+                                    )
+                                    .filter((tag) =>
+                                      tag.name
+                                        .toLowerCase()
+                                        .includes(tagSearch.toLowerCase())
                                     )
                                     .map((tag, index) => (
                                       <p
