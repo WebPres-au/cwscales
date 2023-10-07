@@ -90,7 +90,8 @@ export default function Popover({ open, setOpen, intialProduct }) {
             isPublic: selectedOption === "public",
           },
         ])
-        .select().single();
+        .select()
+        .single();
 
       if (productError) throw productError;
 
@@ -185,8 +186,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
           console.error("Error during rollback", rollbackError);
         }
       }
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -195,7 +195,25 @@ export default function Popover({ open, setOpen, intialProduct }) {
     setLoading(true);
     e.preventDefault();
     const productId = intialProduct.id;
+    let rollbackData = [];
+
     try {
+      // Get and store the original product data for potential rollback
+      const { data: originalProductData, error: originalProductError } =
+        await supabase
+          .from("products")
+          .select("*")
+          .eq("id", productId)
+          .single();
+
+      if (originalProductError) throw originalProductError;
+
+      rollbackData.push({
+        action: "update",
+        table: "products",
+        data: originalProductData,
+      });
+
       // Update product in products table
       const { data: updatedProductData, error: productError } = await supabase
         .from("products")
@@ -208,12 +226,38 @@ export default function Popover({ open, setOpen, intialProduct }) {
 
       if (productError) throw productError;
 
-      // Delete existing categories and tags and insert the updated ones
+      // Fetch and store existing categories and tags for rollback
+      const { data: existingCategories, error: existingCategoriesError } =
+        await supabase
+          .from("product_categories")
+          .select("*")
+          .eq("product_id", productId);
+      if (existingCategoriesError) throw existingCategoriesError;
+
+      const { data: existingTags, error: existingTagsError } = await supabase
+        .from("product_tags")
+        .select("*")
+        .eq("product_id", productId);
+      if (existingTagsError) throw existingTagsError;
+
+      // Delete existing categories and tags
       await supabase
         .from("product_categories")
         .delete()
         .eq("product_id", productId);
       await supabase.from("product_tags").delete().eq("product_id", productId);
+
+      rollbackData.push({
+        action: "delete",
+        table: "product_tags",
+        data: existingTags,
+      });
+
+      rollbackData.push({
+        action: "delete",
+        table: "product_categories",
+        data: existingCategories,
+      });
 
       // Inserting new categories related to the product in the product_categories table
       const categoryInserts = chosenCategories.map((categoryId) => ({
@@ -223,7 +267,14 @@ export default function Popover({ open, setOpen, intialProduct }) {
       const { error: categoryError } = await supabase
         .from("product_categories")
         .insert(categoryInserts);
+
       if (categoryError) throw categoryError;
+
+      rollbackData.push({
+        action: "insert",
+        table: "product_categories",
+        data: categoryInserts,
+      });
 
       // Inserting new tags related to the product in the product_tags table
       const tagInserts = chosenTags.map((tagId) => ({
@@ -233,7 +284,14 @@ export default function Popover({ open, setOpen, intialProduct }) {
       const { error: tagError } = await supabase
         .from("product_tags")
         .insert(tagInserts);
+
       if (tagError) throw tagError;
+
+      rollbackData.push({
+        action: "insert",
+        table: "product_tags",
+        data: tagInserts,
+      });
 
       // Uploading images to Supabase Storage and inserting to product_images table
       const imageInserts = [];
@@ -242,24 +300,46 @@ export default function Popover({ open, setOpen, intialProduct }) {
         const { error: uploadError } = await supabase.storage
           .from("product-images")
           .upload(path, file);
+
         if (uploadError) throw uploadError;
+
         imageInserts.push({ product_id: productId, image_path: path });
       }
 
       const { error: imageError } = await supabase
         .from("product_images")
         .insert(imageInserts);
+
       if (imageError) throw imageError;
 
-      router.refresh();
+      rollbackData.push({
+        action: "insert",
+        table: "product_images",
+        data: imageInserts,
+      });
 
+      router.refresh();
       setOpen(false);
       setLoading(false);
-
       toast.success("Product edited successfully");
     } catch (error) {
       setLoading(false);
       toast.error(error.message);
+
+      // Perform Rollbacks
+      for (const rb of rollbackData.reverse()) {
+        try {
+          if (rb.action === 'update') {
+            await supabase.from(rb.table).update(rb.data).eq('id', productId);
+          } else if (rb.action === 'insert') {
+            await supabase.from(rb.table).delete().eq('id', rb.data[0].id);
+          } else if (rb.action === 'delete') {
+            await supabase.from(rb.table).insert(rb.data);
+          }
+        } catch (rollbackError) {
+          console.error('Error during rollback', rollbackError);
+        }
+      }
     }
   };
 
