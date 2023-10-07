@@ -4,7 +4,7 @@ import { Fragment, useEffect, useState, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
-import { classNames } from "@/lib/functions";
+import { classNames, snake_case_string } from "@/lib/functions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -86,6 +86,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
         .insert([
           {
             name: productName,
+            snake_case_name: snake_case_string(productName),
             short_description: description,
             isPublic: selectedOption === "public",
           },
@@ -219,6 +220,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
         .from("products")
         .update({
           name: productName,
+          snake_case_name: snake_case_string(productName),
           short_description: description,
           isPublic: selectedOption === "public",
         })
