@@ -38,8 +38,11 @@ export default function SecondPopover({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let rollbackData = [];
+
     try {
       setIsLoading(true);
+
       if (isCategory) {
         const { data, error } = await supabase
           .from("categories")
@@ -52,41 +55,58 @@ export default function SecondPopover({
               isFeatured,
             },
           ])
-          .select();
+          .select()
+          .single();
         if (error) throw error;
 
-        // Uploading images to Supabase Storage and inserting to product_images table
+        rollbackData.push({
+          action: "insert",
+          table: "categories",
+          data: data,
+        });
 
-        const path = `categories/${data[0].id}/${file.file.name}_${Date.now()}`;
+        const path = `categories/${data.id}/${file.file.name}_${Date.now()}`;
         const { error: uploadError } = await supabase.storage
           .from("category-images")
           .upload(path, file.file);
         if (uploadError) throw uploadError;
 
+        rollbackData.push({
+          action: "upload",
+          table: "category-images",
+          data: path,
+        });
+
         const { error: imageError } = await supabase
           .from("categories")
           .update({ image: path })
-          .eq("id", data[0].id);
+          .eq("id", data.id);
         if (imageError) throw imageError;
 
-        setCategories((prev) => [...prev, data[0]]);
+        setCategories((prev) => [...prev, data]);
       } else if (isTag) {
         const { data, error } = await supabase
           .from("tags")
           .insert([{ name: productName }])
-          .select();
+          .select()
+          .single();
         if (error) throw error;
-        setTags((prev) => [...prev, data[0]]);
-      }
-      router.refresh();
 
-      // reset form values
+        rollbackData.push({
+          action: "insert",
+          table: "tags",
+          data: data,
+        });
+
+        setTags((prev) => [...prev, data]);
+      }
+
+      router.refresh();
       setProductName("");
       setDescription("");
       setFile(null);
       setIsFeatured(false);
       setParentCategory(null);
-
       setOpen(false);
 
       toast.success(
@@ -94,6 +114,19 @@ export default function SecondPopover({
       );
     } catch (error) {
       toast.error(error.message);
+
+      // Rollback Logic
+      for (const rb of rollbackData.reverse()) {
+        try {
+          if (rb.action === "insert") {
+            await supabase.from(rb.table).delete().match({ id: rb.data.id });
+          } else if (rb.action === "upload") {
+            await supabase.storage.from(rb.table).remove([rb.data]);
+          }
+        } catch (rollbackError) {
+          console.error("Error during rollback", rollbackError);
+        }
+      }
     } finally {
       setIsLoading(false);
     }
