@@ -3,7 +3,6 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { classNames, snake_case_string } from "@/lib/functions";
-import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import LogoutButton from "./LogoutButton";
 import Popover from "@/components/Popover";
@@ -19,25 +18,25 @@ export default function Body({ children, navigation }) {
 
   const isRouteActive = (name) => {
     return (
-      snake_case_string(category) === snake_case_string(name) || snake_case_string(subCategory) === snake_case_string(name) ||
+      snake_case_string(category) === snake_case_string(name) ||
+      snake_case_string(subCategory) === snake_case_string(name) ||
       (!category && name === "All")
     );
   };
 
-  const pathname = usePathname()
+  const pathname = usePathname();
 
-  const router = useRouter()
-
+  const router = useRouter();
 
   const createQueryString = useCallback(
     (name, value) => {
-      const params = new URLSearchParams(searchParams)
-      params.set(name, value)
- 
-      return params.toString()
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
+
+      return params.toString();
     },
     [searchParams]
-  )
+  );
 
   return (
     <>
@@ -113,26 +112,31 @@ export default function Body({ children, navigation }) {
                 category &&
                   navigation.find((item) => isRouteActive(item.name)) && (
                     <div className="my-4 flex flex-wrap items-center gap-6 px-4 sm:px-6 lg:px-8">
-                      {/* <div className="order-last flex w-full gap-x-4 text-sm font-semibold leading-6 sm:order-none sm:w-auto sm:pl-2 sm:leading-7"> */}
-                        {navigation
-                          .find((item) => isRouteActive(item.name))
-                          .subcategories.map((subcategory) => (
-                            <button onClick={ () =>
-                              router.push(pathname + '?' + createQueryString('subcategory', snake_case_string(subcategory.name)))
-                            } 
-                            
-                            className={
-                              classNames(
-                                isRouteActive(subcategory.name)
-                                  ? "text-indigo-600 border-indigo-500"
-                                  : "text-gray-500 hover:text-gray-700",
-                                "border-b-2 text-sm font-medium"
+                      {navigation
+                        .find((item) => isRouteActive(item.name))
+                        .subcategories.map((subcategory, index) => (
+                          <button
+                            key={index}
+                            onClick={() =>
+                              router.push(
+                                pathname +
+                                  "?" +
+                                  createQueryString(
+                                    "subcategory",
+                                    snake_case_string(subcategory.name)
+                                  )
                               )
-                            }>
-                              {subcategory.name}
-                            </button>
-                          ))}
-                      {/* </div> */}
+                            }
+                            className={classNames(
+                              isRouteActive(subcategory.name)
+                                ? "text-gray-700 border-black-500 px-3 py-2 bg-gray-300 rounded-md"
+                                : "text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 px-3 py-2 rounded-md",
+                              "text-sm font-medium"
+                            )}
+                          >
+                            {subcategory.name}
+                          </button>
+                        ))}
                     </div>
                   )
               }
