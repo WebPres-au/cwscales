@@ -72,14 +72,14 @@ export default function Hero() {
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-32 text-center sm:py-64 lg:px-0">
         <h1 className="text-4xl font-bold tracking-tight text-white lg:text-6xl">
-          {`Shop ${currentImage.name} Products`}
+          {`${currentImage.name} Products`}
         </h1>
         <p className="mt-4 text-xl text-white">{currentImage.description}</p>
         <a
           href={currentImage.href}
           className="mt-8 inline-block rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-gray-900 hover:bg-gray-100"
         >
-          {`Shop ${currentImage.name}`}
+          {`${currentImage.name} Products`}
         </a>
       </div>
     </div>
