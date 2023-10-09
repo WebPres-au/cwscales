@@ -143,7 +143,7 @@ export const categories = [
   },
   {
     title: "Label Printers & Consumables",
-    href: "/product-category/label-printers-consumables",
+    href: "/product-category/label-receipt-printers-consumables",
     description: "Image of a label printer",
     imageUrl: "/categories/printers.jpeg",
   },
