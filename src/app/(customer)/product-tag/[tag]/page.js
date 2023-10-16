@@ -3,6 +3,31 @@ import {
     getServerTags,
   } from "@/app/supabase-server";
   import ContentHero from "@/components/ContentHero";
+
+  export async function generateMetadata({ params }) {
+    const tags = await getServerTags();
+  
+    const tag = tags.find(
+      (tag) => tag.snake_case_name == params.tag
+    );
+  
+    return {
+      title: tag.name,
+      description: tag.description,
+      openGraph: {
+        title: tag.name,
+        description: tag.description,
+        images: [
+          {
+            url: tag.signedUrl,
+            width: 500,
+            height: 500,
+            alt: tag.name,
+          },
+        ],
+      },
+    };
+  }
   
   export default async function TagPage({ params }) {
     const tags = await getServerTags();

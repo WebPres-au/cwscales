@@ -1,4 +1,7 @@
-const title = "Product Categories - Correct Weight Scales";
+const title = {
+  default: "Product Categories",
+  template: "%s | Correct Weight Scales",
+};
 const description =
   "Check out our various product categories that you can choose from. Each will have a variety of products that you will surely find the product that you're looking for.";
 

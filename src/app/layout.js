@@ -7,7 +7,10 @@ export const dynamic = "force-dynamic";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const title =
+const title = {
+  default: "Correct Weight Scales - Digital Scales, Weighing Equipment, Scale repairs Melbourne",
+  template: "%s | Correct Weight Scales",
+}
   "Correct Weight Scales - Digital Scales, Weighing Equipment, Scale repairs Melbourne";
 const description =
   "Welcome to Correct Weight Scales! Correct Weight Scales has derived from over 20 years experience in the Weighing and Packaging Industry. We can assist in helping your business weighing applications through the perfect combination of unsurpassed experience and loyal committed customer service that is unfortunately hard";

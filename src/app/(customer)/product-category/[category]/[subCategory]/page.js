@@ -4,6 +4,31 @@ import {
 } from "@/app/supabase-server";
 import ContentHero from "@/components/ContentHero";
 
+export async function generateMetadata({ params }) {
+  const categories = await getServerCategories();
+
+  const subCategory = categories.find(
+    (item) => item.snake_case_name == params.subCategory
+  );
+
+  return {
+    title: subCategory.name,
+    description: subCategory.description,
+    openGraph: {
+      title: subCategory.name,
+      description: subCategory.description,
+      images: [
+        {
+          url: subCategory.signedUrl,
+          width: 500,
+          height: 500,
+          alt: subCategory.name,
+        },
+      ],
+    },
+  };
+}
+
 export default async function SubCategoryPage({ params }) {
   const categories = await getServerCategories();
 
