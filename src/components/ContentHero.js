@@ -68,7 +68,7 @@ export default function ContentHero({
               }}
             >
               {content.map((item, index) => (
-                <div className="h-full w-full group">
+                <div className="h-full w-full group" key={index}>
                   {item.image.length > 0 &&
                     item.images.map((image, index) => (
                       <Image
