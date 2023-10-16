@@ -16,6 +16,9 @@ export default function Popover({ open, setOpen, intialProduct }) {
 
   const [productName, setProductName] = useState(intialProduct?.name ?? "");
   const [description, setDescription] = useState(
+    intialProduct?.description ?? ""
+  );
+  const [shortDescription, setShortDescription] = useState(
     intialProduct?.short_description ?? ""
   );
 
@@ -87,7 +90,8 @@ export default function Popover({ open, setOpen, intialProduct }) {
           {
             name: productName,
             snake_case_name: snake_case_string(productName),
-            short_description: description,
+            description: description,
+            short_description: shortDescription,
             isPublic: selectedOption === "public",
           },
         ])
@@ -221,7 +225,8 @@ export default function Popover({ open, setOpen, intialProduct }) {
         .update({
           name: productName,
           snake_case_name: snake_case_string(productName),
-          short_description: description,
+          description: description,
+          short_description: shortDescription,
           isPublic: selectedOption === "public",
         })
         .eq("id", productId);
@@ -472,6 +477,26 @@ export default function Popover({ open, setOpen, intialProduct }) {
                                   value={description}
                                   onChange={(e) =>
                                     setDescription(e.target.value)
+                                  }
+                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label
+                                htmlFor="short-description"
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                              >
+                                Short Description
+                              </label>
+                              <div className="mt-2">
+                                <input
+                                  type="text"
+                                  id="short-description"
+                                  name="short-description"
+                                  value={shortDescription}
+                                  onChange={(e) =>
+                                    setShortDescription(e.target.value)
                                   }
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />

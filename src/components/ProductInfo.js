@@ -9,7 +9,7 @@ export default function ProductInfo({ categoryName, product, type, isOne}) {
       <h3 className="product-code">Product Description:</h3>
 
       <p>
-        {product.short_description.split("\n").map((item, key) => {
+        {product.description.split("\n").map((item, key) => {
           return (
             <span key={key}>
               {item}
