@@ -13,7 +13,7 @@ export default async function SubCategoryPage({ params }) {
   // const title = "Our Range";
   let products = await getFilteredProducts(params.subCategory);
   products = products.map((product) => {
-    return { ...product, image: product?.images[0]?.signedUrl, href: "#" };
+    return { ...product, image: product?.images[0]?.signedUrl, href: `/product/${product.id}` };
   });
 
   return (

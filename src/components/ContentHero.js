@@ -5,7 +5,12 @@ import Image from "next/image";
 import ProductInfo from "./ProductInfo";
 // import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 
-export default function ContentHero({ category, content }) {
+export default function ContentHero({
+  category,
+  content,
+  type = "Product",
+  isOne = false,
+}) {
   const [columnCount, setColumnCount] = useState(2);
 
   useEffect(() => {
@@ -20,12 +25,75 @@ export default function ContentHero({ category, content }) {
   }, []);
 
   if (!category) return <div>loading...</div>;
+
+  if (isOne)
+    return (
+      <>
+        <div className="relative mt-32 -mb-32">
+          <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black">
+            <div className="absolute bottom-0 left-0 p-20 z-10 text-white">
+              <h1 className="capitalize text-3xl sm:text-6xl md:text-6xl break-all	">
+                {category.name}
+              </h1>
+              <p className="pt-4">{category.description}</p>
+              <button className="px-4 py-2 bg-blue-400 rounded-md mt-2">
+                Enquire now
+              </button>
+            </div>
+            <Image
+              src={
+                category.image ??
+                "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=935&q=80"
+              }
+              className="object-cover opacity-50 w-full h-full"
+              alt=""
+              fill={true}
+              sizes="(max-width: 600px) 100vw, 600px"
+            />
+          </div>
+          <div className="w-full lg:w-1/2 min-h-screen h-full inset-0 ml-auto sm:mt-[0vh] lg:mt-[-100vh]">
+            <ProductInfo
+              categoryName={category.name}
+              product={content[0]}
+              style={{ padding: 0, margin: 0 }}
+              type={type}
+              isOne={isOne}
+            />
+            <h3 className="product-images-heading">Product Images:</h3>
+
+            <div
+              style={{
+                columnCount: columnCount,
+                columnGap: "0px",
+              }}
+            >
+              {content.map((item, index) => (
+                <div className="h-full w-full group">
+                  {item.image.length > 0 &&
+                    item.images.map((image, index) => (
+                      <Image
+                        key={index}
+                        className="h-auto w-full object-cover border border-gray-400"
+                        width={400}
+                        height={400}
+                        src={image.signedUrl}
+                        alt={item.name}
+                        style={{ padding: 0, margin: 0 }}
+                      />
+                    ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    );
   return (
     <>
       <div className="relative mt-32 -mb-32">
-        <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0">
+        <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black">
           <div className="absolute bottom-0 left-0 p-20 z-10 text-white">
-            <h1 className="capitalize text-3xl sm:text-6xl md:text-8xl">
+            <h1 className="capitalize text-3xl sm:text-6xl md:text-6xl break-all	">
               {category.name}
             </h1>
             <p className="pt-4">{category.description}</p>
@@ -34,8 +102,11 @@ export default function ContentHero({ category, content }) {
             </button>
           </div>
           <Image
-            src="https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=935&q=80"
-            className="object-cover opacity-90 w-full h-full"
+            src={
+              category.signedUrl ?? category.image ??
+              "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=935&q=80"
+            }
+            className="object-cover opacity-50 w-full h-full"
             alt=""
             fill={true}
             sizes="(max-width: 600px) 100vw, 600px"
@@ -68,6 +139,7 @@ export default function ContentHero({ category, content }) {
                     categoryName={category.name}
                     product={item}
                     style={{ padding: 0, margin: 0 }}
+                    type={type}
                   />
                 </div>
               </div>

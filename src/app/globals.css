@@ -21,11 +21,15 @@
   color: #1db150;
 }
 
-.product-info > h3 {
+.product-info > h3,
+.product-images-heading {
   font-size: calc(18px + 0.9375vw);
   line-height: calc(18.6px + 1.21875vw);
   font-weight: 700;
   margin-bottom: 15px;
+}
+.product-images-heading {
+  padding-left: calc(19.4px + 1.59375vw);
 }
 
 .product-info > p {

@@ -250,3 +250,59 @@ export const getNavItems = async () => {
     console.error("Error fetching categories:", error);
   }
 };
+
+export const getProductDetails = async (id) => {
+  const supabase = createServerSupabaseClient();
+
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select(`
+        *,
+        product_categories (
+          categories (
+            id,
+            name
+          )
+        ),
+        product_tags (
+          tags (
+            id,
+            name
+          )
+        ),
+        product_images (
+          id,
+          image_path
+        )
+      `)
+      .eq("id", id)
+      .single();
+
+    if (error) throw error;
+
+    const product = data;
+
+    const categories = product.product_categories.map((pc) => pc.categories);
+    const tags = product.product_tags.map((pt) => pt.tags);
+
+    // Await all the signed URLs and create the images array
+    const images = await Promise.all(
+      product.product_images.map(async (image) => {
+        return {
+          ...image,
+          signedUrl: await getSignedUrl(image, "product-images"),
+        };
+      })
+    );
+
+    return {
+      ...product,
+      categories,
+      tags,
+      images,
+    };
+  } catch (error) {
+    console.error("Error fetching product:", error);
+  }
+}
