@@ -149,6 +149,76 @@ export const getFilteredProducts = async (
   );
 };
 
+export const getProductsByTag = async (tagID) => {
+  const supabase = createServerSupabaseClient();
+
+  const { data: tagsData, error: tagsError } = await supabase
+    .from("product_tags")
+    .select("product_id")
+    .eq("tag_id", tagID);
+
+  if (tagsError) {
+    console.error(tagsError.message);
+    return [];
+  }
+
+  const productIds = tagsData.map((tag) => tag.product_id);
+
+  const { data: productsData, error: productsError } = await supabase
+    .from("products")
+    .select(`
+      *,
+      product_categories (
+        categories (
+          id,
+          name
+        )
+      ),
+      product_tags (
+        tags (
+          id,
+          name
+        )
+      ),
+      product_images (
+        id,
+        image_path
+      )
+    `)
+    .in("id", productIds);
+
+  if (productsError) {
+    console.error(productsError.message);
+    return [];
+  }
+
+  // Create an array of Promises that resolve to the transformed product objects
+  const transformedDataPromises = productsData.map(async (product) => {
+    const categories = product.product_categories.map((pc) => pc.categories);
+    const tags = product.product_tags.map((pt) => pt.tags);
+
+    // Await all the signed URLs and create the images array
+    const images = await Promise.all(
+      product.product_images.map(async (image) => {
+        return {
+          ...image,
+          signedUrl: await getSignedUrl(image, "product-images"),
+        };
+      }
+    ));
+
+    return {
+      ...product,
+      categories,
+      tags,
+      images,
+    };
+  });
+
+  // Wait for all Promises to resolve and return the transformed data
+  return await Promise.all(transformedDataPromises);
+};
+
 export const getServerCategories = async (hasNoSubcategories = false) => {
   const supabase = createServerSupabaseClient();
   try {
@@ -179,6 +249,18 @@ export const getServerCategories = async (hasNoSubcategories = false) => {
     );
 
     return dataWithImages;
+  } catch (error) {
+    console.error(error.message);
+    return [];
+  }
+};
+
+export const getServerTags = async () => {
+  const supabase = createServerSupabaseClient();
+  try {
+    const { data, error } = await supabase.from("tags").select();
+    if (error) throw error;
+    return data;
   } catch (error) {
     console.error(error.message);
     return [];

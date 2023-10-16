@@ -87,7 +87,7 @@ export default function SecondPopover({
       } else if (isTag) {
         const { data, error } = await supabase
           .from("tags")
-          .insert([{ name: productName }])
+          .insert([{ name: productName, snake_case_name: snake_case_string(productName) }])
           .select()
           .single();
         if (error) throw error;

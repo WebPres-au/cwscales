@@ -1,7 +1,8 @@
 import KebabMenu from "./KebabMenu";
 import { getFilteredProducts, getProducts } from "@/app/supabase-server";
 import Image from "next/image";
-import { classNames } from "@/lib/functions";
+import { classNames, snake_case_string } from "@/lib/functions";
+import Link from "next/link";
 
 const statuses = {
   Complete: "text-green-700 bg-green-50 ring-green-600/20",
@@ -71,14 +72,15 @@ export default async function ProductList({searchParams}) {
                   </div>
                   <div className="flex gap-1 flex-wrap">
                     {product.tags.map((tag) => (
-                      <p
+                      <Link
+                        href={`/product-tag/${snake_case_string(tag.name)}`}
                         className={
                           "rounded-md whitespace-nowrap mt-0.5 px-3 py-1 text-xs font-medium ring-1 ring-inset"
                         }
                         key={tag.id}
                       >
                         {tag.name}
-                      </p>
+                      </Link>
                     ))}
                   </div>
                   {/* <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
