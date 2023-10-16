@@ -203,7 +203,7 @@ export const getNavItems = async () => {
         navigation.categories.push({
           name: category.name,
           subcategories: [
-            ...category.subcategories.map((sub) => ({
+            ...category.subcategories.filter((cat) => !cat.isFeatured).map((sub) => ({
               name: sub.name,
               href: `/product-category/${snake_case_string(
                 category.name
