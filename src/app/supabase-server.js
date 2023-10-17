@@ -267,7 +267,7 @@ export const getServerTags = async () => {
   }
 };
 
-export const getNavItems = async () => {
+export const getNavItems = async (hasStaticPages = false) => {
   const supabase = createServerSupabaseClient();
 
   try {
@@ -320,12 +320,15 @@ export const getNavItems = async () => {
       }
     }
 
-    navigation.pages.push(
-      { name: "Repairs & Calibration", href: "/service-repairs-calibration" },
-      { name: "Scale Hire", href: "/service-repairs-calibration/scales-hire" }
-      // { name: "About", href: "/about" },
-      // { name: "Contact", href: "/contact" }
-    );
+    if (hasStaticPages){
+
+      navigation.pages.push(
+        { name: "Repairs & Calibration", href: "/service-repairs-calibration" },
+        { name: "Scale Hire", href: "/service-repairs-calibration/scales-hire" }
+        // { name: "About", href: "/about" },
+        // { name: "Contact", href: "/contact" }
+      );
+    }
 
     return navigation;
   } catch (error) {

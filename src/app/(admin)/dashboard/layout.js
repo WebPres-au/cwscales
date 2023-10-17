@@ -13,7 +13,9 @@ export default async function DashboardLayout({ children }) {
 
   let navigation = [{ name: "All", href: "/dashboard/" }];
 
-  const {categories} = await getNavItems();
+  const {categories, pages} = await getNavItems(false);
+
+  console.log("categories", categories);
 
   navigation.push(
     ...categories.map((category) => {
@@ -30,6 +32,17 @@ export default async function DashboardLayout({ children }) {
         ...category,
         name: category.name,
         href: `/dashboard?category=${snake_case_string(category.name)}`,
+      };
+    })
+  );
+
+  navigation.push(
+    ...pages.map((page) => {
+      delete page.href;
+      return {
+        ...page,
+        name: page.name,
+        href: `/dashboard?category=${snake_case_string(page.name)}`,
       };
     })
   );

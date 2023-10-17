@@ -114,7 +114,7 @@ export default function Body({ children, navigation }) {
                     <div className="my-4 flex flex-wrap items-center gap-6 px-4 sm:px-6 lg:px-8">
                       {navigation
                         .find((item) => isRouteActive(item.name))
-                        .subcategories.map((subcategory, index) => (
+                        .subcategories?.map((subcategory, index) => (
                           <button
                             key={index}
                             onClick={() =>
