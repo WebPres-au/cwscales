@@ -333,7 +333,7 @@ export const getNavItems = async () => {
   }
 };
 
-export const getProductDetails = async (id) => {
+export const getProductDetails = async (name) => {
   const supabase = createServerSupabaseClient();
 
   try {
@@ -358,7 +358,7 @@ export const getProductDetails = async (id) => {
           image_path
         )
       `)
-      .eq("id", id)
+      .eq("snake_case_name", name)
       .single();
 
     if (error) throw error;

@@ -35,7 +35,7 @@ export default function ContentHero({
               <h1 className="capitalize text-3xl sm:text-6xl md:text-6xl break-all	">
                 {category.name}
               </h1>
-              <p className="pt-4">{category.description}</p>
+              <p className="pt-4">{category.short_description}</p>
               <button className="px-4 py-2 bg-blue-400 rounded-md mt-2">
                 Enquire now
               </button>

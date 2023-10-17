@@ -3,6 +3,7 @@ import {
   getServerCategories,
 } from "@/app/supabase-server";
 import ContentHero from "@/components/ContentHero";
+import { snake_case_string } from "@/lib/functions";
 
 export async function generateMetadata({ params }) {
   const categories = await getServerCategories();
@@ -38,7 +39,7 @@ export default async function SubCategoryPage({ params }) {
   // const title = "Our Range";
   let products = await getFilteredProducts(params.subCategory);
   products = products.map((product) => {
-    return { ...product, image: product?.images[0]?.signedUrl, href: `/product/${product.id}` };
+    return { ...product, image: product?.images[0]?.signedUrl, href: `/product/${snake_case_string(product.name)}` };
   });
 
   return (
