@@ -1,10 +1,13 @@
-import { getNavItems, getServerCategories, getSession } from "@/app/supabase-server";
+import {
+  getNavItems,
+  // getServerCategories,
+  getSession,
+} from "@/app/supabase-server";
 import Body from "./body";
 import { snake_case_string } from "@/lib/functions";
 import { redirect } from "next/navigation";
 
 export default async function DashboardLayout({ children }) {
-  
   const session = await getSession();
 
   if (!session) {
@@ -13,9 +16,7 @@ export default async function DashboardLayout({ children }) {
 
   let navigation = [{ name: "All", href: "/dashboard/" }];
 
-  const {categories, pages} = await getNavItems(false);
-
-  console.log("categories", categories);
+  const { categories, pages } = await getNavItems(false);
 
   navigation.push(
     ...categories.map((category) => {
@@ -23,9 +24,8 @@ export default async function DashboardLayout({ children }) {
         delete subcategory.href;
         delete subcategory.imageSrc;
         delete subcategory.imageAlt;
-        if(subcategory.name != "Browse All")return subcategory;
-      }
-      );
+        if (subcategory.name != "Browse All") return subcategory;
+      });
       delete category.featured;
       delete category.href;
       return {
