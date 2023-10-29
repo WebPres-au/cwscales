@@ -1,14 +1,14 @@
 import Image from "next/image";
-import ContactForm from "@/components/ContactForm";
 import { getNavItems } from "@/app/supabase-server";
 import Link from "next/link";
+import ClientContact from "./ClientContact";
 
 export default async function Footer() {
   const navigation = await getNavItems(true);
 
   return (
     <>
-      <ContactForm />
+      <ClientContact />
       <footer
         className="bg-gray-900 border-y-[16px] border-green"
         aria-labelledby="footer-heading"
@@ -122,9 +122,12 @@ export default async function Footer() {
               </ul>
             </div>
           </div>
-          <div className="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">
+          <div className="mt-16 border-t border-white/10 pt-8 flex justify-between sm:mt-20 lg:mt-24">
             <p className="text-xs leading-5 text-gray-400">
-              &copy; 2020 Your Company, Inc. All rights reserved.
+              &copy; CWScales {new Date().getFullYear()}. All rights reserved.
+            </p>
+            <p className="text-xs leading-5 text-gray-400">
+              Made by <a href="https://webpres.au">WebPres</a>
             </p>
           </div>
         </div>
