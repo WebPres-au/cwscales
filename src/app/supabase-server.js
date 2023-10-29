@@ -137,7 +137,7 @@ export const getFilteredProducts = async (
 
   let transformedData = await getProducts();
 
-  if(!includesDrafts) {
+  if (!includesDrafts) {
     transformedData = transformedData.filter((product) => product.isPublic);
   }
 
@@ -166,7 +166,8 @@ export const getProductsByTag = async (tagID) => {
 
   const { data: productsData, error: productsError } = await supabase
     .from("products")
-    .select(`
+    .select(
+      `
       *,
       product_categories (
         categories (
@@ -184,7 +185,8 @@ export const getProductsByTag = async (tagID) => {
         id,
         image_path
       )
-    `)
+    `
+    )
     .in("id", productIds);
 
   if (productsError) {
@@ -204,8 +206,8 @@ export const getProductsByTag = async (tagID) => {
           ...image,
           signedUrl: await getSignedUrl(image, "product-images"),
         };
-      }
-    ));
+      })
+    );
 
     return {
       ...product,
@@ -278,6 +280,7 @@ export const getNavItems = async (hasStaticPages = false) => {
     let navigation = {
       categories: [],
       pages: [],
+      company: [],
     };
 
     for (const category of categories) {
@@ -285,12 +288,14 @@ export const getNavItems = async (hasStaticPages = false) => {
         navigation.categories.push({
           name: category.name,
           subcategories: [
-            ...category.subcategories.filter((cat) => !cat.isFeatured).map((sub) => ({
-              name: sub.name,
-              href: `/product-category/${snake_case_string(
-                category.name
-              )}/${snake_case_string(sub.name)}`,
-            })),
+            ...category.subcategories
+              .filter((cat) => !cat.isFeatured)
+              .map((sub) => ({
+                name: sub.name,
+                href: `/product-category/${snake_case_string(
+                  category.name
+                )}/${snake_case_string(sub.name)}`,
+              })),
             {
               name: "Browse All",
               href: `/product-category/${snake_case_string(category.name)}`,
@@ -320,13 +325,20 @@ export const getNavItems = async (hasStaticPages = false) => {
       }
     }
 
-    if (hasStaticPages){
-
+    if (hasStaticPages) {
       navigation.pages.push(
         { name: "Repairs & Calibration", href: "/service-repairs-calibration" },
-        { name: "Scale Hire", href: "/service-repairs-calibration/scales-hire" }
-        // { name: "About", href: "/about" },
-        // { name: "Contact", href: "/contact" }
+        {
+          name: "Scale Hire",
+          href: "/service-repairs-calibration/scales-hire",
+        }
+      );
+    }
+    if (hasStaticPages) {
+      navigation.company.push(
+        { name: "About", href: "/about" },
+        { name: "Contact", href: "/contact" },
+        { name: "Privacy & Terms", href: "/privacy-terms" }
       );
     }
 
@@ -342,7 +354,8 @@ export const getProductDetails = async (name) => {
   try {
     const { data, error } = await supabase
       .from("products")
-      .select(`
+      .select(
+        `
         *,
         product_categories (
           categories (
@@ -360,7 +373,8 @@ export const getProductDetails = async (name) => {
           id,
           image_path
         )
-      `)
+      `
+      )
       .eq("snake_case_name", name)
       .single();
 
@@ -390,4 +404,4 @@ export const getProductDetails = async (name) => {
   } catch (error) {
     console.error("Error fetching product:", error);
   }
-}
+};
