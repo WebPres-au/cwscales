@@ -35,15 +35,14 @@ export default function ContentHero({
                 {category.name}
               </h1>
               <p className="pt-4">{category.short_description}</p>
-              <button className="px-4 py-2 bg-blue-400 rounded-md mt-2">
-                Enquire now
-              </button>
+              <a href="#contact">
+                <button className="px-4 py-2 bg-green hover:bg-green/80 rounded-md mt-2">
+                  Enquire now
+                </button>
+              </a>
             </div>
             <Image
-              src={
-                category.image ??
-                "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=935&q=80"
-              }
+              src={category.image ?? "/bakery.jpg"}
               className="object-cover opacity-50 w-full h-full"
               alt=""
               fill={true}
@@ -87,25 +86,24 @@ export default function ContentHero({
         </div>
       </>
     );
+
   return (
     <>
       <div className="relative mt-32 -mb-32">
         <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black">
           <div className="absolute bottom-0 left-0 p-20 z-10 text-white">
-            <h1 className="capitalize text-3xl sm:text-6xl md:text-6xl break-all	">
+            <h1 className="capitalize text-3xl sm:text-4xl md:text-5xl break-all">
               {category.name}
             </h1>
             <p className="pt-4">{category.description}</p>
-            <button className="px-4 py-2 bg-blue-400 rounded-md mt-2">
-              Enquire now
-            </button>
+            <a href="#contact">
+              <button className="px-4 py-2 bg-green hover:bg-green/80 rounded-md mt-2">
+                Enquire now
+              </button>
+            </a>
           </div>
           <Image
-            src={
-              category.signedUrl ??
-              category.image ??
-              "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=935&q=80"
-            }
+            src={category.signedUrl ?? category.image ?? "/bakery.jpg"}
             className="object-cover opacity-50 w-full h-full"
             alt=""
             fill={true}
