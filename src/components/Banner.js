@@ -67,7 +67,7 @@ export default function Hero() {
       </div>
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gray-900 opacity-10"
+        className="absolute inset-0 bg-gray-900 opacity-40"
       />
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-32 text-center sm:py-64 lg:px-0">
