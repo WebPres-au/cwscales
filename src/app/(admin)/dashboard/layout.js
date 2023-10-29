@@ -15,8 +15,6 @@ export default async function DashboardLayout({ children }) {
 
   const {categories, pages} = await getNavItems(false);
 
-  console.log("categories", categories);
-
   navigation.push(
     ...categories.map((category) => {
       category.subcategories = category.subcategories.map((subcategory) => {
