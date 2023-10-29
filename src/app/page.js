@@ -1,6 +1,5 @@
 import Banner from "@/components/Banner";
 import Categories from "@/components/Categories";
-import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/ui/Footer";
 import Navigation from "@/components/ui/Navigation";
 import Image from "next/image";
@@ -13,7 +12,6 @@ export default function Home() {
       <Categories />
       <Information />
       <Association />
-      <ContactForm />
       <Footer />
     </div>
   );
