@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import ProductInfo from "./ProductInfo";
-// import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 
 export default function ContentHero({
   category,
@@ -103,7 +102,8 @@ export default function ContentHero({
           </div>
           <Image
             src={
-              category.signedUrl ?? category.image ??
+              category.signedUrl ??
+              category.image ??
               "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=935&q=80"
             }
             className="object-cover opacity-50 w-full h-full"
