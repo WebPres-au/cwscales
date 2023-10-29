@@ -77,9 +77,9 @@ export default function Hero() {
         <p className="mt-4 text-xl text-white">{currentImage.description}</p>
         <a
           href={currentImage.href}
-          className="mt-8 inline-block rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-gray-900 hover:bg-gray-100"
+          className="mt-8 inline-block rounded-md border border-transparent bg-green px-8 py-3 text-base font-medium text-gray-900 hover:bg-green/80"
         >
-          {`${currentImage.name} Products`}
+          {`${currentImage.name} Range`}
         </a>
       </div>
     </div>
