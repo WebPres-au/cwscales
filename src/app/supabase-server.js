@@ -246,6 +246,7 @@ export const getNavItems = async (hasStaticPages = false) => {
     let navigation = {
       categories: [],
       pages: [],
+      company: [],
     };
 
     for (const category of categories) {
@@ -293,9 +294,17 @@ export const getNavItems = async (hasStaticPages = false) => {
     if (hasStaticPages) {
       navigation.pages.push(
         { name: "Repairs & Calibration", href: "/service-repairs-calibration" },
-        { name: "Scale Hire", href: "/service-repairs-calibration/scales-hire" }
-        // { name: "About", href: "/about" },
-        // { name: "Contact", href: "/contact" }
+        {
+          name: "Scale Hire",
+          href: "/service-repairs-calibration/scales-hire",
+        }
+      );
+    }
+    if (hasStaticPages) {
+      navigation.company.push(
+        { name: "About", href: "/about" },
+        { name: "Contact", href: "/contact" },
+        { name: "Privacy & Terms", href: "/privacy-terms" }
       );
     }
 

@@ -67,7 +67,7 @@ export default function Hero() {
       </div>
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gray-900 opacity-10"
+        className="absolute inset-0 bg-gray-900 opacity-40"
       />
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-32 text-center sm:py-64 lg:px-0">
@@ -77,9 +77,9 @@ export default function Hero() {
         <p className="mt-4 text-xl text-white">{currentImage.description}</p>
         <a
           href={currentImage.href}
-          className="mt-8 inline-block rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-gray-900 hover:bg-gray-100"
+          className="mt-8 inline-block rounded-md border border-transparent bg-green px-8 py-3 text-base font-medium text-gray-900 hover:bg-green/80"
         >
-          {`${currentImage.name} Products`}
+          {`${currentImage.name} Range`}
         </a>
       </div>
     </div>

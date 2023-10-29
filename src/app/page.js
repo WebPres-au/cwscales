@@ -1,20 +1,17 @@
 import Banner from "@/components/Banner";
 import Categories from "@/components/Categories";
-import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/ui/Footer";
 import Navigation from "@/components/ui/Navigation";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <div>
       <Navigation />
-
       <Banner />
       <Categories />
       <Information />
-      {/* <LogoCloud /> */}
-      <ContactForm />
-
+      <Association />
       <Footer />
     </div>
   );
@@ -53,51 +50,24 @@ function Information() {
   );
 }
 
-// function LogoCloud() {
-//   return (
-//     <div className="bg-white pb-24 sm:pb-32">
-//       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-//         <h2 className="text-center text-lg font-semibold leading-8 text-gray-900">
-//           Trusted some well known companies
-//         </h2>
-//         <div className="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-//           <img
-//             className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-//             src="https://tailwindui.com/img/logos/158x48/transistor-logo-gray-900.svg"
-//             alt="Transistor"
-//             width={158}
-//             height={48}
-//           />
-//           <img
-//             className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-//             src="https://tailwindui.com/img/logos/158x48/reform-logo-gray-900.svg"
-//             alt="Reform"
-//             width={158}
-//             height={48}
-//           />
-//           <img
-//             className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-//             src="https://tailwindui.com/img/logos/158x48/tuple-logo-gray-900.svg"
-//             alt="Tuple"
-//             width={158}
-//             height={48}
-//           />
-//           <img
-//             className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
-//             src="https://tailwindui.com/img/logos/158x48/savvycal-logo-gray-900.svg"
-//             alt="SavvyCal"
-//             width={158}
-//             height={48}
-//           />
-//           <img
-//             className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
-//             src="https://tailwindui.com/img/logos/158x48/statamic-logo-gray-900.svg"
-//             alt="Statamic"
-//             width={158}
-//             height={48}
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+function Association() {
+  return (
+    <div className="bg-white px-6 pb-16 lg:px-8">
+      <div className="mx-auto max-w-6xl text-center">
+        <h2 className="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+          Correct Weight Scales is a Proud member of the Weighing Industry
+          Association of Australia
+        </h2>
+        <div className="mx-auto">
+          <Image
+            height={400}
+            width={400}
+            src="wiaa.jpg"
+            alt="Image"
+            className="mx-auto mt-12 mb-6"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
