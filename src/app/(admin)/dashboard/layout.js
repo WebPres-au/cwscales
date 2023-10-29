@@ -1,8 +1,4 @@
-import {
-  getNavItems,
-  // getServerCategories,
-  getSession,
-} from "@/app/supabase-server";
+import { getNavItems, getSession } from "@/app/supabase-server";
 import Body from "./body";
 import { snake_case_string } from "@/lib/functions";
 import { redirect } from "next/navigation";
@@ -16,7 +12,7 @@ export default async function DashboardLayout({ children }) {
 
   let navigation = [{ name: "All", href: "/dashboard/" }];
 
-  const { categories, pages } = await getNavItems(false);
+  const { categories, pages} = await getNavItems(false);
 
   navigation.push(
     ...categories.map((category) => {

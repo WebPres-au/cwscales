@@ -7,8 +7,9 @@ export const createServerSupabaseClient = cache(() =>
   createServerComponentClient({ cookies })
 );
 
+const supabase = createServerSupabaseClient();
+
 export async function getSession() {
-  const supabase = createServerSupabaseClient();
   try {
     const {
       data: { session },
@@ -21,8 +22,6 @@ export async function getSession() {
 }
 
 export const getSignedUrl = async (image, bucket) => {
-  const supabase = createServerSupabaseClient();
-
   const { data, error } = await supabase.storage
     .from(bucket)
     .getPublicUrl(image.image_path);
@@ -32,126 +31,60 @@ export const getSignedUrl = async (image, bucket) => {
   return data.publicUrl;
 };
 
-export const getProducts = async () => {
-  const supabase = createServerSupabaseClient();
-  const { data, error } = await supabase.from("products").select(`
-    *,
-    product_categories (
-      categories (
-        id,
-        name
-      )
-    ),
-    product_tags (
-      tags (
-        id,
-        name
-      )
-    ),
-    product_images (
-      id,
-      image_path
-    )
-  `);
+export const getProductsFromCategory = async (
+  categoryName,
+  subCategories = null,
+  includesDrafts = false
+) => {
+  try {
+    const { data, error } = await supabase.rpc("getproductsfromcategory", {
+      categoryname: categoryName,
+      subcategories: subCategories,
+      includesdrafts: includesDrafts,
+    });
 
-  if (error) {
+    if (error) throw error;
+
+    // Create an array of Promises that resolve to the transformed product objects
+    const transformedDataPromises = data.map(async (product) => {
+      // Await all the signed URLs and create the images array
+      const id = product.product_id;
+      const name = product.product_name;
+      const isPublic = product.ispublic;
+      const href = `/product/${snake_case_string(product.product_name)}`;
+      delete product.product_id;
+      delete product.product_name;
+      delete product.ispublic;
+
+      const images = await Promise.all(
+        product.images.map(async (image, index) => {
+          return {
+            ...image,
+            signedUrl: await getSignedUrl(image, "product-images"),
+          };
+        })
+      );
+
+      return {
+        id,
+        name,
+        image: images ? images[0]?.signedUrl : null,
+        ...product,
+        href,
+        images,
+        isPublic,
+      };
+    });
+
+    // Wait for all Promises to resolve and return the transformed data
+    return await Promise.all(transformedDataPromises);
+  } catch (error) {
     console.error(error.message);
     return [];
   }
-
-  // Create an array of Promises that resolve to the transformed product objects
-  const transformedDataPromises = data.map(async (product) => {
-    const categories = product.product_categories.map((pc) => pc.categories);
-    const tags = product.product_tags.map((pt) => pt.tags);
-
-    // Await all the signed URLs and create the images array
-    const images = await Promise.all(
-      product.product_images.map(async (image) => {
-        return {
-          ...image,
-          signedUrl: await getSignedUrl(image, "product-images"),
-        };
-      })
-    );
-
-    return {
-      ...product,
-      categories,
-      tags,
-      images,
-    };
-  });
-
-  // Wait for all Promises to resolve and return the transformed data
-  return await Promise.all(transformedDataPromises);
-};
-
-export const getFilteredProducts = async (
-  categoryName,
-  includesDrafts = false
-) => {
-  const supabase = createServerSupabaseClient();
-
-  // 1. Fetch the ID of the category by its name
-  const { data: categoriesData, error: categoriesError } = await supabase
-    .from("categories")
-    .select("id")
-    .eq("snake_case_name", categoryName);
-
-  if (categoriesError || !categoriesData || categoriesData.length === 0) {
-    console.error(
-      categoriesError?.message || `No category found for name: ${categoryName}`
-    );
-    return [];
-  }
-
-  const categoryId = categoriesData[0].id;
-
-  // 2. Recursively fetch all subcategories of the given category using the ID
-  const fetchSubcategories = async (categoryId) => {
-    const { data: subcategoriesData, error: subcategoriesError } =
-      await supabase
-        .from("categories")
-        .select("id")
-        .eq("parent_category", categoryId);
-
-    if (subcategoriesError) {
-      console.error(subcategoriesError.message);
-      return [];
-    }
-
-    let subcategories = subcategoriesData || [];
-    for (const subcategory of subcategoriesData) {
-      const children = await fetchSubcategories(subcategory.id);
-      subcategories = subcategories.concat(children);
-    }
-    return subcategories;
-  };
-
-  const allCategories = [
-    { id: categoryId },
-    ...(await fetchSubcategories(categoryId)),
-  ];
-
-  // 3. Fetch all products and their categories, tags and images
-
-  let transformedData = await getProducts();
-
-  if (!includesDrafts) {
-    transformedData = transformedData.filter((product) => product.isPublic);
-  }
-
-  // 4. Filter products based on the category and its subcategories IDs
-  return transformedData.filter((product) =>
-    product.categories.some((category) =>
-      allCategories.map((c) => c.id).includes(category.id)
-    )
-  );
 };
 
 export const getProductsByTag = async (tagID) => {
-  const supabase = createServerSupabaseClient();
-
   const { data: tagsData, error: tagsError } = await supabase
     .from("product_tags")
     .select("product_id")
@@ -221,44 +154,79 @@ export const getProductsByTag = async (tagID) => {
   return await Promise.all(transformedDataPromises);
 };
 
-export const getServerCategories = async (hasNoSubcategories = false) => {
-  const supabase = createServerSupabaseClient();
+export const getCategory = async (categoryName) => {
   try {
-    let dataWithImages;
-    if (hasNoSubcategories) {
-      const { data, error } = await supabase
-        .from("categories")
-        .select()
-        .is("parent_category", null);
-      if (error) throw error;
-      dataWithImages = data;
-    } else {
-      const { data, error } = await supabase.from("categories").select();
-      if (error) throw error;
-      dataWithImages = data;
-    }
+    const { data, error } = await supabase
+      .from("categories")
+      .select()
+      .eq("snake_case_name", categoryName)
+      .single();
 
-    dataWithImages = await Promise.all(
-      dataWithImages.map(async (category) => {
+    if (error) throw error;
+
+    let category = data;
+
+    category.image = await getSignedUrl(
+      { image_path: category.image },
+      "category-images"
+    );
+
+    return category;
+  } catch (error) {
+    console.error(error.message);
+    return null;
+  }
+};
+
+export const getCategoryWithSubcategories = async (categoryName) => {
+  try {
+    const { data, error } = await supabase
+      .from("categories")
+      .select()
+      .eq("snake_case_name", categoryName)
+      .single();
+
+    if (error) throw error;
+
+    let category = data;
+
+    category.image = await getSignedUrl(
+      { image_path: category.image },
+      "category-images"
+    );
+
+    const { data: subcategories, error: subcategoriesError } = await supabase
+      .from("categories")
+      .select()
+      .eq("parent_category", category.id)
+      .order("isFeatured", { ascending: false });
+
+    if (subcategoriesError) throw subcategoriesError;
+
+    const subcategoriesWithImages = await Promise.all(
+      subcategories.map(async (subcategory) => {
         return {
-          ...category,
-          signedUrl: await getSignedUrl(
-            { image_path: category.image },
+          ...subcategory,
+          href: `/product-category/${categoryName}/${subcategory.snake_case_name}`,
+          image: await getSignedUrl(
+            { image_path: subcategory.image },
             "category-images"
           ),
         };
       })
     );
 
-    return dataWithImages;
+    return {
+      ...category,
+      subcategories: subcategoriesWithImages,
+    };
   } catch (error) {
     console.error(error.message);
-    return [];
+    return null;
   }
 };
 
 export const getServerTags = async () => {
-  const supabase = createServerSupabaseClient();
   try {
     const { data, error } = await supabase.from("tags").select();
     if (error) throw error;
@@ -270,8 +238,6 @@ export const getServerTags = async () => {
 };
 
 export const getNavItems = async (hasStaticPages = false) => {
-  const supabase = createServerSupabaseClient();
-
   try {
     const { data: categories, error } = await supabase.rpc("get_categories");
 
@@ -349,8 +315,6 @@ export const getNavItems = async (hasStaticPages = false) => {
 };
 
 export const getProductDetails = async (name) => {
-  const supabase = createServerSupabaseClient();
-
   try {
     const { data, error } = await supabase
       .from("products")

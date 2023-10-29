@@ -1,5 +1,5 @@
 import KebabMenu from "./KebabMenu";
-import { getFilteredProducts, getProducts } from "@/app/supabase-server";
+import { getProductsFromCategory } from "@/app/supabase-server";
 import Image from "next/image";
 import { classNames, snake_case_string } from "@/lib/functions";
 import Link from "next/link";
@@ -16,11 +16,11 @@ export default async function ProductList({searchParams}) {
 
   let products;
   if(subcategory){
-    products = await getFilteredProducts(subcategory, false);
+    products = await getProductsFromCategory(subcategory,null,true);
   } else if (category) {
-    products = await getFilteredProducts(category, true);;
+    products = await getProductsFromCategory(category, null, true);
   } else {
-    products = await getProducts();
+    products = await getProductsFromCategory('', null, true);
   }
 
   return (
