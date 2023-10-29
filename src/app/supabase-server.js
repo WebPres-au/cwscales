@@ -31,59 +31,6 @@ export const getSignedUrl = async (image, bucket) => {
   return data.publicUrl;
 };
 
-export const getProducts = async () => {
-  const { data, error } = await supabase.from("products").select(`
-    *,
-    product_categories (
-      categories (
-        id,
-        name
-      )
-    ),
-    product_tags (
-      tags (
-        id,
-        name
-      )
-    ),
-    product_images (
-      id,
-      image_path
-    )
-  `);
-
-  if (error) {
-    console.error(error.message);
-    return [];
-  }
-
-  // Create an array of Promises that resolve to the transformed product objects
-  const transformedDataPromises = data.map(async (product) => {
-    const categories = product.product_categories.map((pc) => pc.categories);
-    const tags = product.product_tags.map((pt) => pt.tags);
-
-    // Await all the signed URLs and create the images array
-    const images = await Promise.all(
-      product.product_images.map(async (image) => {
-        return {
-          ...image,
-          signedUrl: await getSignedUrl(image, "product-images"),
-        };
-      })
-    );
-
-    return {
-      ...product,
-      categories,
-      tags,
-      images,
-    };
-  });
-
-  // Wait for all Promises to resolve and return the transformed data
-  return await Promise.all(transformedDataPromises);
-};
-
 export const getProductsFromCategory = async (
   categoryName,
   subCategories = null,
@@ -103,9 +50,11 @@ export const getProductsFromCategory = async (
       // Await all the signed URLs and create the images array
       const id = product.product_id;
       const name = product.product_name;
+      const isPublic = product.ispublic;
       const href = `/product/${snake_case_string(product.product_name)}`;
       delete product.product_id;
       delete product.product_name;
+      delete product.ispublic;
 
       const images = await Promise.all(
         product.images.map(async (image, index) => {
@@ -119,10 +68,11 @@ export const getProductsFromCategory = async (
       return {
         id,
         name,
-        ...product,
         image: images ? images[0]?.signedUrl : null,
+        ...product,
         href,
         images,
+        isPublic,
       };
     });
 
@@ -132,67 +82,6 @@ export const getProductsFromCategory = async (
     console.error(error.message);
     return [];
   }
-};
-
-export const getFilteredProducts = async (
-  categoryName,
-  includesDrafts = false
-) => {
-  // 1. Fetch the ID of the category by its name
-  const { data: categoriesData, error: categoriesError } = await supabase
-    .from("categories")
-    .select("id")
-    .eq("snake_case_name", categoryName);
-
-  if (categoriesError || !categoriesData || categoriesData.length === 0) {
-    console.error(
-      categoriesError?.message || `No category found for name: ${categoryName}`
-    );
-    return [];
-  }
-
-  const categoryId = categoriesData[0].id;
-
-  // 2. Recursively fetch all subcategories of the given category using the ID
-  const fetchSubcategories = async (categoryId) => {
-    const { data: subcategoriesData, error: subcategoriesError } =
-      await supabase
-        .from("categories")
-        .select("id")
-        .eq("parent_category", categoryId);
-
-    if (subcategoriesError) {
-      console.error(subcategoriesError.message);
-      return [];
-    }
-
-    let subcategories = subcategoriesData || [];
-    for (const subcategory of subcategoriesData) {
-      const children = await fetchSubcategories(subcategory.id);
-      subcategories = subcategories.concat(children);
-    }
-    return subcategories;
-  };
-
-  const allCategories = [
-    { id: categoryId },
-    ...(await fetchSubcategories(categoryId)),
-  ];
-
-  // 3. Fetch all products and their categories, tags and images
-
-  let transformedData = await getProducts();
-
-  if (!includesDrafts) {
-    transformedData = transformedData.filter((product) => product.isPublic);
-  }
-
-  // 4. Filter products based on the category and its subcategories IDs
-  return transformedData.filter((product) =>
-    product.categories.some((category) =>
-      allCategories.map((c) => c.id).includes(category.id)
-    )
-  );
 };
 
 export const getProductsByTag = async (tagID) => {
@@ -263,41 +152,6 @@ export const getProductsByTag = async (tagID) => {
 
   // Wait for all Promises to resolve and return the transformed data
   return await Promise.all(transformedDataPromises);
-};
-
-export const getServerCategories = async (hasNoSubcategories = false) => {
-  try {
-    let dataWithImages;
-    if (hasNoSubcategories) {
-      const { data, error } = await supabase
-        .from("categories")
-        .select()
-        .is("parent_category", null);
-      if (error) throw error;
-      dataWithImages = data;
-    } else {
-      const { data, error } = await supabase.from("categories").select();
-      if (error) throw error;
-      dataWithImages = data;
-    }
-
-    dataWithImages = await Promise.all(
-      dataWithImages.map(async (category) => {
-        return {
-          ...category,
-          signedUrl: await getSignedUrl(
-            { image_path: category.image },
-            "category-images"
-          ),
-        };
-      })
-    );
-
-    return dataWithImages;
-  } catch (error) {
-    console.error(error.message);
-    return [];
-  }
 };
 
 export const getCategory = async (categoryName) => {

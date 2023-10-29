@@ -1,4 +1,4 @@
-import { getNavItems, getServerCategories, getSession } from "@/app/supabase-server";
+import { getNavItems, getSession } from "@/app/supabase-server";
 import Body from "./body";
 import { snake_case_string } from "@/lib/functions";
 import { redirect } from "next/navigation";
