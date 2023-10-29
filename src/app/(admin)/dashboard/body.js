@@ -26,11 +26,8 @@ export default function Body({ children, navigation }) {
 
   const selectedCategory = navigation.find((item) => isRouteActive(item.name));
   const selectedSubcategory = subCategory
-  ? 
-    selectedCategory?.subcategories?.find((item) =>
-      isRouteActive(item.name)
-    )
-  : null;
+    ? selectedCategory?.subcategories?.find((item) => isRouteActive(item.name))
+    : null;
 
   const pathname = usePathname();
 
@@ -187,7 +184,8 @@ export default function Body({ children, navigation }) {
             <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
               <div className="ml-4 mt-2">
                 <h3 className="text-base font-semibold leading-6 text-gray-900">
-                  {selectedSubcategory?.name?? selectedCategory?.name?? "All"} products
+                  {selectedSubcategory?.name ?? selectedCategory?.name ?? "All"}{" "}
+                  products
                 </h3>
               </div>
               <div className="ml-4 mt-2 flex-shrink-0">
