@@ -1,16 +1,7 @@
-import {
-  getFilteredProducts,
-  getServerCategories,
-} from "@/app/supabase-server";
+import { getCategory, getProductsFromCategory } from "@/app/supabase-server";
 import ContentHero from "@/components/ContentHero";
-import { snake_case_string } from "@/lib/functions";
-
 export async function generateMetadata({ params }) {
-  const categories = await getServerCategories();
-
-  const subCategory = categories.find(
-    (item) => item.snake_case_name == params.subCategory
-  );
+  const subCategory = await getCategory(params.subCategory);
 
   return {
     title: subCategory.name,
@@ -20,7 +11,7 @@ export async function generateMetadata({ params }) {
       description: subCategory.description,
       images: [
         {
-          url: subCategory.signedUrl,
+          url: subCategory.image,
           width: 500,
           height: 500,
           alt: subCategory.name,
@@ -31,16 +22,9 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function SubCategoryPage({ params }) {
-  const categories = await getServerCategories();
+  const category = await getCategory(params.subCategory);
 
-  const category = categories.find(
-    (category) => category.snake_case_name === params.subCategory
-  );
-  // const title = "Our Range";
-  let products = await getFilteredProducts(params.subCategory);
-  products = products.map((product) => {
-    return { ...product, image: product?.images[0]?.signedUrl, href: `/product/${snake_case_string(product.name)}` };
-  });
+  let products = await getProductsFromCategory(params.subCategory);
 
   return (
     <div>

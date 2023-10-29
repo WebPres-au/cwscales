@@ -7,8 +7,9 @@ export const createServerSupabaseClient = cache(() =>
   createServerComponentClient({ cookies })
 );
 
+const supabase = createServerSupabaseClient();
+
 export async function getSession() {
-  const supabase = createServerSupabaseClient();
   try {
     const {
       data: { session },
@@ -21,8 +22,6 @@ export async function getSession() {
 }
 
 export const getSignedUrl = async (image, bucket) => {
-  const supabase = createServerSupabaseClient();
-
   const { data, error } = await supabase.storage
     .from(bucket)
     .getPublicUrl(image.image_path);
@@ -33,7 +32,6 @@ export const getSignedUrl = async (image, bucket) => {
 };
 
 export const getProducts = async () => {
-  const supabase = createServerSupabaseClient();
   const { data, error } = await supabase.from("products").select(`
     *,
     product_categories (
@@ -86,12 +84,60 @@ export const getProducts = async () => {
   return await Promise.all(transformedDataPromises);
 };
 
+export const getProductsFromCategory = async (
+  categoryName,
+  subCategories = null,
+  includesDrafts = false
+) => {
+  try {
+    const { data, error } = await supabase.rpc("getproductsfromcategory", {
+      categoryname: categoryName,
+      subcategories: subCategories,
+      includesdrafts: includesDrafts,
+    });
+
+    if (error) throw error;
+
+    // Create an array of Promises that resolve to the transformed product objects
+    const transformedDataPromises = data.map(async (product) => {
+      // Await all the signed URLs and create the images array
+      const id = product.product_id;
+      const name = product.product_name;
+      const href = `/product/${snake_case_string(product.product_name)}`;
+      delete product.product_id;
+      delete product.product_name;
+
+      const images = await Promise.all(
+        product.images.map(async (image, index) => {
+          return {
+            ...image,
+            signedUrl: await getSignedUrl(image, "product-images"),
+          };
+        })
+      );
+
+      return {
+        id,
+        name,
+        ...product,
+        image: images ? images[0]?.signedUrl : null,
+        href,
+        images,
+      };
+    });
+
+    // Wait for all Promises to resolve and return the transformed data
+    return await Promise.all(transformedDataPromises);
+  } catch (error) {
+    console.error(error.message);
+    return [];
+  }
+};
+
 export const getFilteredProducts = async (
   categoryName,
   includesDrafts = false
 ) => {
-  const supabase = createServerSupabaseClient();
-
   // 1. Fetch the ID of the category by its name
   const { data: categoriesData, error: categoriesError } = await supabase
     .from("categories")
@@ -137,7 +183,7 @@ export const getFilteredProducts = async (
 
   let transformedData = await getProducts();
 
-  if(!includesDrafts) {
+  if (!includesDrafts) {
     transformedData = transformedData.filter((product) => product.isPublic);
   }
 
@@ -150,8 +196,6 @@ export const getFilteredProducts = async (
 };
 
 export const getProductsByTag = async (tagID) => {
-  const supabase = createServerSupabaseClient();
-
   const { data: tagsData, error: tagsError } = await supabase
     .from("product_tags")
     .select("product_id")
@@ -166,7 +210,8 @@ export const getProductsByTag = async (tagID) => {
 
   const { data: productsData, error: productsError } = await supabase
     .from("products")
-    .select(`
+    .select(
+      `
       *,
       product_categories (
         categories (
@@ -184,7 +229,8 @@ export const getProductsByTag = async (tagID) => {
         id,
         image_path
       )
-    `)
+    `
+    )
     .in("id", productIds);
 
   if (productsError) {
@@ -204,8 +250,8 @@ export const getProductsByTag = async (tagID) => {
           ...image,
           signedUrl: await getSignedUrl(image, "product-images"),
         };
-      }
-    ));
+      })
+    );
 
     return {
       ...product,
@@ -220,7 +266,6 @@ export const getProductsByTag = async (tagID) => {
 };
 
 export const getServerCategories = async (hasNoSubcategories = false) => {
-  const supabase = createServerSupabaseClient();
   try {
     let dataWithImages;
     if (hasNoSubcategories) {
@@ -255,8 +300,79 @@ export const getServerCategories = async (hasNoSubcategories = false) => {
   }
 };
 
+export const getCategory = async (categoryName) => {
+  try {
+    const { data, error } = await supabase
+      .from("categories")
+      .select()
+      .eq("snake_case_name", categoryName)
+      .single();
+
+    if (error) throw error;
+
+    let category = data;
+
+    category.image = await getSignedUrl(
+      { image_path: category.image },
+      "category-images"
+    );
+
+    return category;
+  } catch (error) {
+    console.error(error.message);
+    return null;
+  }
+};
+
+export const getCategoryWithSubcategories = async (categoryName) => {
+  try {
+    const { data, error } = await supabase
+      .from("categories")
+      .select()
+      .eq("snake_case_name", categoryName)
+      .single();
+
+    if (error) throw error;
+
+    let category = data;
+
+    category.image = await getSignedUrl(
+      { image_path: category.image },
+      "category-images"
+    );
+
+    const { data: subcategories, error: subcategoriesError } = await supabase
+      .from("categories")
+      .select()
+      .eq("parent_category", category.id)
+      .order("isFeatured", { ascending: false });
+
+    if (subcategoriesError) throw subcategoriesError;
+
+    const subcategoriesWithImages = await Promise.all(
+      subcategories.map(async (subcategory) => {
+        return {
+          ...subcategory,
+          href: `/product-category/${categoryName}/${subcategory.snake_case_name}`,
+          image: await getSignedUrl(
+            { image_path: subcategory.image },
+            "category-images"
+          ),
+        };
+      })
+    );
+
+    return {
+      ...category,
+      subcategories: subcategoriesWithImages,
+    };
+  } catch (error) {
+    console.error(error.message);
+    return null;
+  }
+};
+
 export const getServerTags = async () => {
-  const supabase = createServerSupabaseClient();
   try {
     const { data, error } = await supabase.from("tags").select();
     if (error) throw error;
@@ -268,8 +384,6 @@ export const getServerTags = async () => {
 };
 
 export const getNavItems = async (hasStaticPages = false) => {
-  const supabase = createServerSupabaseClient();
-
   try {
     const { data: categories, error } = await supabase.rpc("get_categories");
 
@@ -285,12 +399,14 @@ export const getNavItems = async (hasStaticPages = false) => {
         navigation.categories.push({
           name: category.name,
           subcategories: [
-            ...category.subcategories.filter((cat) => !cat.isFeatured).map((sub) => ({
-              name: sub.name,
-              href: `/product-category/${snake_case_string(
-                category.name
-              )}/${snake_case_string(sub.name)}`,
-            })),
+            ...category.subcategories
+              .filter((cat) => !cat.isFeatured)
+              .map((sub) => ({
+                name: sub.name,
+                href: `/product-category/${snake_case_string(
+                  category.name
+                )}/${snake_case_string(sub.name)}`,
+              })),
             {
               name: "Browse All",
               href: `/product-category/${snake_case_string(category.name)}`,
@@ -320,8 +436,7 @@ export const getNavItems = async (hasStaticPages = false) => {
       }
     }
 
-    if (hasStaticPages){
-
+    if (hasStaticPages) {
       navigation.pages.push(
         { name: "Repairs & Calibration", href: "/service-repairs-calibration" },
         { name: "Scale Hire", href: "/service-repairs-calibration/scales-hire" }
@@ -337,12 +452,11 @@ export const getNavItems = async (hasStaticPages = false) => {
 };
 
 export const getProductDetails = async (name) => {
-  const supabase = createServerSupabaseClient();
-
   try {
     const { data, error } = await supabase
       .from("products")
-      .select(`
+      .select(
+        `
         *,
         product_categories (
           categories (
@@ -360,7 +474,8 @@ export const getProductDetails = async (name) => {
           id,
           image_path
         )
-      `)
+      `
+      )
       .eq("snake_case_name", name)
       .single();
 
@@ -390,4 +505,4 @@ export const getProductDetails = async (name) => {
   } catch (error) {
     console.error("Error fetching product:", error);
   }
-}
+};
