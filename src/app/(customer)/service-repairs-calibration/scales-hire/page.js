@@ -10,11 +10,17 @@ export default function page() {
       />
       <div className="-mt-32 mb-32 mx-auto max-w-6xl text-center">
         <p className="mt-6 text-lg leading-8 text-gray-600">
-          Floor Scales, Counting Scales, Platform Scales, Table Scales, Linear
-          Weighers, Crane Scales
+          Often times, the purchase of weighing equipment is not the most
+          economical or practical option. Instead renting is a great option.
+          Scale Hire is often used for inventories or for temporary projects.
+          CWScales have a range of rental scales that are ready to send out on
+          short notice. We offer counting scales, bench scales, floor scales,
+          crane scales, Portion scales and many more. Hire periods can be as
+          short as a week or as long as multiple months depending on your
+          applicaions.
         </p>
         <p className="mt-6 text-lg font-bold leading-8 text-gray-600">
-          Contact Us Now To Discuss Your Short or Long Term HIRE OPTIONS
+          CONTACT US TO DISCUSS YOUR HIRE NEEDS
         </p>
       </div>
       <ContactForm />
