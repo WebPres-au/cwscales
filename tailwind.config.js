@@ -9,4 +9,13 @@ module.exports = {
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/forms"),
   ],
+  theme: {
+    extend: {
+      colors: {
+        green: {
+          DEFAULT: "#1db150",
+        },
+      },
+    },
+  },
 };
