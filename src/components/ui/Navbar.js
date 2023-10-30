@@ -40,7 +40,7 @@ export default function Navbar({ navigation }) {
     console.log(searchQuery);
 
     // should redirect to all products page with search query to filter products
-  }
+  };
 
   return (
     <div
@@ -119,6 +119,7 @@ export default function Navbar({ navigation }) {
                           {category.featured.map((item) => (
                             <div
                               key={item.name}
+                              onClick={() => setOpen(false)}
                               className="group relative text-sm"
                             >
                               <div className="aspect-h-2 aspect-w-2 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
@@ -157,6 +158,7 @@ export default function Navbar({ navigation }) {
                               <li key={item.name} className="flow-root">
                                 <Link
                                   href={item.href}
+                                  onClick={() => setOpen(false)}
                                   className="-m-2 block p-2 text-gray-500"
                                 >
                                   {item.name}
@@ -175,6 +177,7 @@ export default function Navbar({ navigation }) {
                     <div key={page.name} className="flow-root">
                       <Link
                         href={page.href}
+                        onClick={() => setOpen(false)}
                         className="-m-2 block p-2 font-medium text-gray-900"
                       >
                         {page.name}
@@ -415,26 +418,22 @@ export default function Navbar({ navigation }) {
                   name="searchQuery"
                   id="searchQuery"
                   value={searchQuery}
-                  onChange={(e) =>
-                    setSearchQuery(e.target.value)
-                  }
-                  onKeyUp={
-                    (e) => {
-                      if (e.key === "Enter") {
-                        submitSearch();
-                      }
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyUp={(e) => {
+                    if (e.key === "Enter") {
+                      submitSearch();
                     }
-                  }
+                  }}
                   placeholder="Search Products"
                   className={`
                   peer cursor-pointer relative z-10 h-10 w-6 bg-transparent pl-3 outline-none focus:w-full focus:cursor-text focus:border-lime-300 focus:pl-10 focus:pr-4
                   
                   rounded-md border-0  text-gray-900 shadow-sm ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6`}
                 />
-                <MagnifyingGlassIcon className="
-                absolute inset-y-0 my-auto h-6 w-6 border-r border-transparent peer-focus:stroke-green-600 peer-focus:left-2
-                " aria-hidden="true" />
-
+                <MagnifyingGlassIcon
+                  className="absolute inset-y-0 my-auto h-6 w-6 border-r border-transparent peer-focus:stroke-green-600 peer-focus:left-2"
+                  aria-hidden="true"
+                />
               </div>
             </div>
           </div>
