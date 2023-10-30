@@ -12,7 +12,7 @@ export default async function DashboardLayout({ children }) {
 
   let navigation = [{ name: "All", href: "/dashboard/" }];
 
-  const { categories, pages} = await getNavItems(false);
+  const { categories, pages } = await getNavItems(false);
 
   navigation.push(
     ...categories.map((category) => {
