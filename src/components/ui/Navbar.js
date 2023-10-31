@@ -223,7 +223,7 @@ export default function Navbar({ navigation }) {
             />
             <a
               href="mailto:louis@cwscales.com.au"
-              className="hidden sm:block pt-0.5 text-sm font-medium text-black hover:text-gray-100"
+              className="hidden sm:block pt-0.5 text-sm font-medium text-black"
             >
               louis@cwscales.com.au
             </a>
@@ -252,7 +252,7 @@ export default function Navbar({ navigation }) {
         </div>
       </div>
 
-      <header className="relative hidden lg:block bg-white">
+      <header className="relative hidden lg:block bg-green">
         <nav
           aria-label="Top"
           className="mx-auto max-w-full px-4 sm:px-6 lg:px-8"
