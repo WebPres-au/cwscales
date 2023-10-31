@@ -1,4 +1,3 @@
-import ContactForm from "@/components/ContactForm";
 import Image from "next/image";
 
 export default function ServiceRepairPage() {
@@ -39,7 +38,7 @@ export default function ServiceRepairPage() {
               height={1442}
             />
           </div>
-          <div className="mx-auto mt-16 max-w-6xl lg:text-center">
+          <div className="mx-auto px-6 mt-16 max-w-6xl lg:text-center">
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               &quot;That&apos;s a service with a tick&quot;
             </h1>
@@ -66,13 +65,13 @@ export default function ServiceRepairPage() {
               for your printing requirements as well as label replacement for
               all Label Printing and Retail scales.
             </p>
-            <p className="mt-6 text-lg max-w-xl mx-auto leading-8 text-gray-600">
+            <p className="mt-6 bg-green p-4 rounded-lg text-lg max-w-xl mx-auto leading-8 text-white">
               Contact us on <a href="tel:+61402980089">0402980089</a> for expert
               no obligation <strong>HIGHLY COMPETITIVE</strong> free quotes on
               ALL Service and Repairs on Weighing and Packaging Equipment.
             </p>
           </div>
-          <div className="mx-auto mt-16 max-w-6xl lg:text-center">
+          <div className="mx-auto px-6 mt-8 max-w-lg sm:max-w-6xl lg:text-center">
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Brands serviced
             </h1>
@@ -88,7 +87,6 @@ export default function ServiceRepairPage() {
           </div>
         </div>
       </div>
-      <ContactForm />
     </>
   );
 }
