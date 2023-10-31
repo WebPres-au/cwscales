@@ -100,7 +100,7 @@ export default function Navbar({ navigation }) {
                               selected
                                 ? "border-green-600 "
                                 : "border-transparent",
-                              "text-gray-900 flex-1 whitespace-nowrap border-b-2 px-1 py-4 text-base font-medium"
+                              "text-black hover:text-black/70 flex-1 whitespace-nowrap border-b-2 px-1 py-4 text-base font-medium"
                             )
                           }
                         >
@@ -279,10 +279,8 @@ export default function Navbar({ navigation }) {
                             <div className="relative flex">
                               <Popover.Button
                                 className={classNames(
-                                  open
-                                    ? "border-green-600"
-                                    : "border-transparent",
-                                  "text-gray-900 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                                  open ? "border-black" : "border-transparent",
+                                  "text-black relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
                                 )}
                               >
                                 {category.name}
@@ -394,7 +392,7 @@ export default function Navbar({ navigation }) {
                     <Link
                       key={page.name}
                       href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                      className="flex items-center text-sm font-medium text-black hover:text-black/70"
                     >
                       {page.name}
                     </Link>
