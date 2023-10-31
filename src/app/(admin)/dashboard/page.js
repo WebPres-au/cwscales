@@ -71,7 +71,7 @@ export default async function ProductList({searchParams}) {
                     </div>
                   </div>
                   <div className="flex gap-1 flex-wrap">
-                    {product.tags.map((tag) => (
+                    {product.tags?.map((tag) => (
                       <Link
                         href={`/product-tag/${snake_case_string(tag.name)}`}
                         className={
