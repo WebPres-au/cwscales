@@ -326,16 +326,13 @@ export default function Navbar({ navigation }) {
                                                 height={200}
                                               />
                                             </div>
-                                            <Link
-                                              href={item.href}
-                                              className="mt-6 block font-medium text-gray-900"
-                                            >
+                                            <Popover.Button as={Link} href={item.href} className="mt-6 block font-medium text-gray-900" >
                                               <span
                                                 className="absolute inset-0 z-10"
                                                 aria-hidden="true"
                                               />
                                               {item.name}
-                                            </Link>
+                                            </Popover.Button>
                                             <p
                                               aria-hidden="true"
                                               className="mt-1"
@@ -356,12 +353,9 @@ export default function Navbar({ navigation }) {
                                                 key={item.name}
                                                 className="flex"
                                               >
-                                                <Link
-                                                  href={item.href}
-                                                  className="hover:text-gray-800"
-                                                >
+                                                <Popover.Button as={Link} href={item.href}className="hover:text-gray-800" >
                                                   {item.name}
-                                                </Link>
+                                                </Popover.Button>
                                               </li>
                                             ))}
                                           </ul>
@@ -377,12 +371,9 @@ export default function Navbar({ navigation }) {
                                                 key={item.name}
                                                 className="flex"
                                               >
-                                                <Link
-                                                  href={item.href}
-                                                  className="hover:text-gray-800"
-                                                >
+                                                <Popover.Button as={Link} href={item.href}className="hover:text-gray-800" >
                                                   {item.name}
-                                                </Link>
+                                                </Popover.Button>
                                               </li>
                                             ))}
                                           </ul>
