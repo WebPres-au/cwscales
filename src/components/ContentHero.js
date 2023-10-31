@@ -29,25 +29,27 @@ export default function ContentHero({
     return (
       <>
         <div className="relative mt-32 -mb-32">
-          <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black">
-            <div className="absolute bottom-0 left-0 p-20 z-10 text-white">
-              <h1 className="capitalize text-3xl sm:text-6xl md:text-6xl break-all	">
+          <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black grid grid-rows-4">
+            <div className="row-span-3 relative w-full h-full">
+              <Image
+                src={category.image ?? "/bakery.jpg"}
+                className="object-cover opacity-50 w-full h-full"
+                alt=""
+                fill={true}
+                sizes="(max-width: 600px) 100vw, 600px"
+              />
+            </div>
+            <div className="p-12 z-10 text-black bg-green row-span-1">
+              <h1 className="capitalize text-3xl sm:text-4xl md:text-5xl line-clamp-6 pb-1">
                 {category.name}
               </h1>
               <p className="pt-4">{category.short_description}</p>
               <a href="#contact">
-                <button className="px-4 py-2 bg-green hover:bg-green/80 rounded-md mt-2">
+                <button className="px-4 py-2 bg-white hover:bg-black/60 text-black hover:text-white rounded-md mt-4">
                   Enquire now
                 </button>
               </a>
             </div>
-            <Image
-              src={category.image ?? "/bakery.jpg"}
-              className="object-cover opacity-50 w-full h-full"
-              alt=""
-              fill={true}
-              sizes="(max-width: 600px) 100vw, 600px"
-            />
           </div>
           <div className="w-full lg:w-1/2 min-h-screen h-full inset-0 ml-auto sm:mt-[0vh] lg:mt-[-100vh]">
             <ProductInfo
@@ -57,8 +59,7 @@ export default function ContentHero({
               type={type}
               isOne={isOne}
             />
-            <h3 className="product-images-heading">Product Images:</h3>
-
+            <h3 className="product-images-heading">Product Images</h3>
             <div
               style={{
                 columnCount: columnCount,
@@ -71,7 +72,7 @@ export default function ContentHero({
                     item.images.map((image, index) => (
                       <Image
                         key={index}
-                        className="h-auto w-full object-cover border border-gray-400"
+                        className="h-auto w-full object-cover border border-white hover:border-gray-400 delay-75"
                         width={400}
                         height={400}
                         src={image.signedUrl}
@@ -90,25 +91,27 @@ export default function ContentHero({
   return (
     <>
       <div className="relative mt-32 -mb-32">
-        <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black">
-          <div className="absolute bottom-0 left-0 p-20 z-10 text-white">
-            <h1 className="capitalize text-3xl sm:text-4xl md:text-5xl break-all">
+        <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black grid grid-rows-4">
+          <div className="row-span-3 relative w-full h-full">
+            <Image
+              src={category.image ?? "/bakery.jpg"}
+              className="object-cover opacity-50 w-full h-full"
+              alt=""
+              fill={true}
+              sizes="(max-width: 600px) 100vw, 600px"
+            />
+          </div>
+          <div className="p-12 z-10 text-black bg-green row-span-1">
+            <h1 className="capitalize text-3xl sm:text-4xl md:text-5xl line-clamp-6 pb-1">
               {category.name}
             </h1>
             <p className="pt-4">{category.description}</p>
             <a href="#contact">
-              <button className="px-4 py-2 bg-green hover:bg-green/80 rounded-md mt-2">
+              <button className="px-4 py-2 bg-white hover:bg-black/60 text-black hover:text-white rounded-md mt-4">
                 Enquire now
               </button>
             </a>
           </div>
-          <Image
-            src={category.signedUrl ?? category.image ?? "/bakery.jpg"}
-            className="object-cover opacity-50 w-full h-full"
-            alt=""
-            fill={true}
-            sizes="(max-width: 600px) 100vw, 600px"
-          />
         </div>
         <div className="w-full lg:w-1/2 min-h-screen h-full inset-0 ml-auto sm:mt-[0vh] lg:mt-[-100vh]">
           <div
