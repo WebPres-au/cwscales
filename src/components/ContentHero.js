@@ -28,7 +28,7 @@ export default function ContentHero({
   if (isOne)
     return (
       <>
-        <div className="relative mt-32 -mb-32">
+        <div className="relative mt-28 -mb-32">
           <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black grid grid-rows-4">
             <div className="row-span-3 relative w-full h-full">
               <Image
@@ -90,7 +90,7 @@ export default function ContentHero({
 
   return (
     <>
-      <div className="relative mt-32 -mb-32">
+      <div className="relative mt-28 -mb-32">
         <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black grid grid-rows-4">
           <div className="row-span-3 relative w-full h-full">
             <Image
@@ -128,6 +128,7 @@ export default function ContentHero({
                 <div className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75">
                   {item.image && (
                     <Image
+                      key={index}
                       className="h-auto w-full object-cover"
                       width={400}
                       height={400}
@@ -137,6 +138,7 @@ export default function ContentHero({
                     />
                   )}
                   <ProductInfo
+                    key={index}
                     categoryName={category.name}
                     product={item}
                     style={{ padding: 0, margin: 0 }}
