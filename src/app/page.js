@@ -45,6 +45,17 @@ function Information() {
           comprehensive range of Digital Weighing Scales, Packaging Equipment
           and Bottle & Drum Filling machinery to suit an array of any industry.
         </p>
+        <ul className="mt-6 text-lg font-light leading-8 text-gray-600 grid grid-cols-3">
+          <li>Industrial</li>
+          <li>Retail</li>
+          <li>Medical</li>
+          <li>Oil</li>
+          <li>Logistics</li>
+          <li>Household</li>
+          <li>Manufacturing</li>
+          <li>Food Processing</li>
+          <li>Weighbridge</li>
+        </ul>
       </div>
     </div>
   );
