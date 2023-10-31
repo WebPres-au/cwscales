@@ -83,6 +83,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
     let rollbackData = [];
 
     try {
+      if(chosenCategories.length < 1) throw new Error("Please select at least one category");
       // Insert new product to products table
       const { data: productData, error: productError } = await supabase
         .from("products")
