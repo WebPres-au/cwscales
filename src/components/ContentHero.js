@@ -28,7 +28,7 @@ export default function ContentHero({
   if (isOne)
     return (
       <>
-        <div className="relative mt-28 -mb-32">
+        <div className="relative mt-32 -mb-32">
           <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black grid grid-rows-4">
             <div className="row-span-3 relative w-full h-full">
               <Image
@@ -90,7 +90,7 @@ export default function ContentHero({
 
   return (
     <>
-      <div className="relative mt-28 -mb-32">
+      <div className="relative mt-32 -mb-32">
         <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black grid grid-rows-4">
           <div className="row-span-3 relative w-full h-full">
             <Image
