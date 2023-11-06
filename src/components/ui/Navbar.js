@@ -193,7 +193,7 @@ export default function Navbar({ navigation }) {
 
       {/* Contact information and logo */}
       <div className="bg-white">
-        <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex mb-2 h-12 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex">
             <PhoneArrowUpRightIcon
               className="text-black h-6 w-6 mr-2"
@@ -234,16 +234,23 @@ export default function Navbar({ navigation }) {
       {/* Input form and menu on mobile */}
       <div className="bg-white lg:hidden">
         <div className="mx-auto flex h-12 max-w-full items-center justify-between m-2 px-4 sm:px-6 lg:px-8">
-          <form className="block w-full">
+          <form onSubmit={submitSearch} className="block w-full">
             <input
               type="text"
               placeholder="Search"
-              className="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyUp={(e) => {
+                if (e.key === "Enter") {
+                  submitSearch();
+                }
+              }}
+              className="w-full px-4 py-2 text-gray-700 bg-white border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-green focus:border-green placeholder:text-black"
             />
           </form>
           <button
             type="button"
-            className="ml-5 lg:hidden rounded-md bg-white text-gray-400"
+            className="ml-5 lg:hidden rounded-md bg-white text-black"
             onClick={() => setOpen(true)}
           >
             <span className="sr-only">Open menu</span>
@@ -285,7 +292,7 @@ export default function Navbar({ navigation }) {
                               >
                                 {category.name}
                                 {category.subcategories.length > 0 && (
-                                  <ChevronDownIcon className="h-4 w-4 ml-1 text-gray-500" />
+                                  <ChevronDownIcon className="h-4 w-4 ml-1 text-black" />
                                 )}
                               </Popover.Button>
                             </div>
@@ -324,7 +331,11 @@ export default function Navbar({ navigation }) {
                                                 height={200}
                                               />
                                             </div>
-                                            <Popover.Button as={Link} href={item.href} className="mt-6 block font-medium text-gray-900" >
+                                            <Popover.Button
+                                              as={Link}
+                                              href={item.href}
+                                              className="mt-6 block font-medium text-gray-900"
+                                            >
                                               <span
                                                 className="absolute inset-0 z-10"
                                                 aria-hidden="true"
@@ -351,7 +362,11 @@ export default function Navbar({ navigation }) {
                                                 key={item.name}
                                                 className="flex"
                                               >
-                                                <Popover.Button as={Link} href={item.href}className="hover:text-gray-800" >
+                                                <Popover.Button
+                                                  as={Link}
+                                                  href={item.href}
+                                                  className="hover:text-gray-800"
+                                                >
                                                   {item.name}
                                                 </Popover.Button>
                                               </li>
@@ -369,7 +384,11 @@ export default function Navbar({ navigation }) {
                                                 key={item.name}
                                                 className="flex"
                                               >
-                                                <Popover.Button as={Link} href={item.href}className="hover:text-gray-800" >
+                                                <Popover.Button
+                                                  as={Link}
+                                                  href={item.href}
+                                                  className="hover:text-gray-800"
+                                                >
                                                   {item.name}
                                                 </Popover.Button>
                                               </li>
@@ -402,25 +421,24 @@ export default function Navbar({ navigation }) {
 
               {/* Hidden menu and seach */}
               <div className="ml-6 relative w-max">
-                <input
-                  type="text"
-                  name="searchQuery"
-                  id="searchQuery"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyUp={(e) => {
-                    if (e.key === "Enter") {
-                      submitSearch();
-                    }
-                  }}
-                  placeholder="Search Products"
-                  className={`
-                  peer cursor-pointer relative z-10 h-10 w-6 bg-transparent pl-3 outline-none focus:w-full focus:cursor-text focus:border-lime-300 focus:pl-10 focus:pr-4
-                  
-                  rounded-md border-0  text-gray-900 shadow-sm ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6`}
-                />
+                <form onSubmit={submitSearch}>
+                  <input
+                    type="text"
+                    name="searchQuery"
+                    id="searchQuery"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyUp={(e) => {
+                      if (e.key === "Enter") {
+                        submitSearch();
+                      }
+                    }}
+                    placeholder="Search Products"
+                    className={`peer cursor-pointer relative z-10 h-10 w-6 bg-transparent pl-3 outline-none focus:bg-white focus:w-full focus:cursor-text focus:border-lime-300 focus:pl-10 focus:pr-4 rounded-md border-0  text-gray-900 shadow-sm ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-green sm:text-sm sm:leading-6`}
+                  />
+                </form>
                 <MagnifyingGlassIcon
-                  className="absolute inset-y-0 my-auto h-6 w-6 border-r border-transparent peer-focus:stroke-green-600 peer-focus:left-2"
+                  className="absolute text-black inset-y-0 my-auto h-6 w-6 border-r border-transparent peer-focus:stroke-green peer-focus:left-2 z-20 m-2"
                   aria-hidden="true"
                 />
               </div>
