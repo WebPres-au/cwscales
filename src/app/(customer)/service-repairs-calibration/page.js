@@ -31,7 +31,7 @@ export default function ServiceRepairPage() {
               </div>
             </div>
             <Image
-              src="/categories/servicing.jpeg"
+              src="/categories/servicing.png"
               alt="Product screenshot"
               className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
               width={2432}
