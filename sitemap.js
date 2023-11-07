@@ -1,10 +1,8 @@
-import { getProducts, getNavItems, getServerTags } from "./supabase-server";
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import {
+  getProducts,
+  getNavItems,
+  getServerTags,
+} from "./src/app/supabase-server";
 
 export default async function sitemap() {
   const domain = process.env.VERCEL_URL || "https://cwscales.com.au";
