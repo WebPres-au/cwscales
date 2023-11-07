@@ -1,10 +1,16 @@
 import { getProducts, getNavItems, getServerTags } from "./supabase-server";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default async function sitemap() {
   const domain = process.env.VERCEL_URL || "https://cwscales.com.au";
-  const products = await getProducts();
-  const navigation = await getNavItems(true);
-  const tags = await getServerTags();
+  const products = await getProducts(supabase);
+  const navigation = await getNavItems(supabase, true);
+  const tags = await getServerTags(supabase);
 
   return [
     {
