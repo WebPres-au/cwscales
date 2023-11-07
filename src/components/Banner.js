@@ -75,7 +75,7 @@ export default function Hero() {
         </h1>
         <a
           href={currentImage.href}
-          className="mt-8 inline-block rounded-md border border-transparent bg-green px-8 py-3 text-base font-medium text-gray-900 hover:bg-green/80"
+          className="mt-8 inline-block rounded-md border border-transparent bg-green px-8 py-3 text-base text-white font-semibold hover:bg-green/80"
         >
           {`${currentImage.name} Range`}
         </a>
