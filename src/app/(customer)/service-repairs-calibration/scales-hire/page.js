@@ -1,4 +1,3 @@
-import ContactForm from "@/components/ContactForm";
 import PageHeader from "@/components/ui/PageHeader";
 
 export default function page() {
@@ -23,7 +22,6 @@ export default function page() {
           CONTACT US TO DISCUSS YOUR HIRE NEEDS
         </p>
       </div>
-      <ContactForm />
     </>
   );
 }
