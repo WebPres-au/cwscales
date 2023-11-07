@@ -472,7 +472,7 @@ export default function Navbar({ navigation }) {
                     <Link
                       key={page.name}
                       href={page.href}
-                      className="flex items-center text-sm font-medium text-white hover:text-gray-200"
+                      className="flex items-center text-center text-sm font-medium text-white hover:text-gray-200"
                     >
                       {page.name}
                     </Link>
