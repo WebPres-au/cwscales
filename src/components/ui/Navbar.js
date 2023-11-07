@@ -1,9 +1,10 @@
 "use client";
 
-import { Fragment, useState, useEffect } from "react";
-import { classNames } from "@/lib/functions";
+import { Fragment, useState, useEffect, useRef } from "react";
+import { classNames, snake_case_string } from "@/lib/functions";
 import Image from "next/image";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
@@ -13,10 +14,19 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Navbar({ navigation }) {
+  const router = useRouter()
+  const divRef = useRef()
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [openSearch, setOpenSearch] = useState(false)
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [autoComplete, setAutoComplete] = useState([])
+  const supabase = createClientComponentClient();
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,21 +44,72 @@ export default function Navbar({ navigation }) {
     };
   }, []);
 
-  const [searchQuery, setSearchQuery] = useState("");
+  useEffect(() => {
+    if (searchQuery.length > 1) {
+      const categoriesQuery = supabase
+        .from('categories')
+        .select()
+        .filter('name', 'ilike', `%${searchQuery}%`);
 
-  const submitSearch = () => {
-    console.log(searchQuery);
+      const tagsQuery = supabase
+        .from('tags')
+        .select()
+        .filter('name', 'ilike', `%${searchQuery}%`);
 
-    // should redirect to all products page with search query to filter products
-  };
+      Promise.all([categoriesQuery, tagsQuery])
+        .then(([categoriesData, tagsData]) => {
+          const categories = categoriesData.data || [];
+          const tags = tagsData.data || [];
+
+          const newTagsData = tags?.map(item => ({ ...item, tag: true }));
+          const combinedData = [...categories, ...newTagsData];
+          setAutoComplete(combinedData);
+        })
+        .catch((error) => {
+          console.error('Error fetching categories and tags:', error);
+        });
+    } else {
+      setAutoComplete([]);
+    }
+  }, [searchQuery]);
+
+
+  useEffect(() => {
+    if (!searchQuery && autoComplete[0]) {
+      setAutoComplete([]);
+    }
+  }, [autoComplete, searchQuery])
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (divRef.current && !divRef.current.contains(event.target)) {
+        clearInputdata()
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+  const clearInputdata = () => {
+    setAutoComplete([])
+    setSearchQuery([])
+    setOpenSearch(false)
+  }
+
+
+  const clickAutocomplete = (link, tag) => {
+    router.replace(`/product-${tag ? 'tag' : 'category'}/${snake_case_string(link)}`);
+    clearInputdata()
+  }
 
   return (
     <div
-      className={`${
-        isScrolled
-          ? "hide-show-transition opacity-0"
-          : "hide-show-transition opacity-100"
-      } bg-white pt-2 fixed top-0 right-0 left-0 z-40 `}
+      className={`${isScrolled
+        ? "hide-show-transition opacity-0"
+        : "hide-show-transition opacity-100"
+        } bg-white pt-2 fixed top-0 right-0 left-0 z-40 `}
     >
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
@@ -233,21 +294,16 @@ export default function Navbar({ navigation }) {
 
       {/* Input form and menu on mobile */}
       <div className="bg-white lg:hidden">
-        <div className="mx-auto flex h-12 max-w-full items-center justify-between m-2 px-4 sm:px-6 lg:px-8">
-          <form onSubmit={submitSearch} className="block w-full">
+        <div  value={searchQuery} className="mx-auto flex h-12 max-w-full items-center justify-between m-2 px-4 sm:px-6 lg:px-8">
+          <div className="block w-full">
             <input
               type="text"
               placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyUp={(e) => {
-                if (e.key === "Enter") {
-                  submitSearch();
-                }
-              }}
               className="w-full px-4 py-2 text-gray-700 bg-white border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-green focus:border-green placeholder:text-black"
             />
-          </form>
+          </div>
           <button
             type="button"
             className="ml-5 lg:hidden rounded-md bg-white text-black"
@@ -420,25 +476,21 @@ export default function Navbar({ navigation }) {
               </Popover.Group>
 
               {/* Hidden menu and seach */}
-              <div className="ml-6 relative w-max">
-                <form onSubmit={submitSearch}>
+              <div ref={divRef} className={`ml-6 relative w-max ${!openSearch && 'pl-6'}`}>
+                {openSearch && <div>
                   <input
                     type="text"
                     name="searchQuery"
                     id="searchQuery"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyUp={(e) => {
-                      if (e.key === "Enter") {
-                        submitSearch();
-                      }
-                    }}
                     placeholder="Search Products"
-                    className={`peer cursor-pointer relative z-10 h-10 w-6 bg-transparent pl-3 outline-none focus:bg-white focus:w-full focus:cursor-text focus:border-lime-300 focus:pl-10 focus:pr-4 rounded-md border-0  text-gray-900 shadow-sm ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-green sm:text-sm sm:leading-6`}
+                    className={`peer relative z-10 h-10 w-full bg-transparent outline-none bg-white cursor-text focus:border-lime-300 pl-10 focus:pr-4 rounded-md border-0  text-gray-900 shadow-sm ring-inset ring-gray-300 placeholder:text-black ring-2 focus:ring-green sm:text-sm sm:leading-6`}
                   />
-                </form>
+                </div>}
                 <MagnifyingGlassIcon
-                  className="absolute text-black inset-y-0 my-auto h-6 w-6 border-r border-transparent peer-focus:stroke-green peer-focus:left-2 z-20 m-2"
+                  className={`absolute text-black inset-y-0 my-auto h-6 w-6 border-r border-transparent peer-focus:stroke-green ${openSearch ? 'left-0' : 'right-0'} z-20 m-2`}
+                  onClick={() => setOpenSearch(true)}
                   aria-hidden="true"
                 />
               </div>
@@ -446,6 +498,13 @@ export default function Navbar({ navigation }) {
           </div>
         </nav>
       </header>
+      {autoComplete?.[0] && (
+        <div className='absolute max-h-[400px] w-[98%] lg:w-60 overflow-scroll top-[130px] ml-1 lg:right-6 bg-gray-50 rounded-lg py-4 px-2 border'>
+          {autoComplete.map(category => (
+            <ul onClick={() => clickAutocomplete(category.name, category.tag)} key={category.id} className='py-4 px-6 mb-1 text-sm text-black rounded-lg hover:bg-gray-100 transition duration-300 cursor-pointer'>{category?.name}</ul>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
