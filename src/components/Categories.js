@@ -1,6 +1,38 @@
 import Image from "next/image";
-import { categories } from "@/lib/data";
 import Link from "next/link";
+
+const categories = [
+  {
+    title: "Digital Weighing Scales",
+    href: "/product-category/digital-weighing-scales",
+    description: "Image of a digital weighing scale",
+    imageUrl: "/categories/digiscales.jpeg",
+  },
+  {
+    title: "Packaging Equipment",
+    href: "/product-category/packaging-equipment",
+    description: "Image of a multihead packing machine",
+    imageUrl: "/categories/multihead.jpeg",
+  },
+  {
+    title: "Label Printers & Consumables",
+    href: "/product-category/label-receipt-printers-consumables",
+    description: "Image of a label printer",
+    imageUrl: "/categories/printers.jpeg",
+  },
+  {
+    title: "Loadcell & Accessories",
+    href: "/product-category/loadcells-accesories",
+    description: "Image of a loadcell",
+    imageUrl: "/categories/loadcell.png",
+  },
+  {
+    title: "Service Repairs & Calibration",
+    href: "/service-repairs-calibration/",
+    description: "Image of car that we use to do services and repairs",
+    imageUrl: "/categories/servicing.png",
+  },
+];
 
 export default function Categories() {
   return (
