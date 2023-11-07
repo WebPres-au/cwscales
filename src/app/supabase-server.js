@@ -383,15 +383,3 @@ export const getProducts = async () => {
     console.error("Error fetching product:", error);
   }
 };
-
-export const searchProducts = async (searchQuery) => {
-  const { data, error } = await supabase.rpc("search_products", {
-    search_term: searchQuery,
-  });
-
-  if (error) {
-    console.error("Error:", error);
-  } else {
-    console.log("Products:", data);
-  }
-};
