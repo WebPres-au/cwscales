@@ -2,6 +2,7 @@ import Banner from "@/components/Banner";
 import Categories from "@/components/Categories";
 import Footer from "@/components/ui/Footer";
 import Navigation from "@/components/ui/Navigation";
+import RepairCTA from "@/components/ui/RepairCTA";
 import Image from "next/image";
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
       <Categories />
       <Information />
       <Association />
+      <RepairCTA />
       <Footer />
     </div>
   );

@@ -5,7 +5,7 @@ export default function RepairCTA() {
         <div
           className="relative isolate overflow-hidde px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16"
           style={{
-            backgroundImage: "url('/categories/servicing.jpeg')",
+            backgroundImage: "url('/categories/servicing.png')",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
@@ -17,10 +17,10 @@ export default function RepairCTA() {
             </h2>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
-                href="#"
-                className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                href="#contact"
+                className="rounded-md bg-green px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
-                Click here
+                Contact us
               </a>
             </div>
           </div>
