@@ -342,13 +342,15 @@ export default function Navbar({ navigation }) {
                             <div className="relative flex">
                               <Popover.Button
                                 className={classNames(
-                                  open ? "border-black" : "border-transparent",
-                                  "text-black relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                                  open
+                                    ? "border-white/80"
+                                    : "border-transparent",
+                                  "text-white relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
                                 )}
                               >
                                 {category.name}
                                 {category.subcategories.length > 0 && (
-                                  <ChevronDownIcon className="h-4 w-4 ml-1 text-black" />
+                                  <ChevronDownIcon className="h-6 w-6 ml-1" />
                                 )}
                               </Popover.Button>
                             </div>
@@ -467,7 +469,7 @@ export default function Navbar({ navigation }) {
                     <Link
                       key={page.name}
                       href={page.href}
-                      className="flex items-center text-sm font-medium text-black hover:text-black/70"
+                      className="flex items-center text-sm font-medium text-white hover:text-gray-200"
                     >
                       {page.name}
                     </Link>
