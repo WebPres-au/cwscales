@@ -45,16 +45,36 @@ function Information() {
           comprehensive range of Digital Weighing Scales, Packaging Equipment
           and Bottle & Drum Filling machinery to suit an array of any industry.
         </p>
-        <ul className="mt-6 text-lg font-light leading-8 text-gray-600 grid grid-cols-3">
-          <li>Industrial</li>
-          <li>Retail</li>
-          <li>Medical</li>
-          <li>Oil</li>
-          <li>Logistics</li>
-          <li>Household</li>
-          <li>Manufacturing</li>
-          <li>Food Processing</li>
-          <li>Weighbridge</li>
+        <ul className="mt-12 text-lg uppercase leading-8 text-white font-semibold grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <li className="p-1 bg-green/90 hover:bg-green/60 rounded-md w-full mx-auto">
+            Industrial
+          </li>
+          <li className="p-1 bg-green/90 hover:bg-green/60 rounded-md w-full mx-auto">
+            Retail
+          </li>
+          <li className="p-1 bg-green/90 hover:bg-green/60 rounded-md w-full mx-auto">
+            Medical
+          </li>
+
+          <li className="p-1 bg-green/90 hover:bg-green/60 rounded-md w-full mx-auto">
+            Logistics
+          </li>
+          <li className="p-1 bg-green/90 hover:bg-green/60 rounded-md w-full mx-auto">
+            Oil
+          </li>
+          <li className="p-1 bg-green/90 hover:bg-green/60 rounded-md w-full mx-auto">
+            Household
+          </li>
+
+          <li className="p-1 bg-green/90 hover:bg-green/60 rounded-md w-full mx-auto">
+            Manufacturing
+          </li>
+          <li className="p-1 bg-green/90 hover:bg-green/60 rounded-md w-full mx-auto">
+            Food Processing
+          </li>
+          <li className="p-1 bg-green/90 hover:bg-green/60 rounded-md w-full mx-auto">
+            Weighbridge
+          </li>
         </ul>
       </div>
     </div>
