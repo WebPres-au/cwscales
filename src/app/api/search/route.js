@@ -1,4 +1,4 @@
-import Welcome from "src/emails/Welcome";
+import Welcome from "@/components/email/Welcome";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
