@@ -98,7 +98,7 @@ export default function ContactForm() {
         </div>
         <form
           onSubmit={sendEmail}
-          className="pb-24 sm:pb-32 lg:px-8 mx-auto max-w-xl"
+          className="pb-24 sm:pb-32 px-8 pt-8 mx-auto max-w-xl"
         >
           <div className="mb-12">
             <h2 className="text-3xl mb-4 font-bold tracking-tight text-gray-900">
