@@ -56,7 +56,7 @@ export default function Welcome({
                   {email}
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
-                  <b>Enquiry: </b>
+                  <b>Enquiry type: </b>
                   {enquiryType}
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
@@ -105,7 +105,7 @@ const containerButton = {
 };
 
 const button = {
-  backgroundColor: "#e00707",
+  backgroundColor: "#1db150",
   padding: "12px 30px",
   borderRadius: 3,
   color: "#FFF",
