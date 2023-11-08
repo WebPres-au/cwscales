@@ -237,7 +237,7 @@ export default function ContactForm() {
                     onChange={handleChange}
                   >
                     <option value="product">Product</option>
-                    <option value="product">Rentals</option>
+                    <option value="rentals">Rentals</option>
                     <option value="repair">Repair</option>
                     <option value="other">Other</option>
                   </select>
