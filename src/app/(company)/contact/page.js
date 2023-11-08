@@ -1,5 +1,4 @@
 import ContactForm from "@/components/ContactForm";
-import RepairCTA from "@/components/ui/RepairCTA";
 import PageHeader from "@/components/ui/PageHeader";
 
 export default function Contact() {
@@ -11,9 +10,6 @@ export default function Contact() {
           description="There are multiple ways to contact Correct Weight Scales, the fastest way is to call us on 0402 980 089 or alternatively fill out the form below."
         />
         <ContactForm />
-        <div className="mt-32">
-          <RepairCTA />
-        </div>
       </div>
     </>
   );
