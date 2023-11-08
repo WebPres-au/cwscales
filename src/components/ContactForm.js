@@ -9,14 +9,16 @@ import {
 } from "@heroicons/react/24/outline";
 import ReCAPTCHA from "react-google-recaptcha";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 export default function ContactForm() {
   const [data, setData] = useState({
     firstName: "",
-    lastName: "",
     email: "",
     company: "",
+    enquiryType: "",
     number: "",
+    suburb: "",
     message: "",
   });
   const [captcha, setCaptcha] = useState(false);
@@ -66,10 +68,11 @@ export default function ContactForm() {
     if (response.status === 200) {
       setData({
         firstName: "",
-        lastName: "",
         email: "",
         company: "",
+        enquiryType: "",
         number: "",
+        suburb: "",
         message: "",
       });
       toast.success(`Message sent successfully!`);
@@ -84,89 +87,70 @@ export default function ContactForm() {
         <div className="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48">
           <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
             <div className="absolute inset-y-0 left-0 -z-10 w-full overflow-hidden bg-gray-100 ring-1 ring-gray-900/10 lg:w-1/2">
-              <svg
-                className="absolute inset-0 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
-                aria-hidden="true"
-              >
-                <defs>
-                  <pattern
-                    id="83fd4e5a-9d52-42fc-97b6-718e5d7ee527"
-                    width={200}
-                    height={200}
-                    x="100%"
-                    y={-1}
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <path d="M130 200V.5M.5 .5H200" fill="none" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" strokeWidth={0} fill="white" />
-                <svg x="100%" y={-1} className="overflow-visible fill-gray-50">
-                  <path d="M-470.5 0h201v201h-201Z" strokeWidth={0} />
-                </svg>
-                <rect
-                  width="100%"
-                  height="100%"
-                  strokeWidth={0}
-                  fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)"
-                />
-              </svg>
+              <Image
+                src="/categories/servicing.png"
+                alt="Servicing"
+                fill
+                style={{ objectFit: "cover" }}
+              />
             </div>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-              Get in touch
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              You can reach out to us via multiple ways! You can call or email
-              directly below, or fill out the form and we will get back to you
-              as soon as possible.
-            </p>
-            <dl className="mt-10 space-y-4 text-base leading-7 text-gray-600">
-              <div className="flex gap-x-4">
-                <dt className="flex-none">
-                  <span className="sr-only">Address</span>
-                  <BuildingOffice2Icon
-                    className="h-7 w-6 text-gray-400"
-                    aria-hidden="true"
-                  />
-                </dt>
-                <dd>
-                  75/2 Thomsons Road
-                  <br />
-                  Keilor Park, VIC 3042
-                </dd>
-              </div>
-              <div className="flex gap-x-4">
-                <dt className="flex-none">
-                  <span className="sr-only">Telephone</span>
-                  <PhoneIcon
-                    className="h-7 w-6 text-gray-400"
-                    aria-hidden="true"
-                  />
-                </dt>
-                <dd>
-                  <a className="hover:text-gray-900" href="tel:+61402980089">
-                    0402980089
-                  </a>
-                </dd>
-              </div>
-              <div className="flex gap-x-4">
-                <dt className="flex-none">
-                  <span className="sr-only">Email</span>
-                  <EnvelopeIcon
-                    className="h-7 w-6 text-gray-400"
-                    aria-hidden="true"
-                  />
-                </dt>
-                <dd>
-                  <a
-                    className="hover:text-gray-900"
-                    href="mailto:louis@cwscales.com.au"
-                  >
-                    louis@cwscales.com.au
-                  </a>
-                </dd>
-              </div>
-            </dl>
+            <div className="bg-white/90 p-4 w-full rounded-md">
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+                Get in touch
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-gray-600">
+                You can reach out to us via multiple ways! You can call or email
+                directly below, or fill out the form and we will get back to you
+                as soon as possible.
+              </p>
+              <dl className="mt-10 space-y-4 text-base leading-7 text-gray-600">
+                <div className="flex gap-x-4">
+                  <dt className="flex-none">
+                    <span className="sr-only">Address</span>
+                    <BuildingOffice2Icon
+                      className="h-7 w-6 text-gray-400"
+                      aria-hidden="true"
+                    />
+                  </dt>
+                  <dd>
+                    75/2 Thomsons Road
+                    <br />
+                    Keilor Park, VIC 3042
+                  </dd>
+                </div>
+                <div className="flex gap-x-4">
+                  <dt className="flex-none">
+                    <span className="sr-only">Telephone</span>
+                    <PhoneIcon
+                      className="h-7 w-6 text-gray-400"
+                      aria-hidden="true"
+                    />
+                  </dt>
+                  <dd>
+                    <a className="hover:text-gray-900" href="tel:+61402980089">
+                      0402980089
+                    </a>
+                  </dd>
+                </div>
+                <div className="flex gap-x-4">
+                  <dt className="flex-none">
+                    <span className="sr-only">Email</span>
+                    <EnvelopeIcon
+                      className="h-7 w-6 text-gray-400"
+                      aria-hidden="true"
+                    />
+                  </dt>
+                  <dd>
+                    <a
+                      className="hover:text-gray-900"
+                      href="mailto:louis@cwscales.com.au"
+                    >
+                      louis@cwscales.com.au
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </div>
           </div>
         </div>
         <form
@@ -197,26 +181,6 @@ export default function ContactForm() {
               </div>
               <div>
                 <label
-                  htmlFor="last-name"
-                  className="block text-sm font-semibold leading-6 text-gray-900"
-                >
-                  Last name
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    required
-                    type="text"
-                    name="lastName"
-                    id="last-name"
-                    autoComplete="family-name"
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    value={data.lastName}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-              <div>
-                <label
                   htmlFor="email"
                   className="block text-sm font-semibold leading-6 text-gray-900"
                 >
@@ -235,6 +199,7 @@ export default function ContactForm() {
                   />
                 </div>
               </div>
+
               <div>
                 <label
                   htmlFor="company"
@@ -255,7 +220,31 @@ export default function ContactForm() {
                   />
                 </div>
               </div>
-              <div className="sm:col-span-2">
+              <div>
+                <label
+                  htmlFor="enquiryType"
+                  className="block text-sm font-semibold leading-6 text-gray-900"
+                >
+                  Enquiry type
+                </label>
+                <div className="mt-2.5">
+                  <select
+                    required
+                    name="enquiryType"
+                    id="enquiryType"
+                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={data.enquiryType}
+                    onChange={handleChange}
+                  >
+                    <option value="product">Product</option>
+                    <option value="product">Rentals</option>
+                    <option value="repair">Repair</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
                 <label
                   htmlFor="number"
                   className="block text-sm font-semibold leading-6 text-gray-900"
@@ -275,6 +264,26 @@ export default function ContactForm() {
                   />
                 </div>
               </div>
+              <div>
+                <label
+                  htmlFor="suburb"
+                  className="block text-sm font-semibold leading-6 text-gray-900"
+                >
+                  Suburb
+                </label>
+                <div className="mt-2.5">
+                  <input
+                    type="text"
+                    name="suburb"
+                    id="suburb"
+                    autoComplete="tel"
+                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={data.suburb}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
               <div className="sm:col-span-2">
                 <label
                   htmlFor="message"

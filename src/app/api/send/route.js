@@ -7,7 +7,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { firstName, email, number, suburb, enquiry, message } = body;
+    const { firstName, email, company, enquiryType, number, suburb, message } =
+      body;
     const data = await resend.emails.send({
       from: "No reply <no-reply@cwscales.com.au>",
       to: "Louis <hello@simonbeirouti.com>",
@@ -15,9 +16,10 @@ export async function POST(request) {
       react: Welcome({
         firstName,
         email,
+        company,
+        enquiryType,
         number,
         suburb,
-        enquiry,
         message,
       }),
     });

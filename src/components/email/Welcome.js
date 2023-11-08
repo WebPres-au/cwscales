@@ -16,9 +16,10 @@ import * as React from "react";
 export default function Welcome({
   firstName,
   email,
+  company,
+  enquiryType,
   number,
   suburb,
-  product,
   message,
 }) {
   return (
@@ -47,7 +48,7 @@ export default function Welcome({
                     textAlign: "left",
                   }}
                 >
-                  We have a new enquire from {firstName}
+                  We have a new enquire from {firstName}, from {company}
                 </Heading>
 
                 <Text style={paragraph}>
@@ -56,7 +57,7 @@ export default function Welcome({
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
                   <b>Enquiry: </b>
-                  {product}
+                  {enquiryType}
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
                   <b>Suburb: </b>
