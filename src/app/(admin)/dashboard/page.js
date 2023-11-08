@@ -5,29 +5,26 @@ import { classNames, snake_case_string } from "@/lib/functions";
 import Link from "next/link";
 
 const statuses = {
-  Complete: "text-green-700 bg-green-50 ring-green-600/20",
-  "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
-  Archived: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
+  Active: "text-green bg-green/30",
+  Archived: "text-red-900 bg-red-900/30",
 };
 
-export default async function ProductList({searchParams}) {
-
-  const {category, subcategory} = searchParams;
+export default async function ProductList({ searchParams }) {
+  const { category, subcategory } = searchParams;
 
   let products;
-  if(subcategory){
-    products = await getProductsFromCategory(subcategory,null,true);
+  if (subcategory) {
+    products = await getProductsFromCategory(subcategory, null, true);
   } else if (category) {
     products = await getProductsFromCategory(category, null, true);
   } else {
-    products = await getProductsFromCategory('', null, true);
+    products = await getProductsFromCategory("", null, true);
   }
 
   return (
     <ul role="list" className="divide-y mb-32 divide-gray-100">
       {products.map((product) => {
-
-        product.status = product.isPublic ? "Complete" : "Archived";
+        product.status = product.isPublic ? "Active" : "Archived";
 
         return (
           <li
@@ -50,25 +47,20 @@ export default async function ProductList({searchParams}) {
                     <p className="text-sm font-semibold leading-6 text-gray-900 mr-2">
                       {product.name}
                     </p>
-                    {/* <p
-                      className={
-                        "rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"
-                      }
-                      key={"status"}
-                    >
-                      {product.isPublic ? "Public" : "Draft"}
-                    </p> */}
                     <div
                       className={classNames(
                         statuses[product.status],
-                        "flex-none rounded-full p-1"
+                        "flex-none rounded-full p-1 mt-1"
                       )}
                     >
                       <div className="h-1.5 w-1.5 rounded-full bg-current" />
                     </div>
-                    <div className="hidden text-white sm:block">
-                      {product.status}
-                    </div>
+                    <div
+                      className={classNames(
+                        statuses[product.status],
+                        "block ml-1"
+                      )}
+                    />
                   </div>
                   <div className="flex gap-1 flex-wrap">
                     {product.tags?.map((tag) => (
@@ -83,9 +75,6 @@ export default async function ProductList({searchParams}) {
                       </Link>
                     ))}
                   </div>
-                  {/* <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-                    <p className="">{product.short_description}</p>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -99,10 +88,8 @@ export default async function ProductList({searchParams}) {
               <KebabMenu product={product} />
             </div>
           </li>
-        )
-      }
-      
-      )}
+        );
+      })}
     </ul>
   );
 }

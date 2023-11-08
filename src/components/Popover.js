@@ -83,7 +83,8 @@ export default function Popover({ open, setOpen, intialProduct }) {
     let rollbackData = [];
 
     try {
-      if(chosenCategories.length < 1) throw new Error("Please select at least one category");
+      if (chosenCategories.length < 1)
+        throw new Error("Please select at least one category");
       // Insert new product to products table
       const { data: productData, error: productError } = await supabase
         .from("products")
@@ -337,15 +338,15 @@ export default function Popover({ open, setOpen, intialProduct }) {
       // Perform Rollbacks
       for (const rb of rollbackData.reverse()) {
         try {
-          if (rb.action === 'update') {
-            await supabase.from(rb.table).update(rb.data).eq('id', productId);
-          } else if (rb.action === 'insert') {
-            await supabase.from(rb.table).delete().eq('id', rb.data[0].id);
-          } else if (rb.action === 'delete') {
+          if (rb.action === "update") {
+            await supabase.from(rb.table).update(rb.data).eq("id", productId);
+          } else if (rb.action === "insert") {
+            await supabase.from(rb.table).delete().eq("id", rb.data[0].id);
+          } else if (rb.action === "delete") {
             await supabase.from(rb.table).insert(rb.data);
           }
         } catch (rollbackError) {
-          console.error('Error during rollback', rollbackError);
+          console.error("Error during rollback", rollbackError);
         }
       }
     }
@@ -814,7 +815,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
                       <button
                         disabled={loading}
                         type="submit"
-                        className="ml-4 disabled:bg-gray-200 inline-flex justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-green-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="ml-4 disabled:bg-gray-200 inline-flex justify-center rounded-md bg-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Save
                       </button>
