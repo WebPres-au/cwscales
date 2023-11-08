@@ -16,7 +16,7 @@ const images = [
   },
   {
     image: "/banner/medical.jpg",
-    name: "Medical and HealthCare Weighing",
+    name: "Medical and Healthcare Weighing",
     href: "/product-category/digital-weighing-scales/medical-personal-weighing-scales",
   },
   {
@@ -55,7 +55,7 @@ export default function Hero() {
   const currentImage = images[currentImageIndex];
 
   return (
-    <div className="relative bg-gray-900 mt-28">
+    <div className="relative bg-gray-900 mt-32">
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
         <Image
           src={currentImage.image}
