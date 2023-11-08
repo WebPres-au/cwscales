@@ -51,7 +51,7 @@ export default async function CategoryPage() {
         content={isParent ? subCategories : products}
         type={isParent ? "Subcategory" : "Product"}
       />
-      <div className="mt-32" />
+      <div className="mt-32 pb-2" />
     </div>
   );
 }

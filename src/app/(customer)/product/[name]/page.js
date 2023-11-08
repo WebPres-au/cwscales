@@ -29,14 +29,14 @@ export default async function ProductPage({ params }) {
   product.href = `/product/${snake_case_string(product.name)}`;
   product.image = product?.images[0]?.signedUrl;
 
-  if(!product.isPublic){
-    redirect('/404');
+  if (!product.isPublic) {
+    redirect("/404");
   }
 
   return (
     <div>
       <ContentHero category={product} content={[product]} isOne />
-      <div className="mt-32" />
+      <div className="mt-32 pb-2" />
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import ContactForm from "@/components/ContactForm";
 import PageHeader from "@/components/ui/PageHeader";
 
 export default function PrivacyAndTermsPage() {
@@ -123,7 +122,6 @@ export default function PrivacyAndTermsPage() {
             the form below.
           </p>
         </div>
-        <ContactForm />
       </div>
     </>
   );

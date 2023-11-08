@@ -29,7 +29,7 @@ export default async function SubCategoryPage({ params }) {
   return (
     <div>
       <ContentHero category={category} content={products} />
-      <div className="mt-32" />
+      <div className="mt-32 pb-2" />
     </div>
   );
 }

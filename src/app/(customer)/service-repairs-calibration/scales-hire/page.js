@@ -7,7 +7,7 @@ export default function page() {
         title="Scales Hire"
         description="Correct Weight Scales offer a Large range of Hire Scales to suit all Industries and Hire Periods."
       />
-      <div className="-mt-32 mb-32 mx-auto max-w-6xl text-center">
+      <div className="-mt-32 pt-6 mb-32 px-6 mx-auto max-w-6xl text-center">
         <p className="mt-6 text-lg leading-8 text-gray-600">
           Often times, the purchase of weighing equipment is not the most
           economical or practical option. Instead renting is a great option.
