@@ -516,7 +516,7 @@ export default function Navbar({ navigation }) {
             <ul
               onClick={() => clickAutocomplete(category.name, category.tag)}
               key={category.id}
-              className="py-4 px-6 mb-1 text-sm text-black rounded-lg hover:bg-gray-100 transition duration-300 cursor-pointer"
+              className="py-4 px-6 mb-1 text-sm text-black rounded-lg hover:bg-green/30 transition duration-300 cursor-pointer"
             >
               {category?.name}
             </ul>
