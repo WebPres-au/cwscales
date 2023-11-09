@@ -40,7 +40,7 @@ export default function ContentHero({
               />
             </div>
             <div className="p-12 z-10 text-black bg-green row-span-1">
-              <h1 className="capitalize text-3xl sm:text-4xl md:text-5xl line-clamp-6 pb-1">
+              <h1 className="capitalize text-2xl sm:text-4xl md:text-5xl line-clamp-6 pb-1">
                 {category.name}
               </h1>
               <p className="pt-4">{category.short_description}</p>
@@ -102,7 +102,7 @@ export default function ContentHero({
             />
           </div>
           <div className="p-12 z-10 text-black bg-green row-span-1">
-            <h1 className="capitalize text-3xl sm:text-4xl md:text-5xl line-clamp-6 pb-1">
+            <h1 className="capitalize text-2xl sm:text-4xl md:text-5xl line-clamp-6 pb-1">
               {category.name}
             </h1>
             <p className="pt-4">{category.description}</p>
