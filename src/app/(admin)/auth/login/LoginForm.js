@@ -13,7 +13,8 @@ export default function LoginForm() {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    if (email === process.env.CONTACT_EMAIL) {
+
+    if (email === "louis@cwscales.com.au") {
       try {
         await supabase.auth.signInWithPassword({
           email: email,
