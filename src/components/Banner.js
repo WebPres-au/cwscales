@@ -60,9 +60,10 @@ export default function Hero() {
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
         <Image
           src={currentImage.image}
-          alt={currentImage.description}
+          alt={currentImage.name}
           className="h-full w-full object-cover object-center"
           fill={true}
+          priority
         />
       </div>
       <div
