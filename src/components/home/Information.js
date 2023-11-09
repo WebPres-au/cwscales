@@ -87,7 +87,7 @@ function Association() {
       transition={{ delay: 1, duration: 1 }}
     >
       <div className="mx-auto max-w-6xl text-center">
-        <h2 className="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+        <h2 className="mt-2 text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
           Correct Weight Scales is a Proud member of the Weighing Industry
           Association of Australia
         </h2>
@@ -97,7 +97,7 @@ function Association() {
             width={400}
             src="wiaa.jpg"
             alt="Image"
-            className="mx-auto mt-12 mb-6"
+            className="mx-auto w-[300px] mt-12 mb-6"
           />
         </div>
       </div>
