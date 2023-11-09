@@ -26,7 +26,7 @@ export default async function Footer() {
               alt="Company name"
             />
             <p className="text-md text-center leading-6 text-gray-300">
-              Providing Correct Weight Scales for your business
+              Providing Correct Weighing Solutions for All Applications
             </p>
           </div>
           <div className="mt-16 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-8 ">
