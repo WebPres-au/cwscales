@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 const images = [
   {
@@ -73,12 +74,15 @@ export default function Hero() {
         <h1 className="text-4xl font-bold tracking-tight text-white lg:text-6xl">
           {currentImage.name}
         </h1>
-        <a
+        <motion.a
           href={currentImage.href}
           className="mt-8 inline-block rounded-md border border-transparent bg-green px-8 py-3 text-base text-white font-semibold hover:bg-green/80"
+          whileHover={{
+            scale: 1.15,
+          }}
         >
           View Range
-        </a>
+        </motion.a>
       </div>
     </div>
   );
