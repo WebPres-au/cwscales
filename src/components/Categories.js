@@ -6,19 +6,19 @@ const categories = [
     title: "Digital Weighing Scales",
     href: "/product-category/digital-weighing-scales",
     description: "Image of a digital weighing scale",
-    imageUrl: "/categories/digiscales.jpeg",
+    imageUrl: "/categories/digiscales.jpg",
   },
   {
     title: "Packaging Equipment",
     href: "/product-category/packaging-equipment",
     description: "Image of a multihead packing machine",
-    imageUrl: "/categories/multihead.jpeg",
+    imageUrl: "/categories/multisetup.jpg",
   },
   {
     title: "Label Printers & Consumables",
     href: "/product-category/label-receipt-printers-consumables",
     description: "Image of a label printer",
-    imageUrl: "/categories/printers.jpeg",
+    imageUrl: "/categories/printer.png",
   },
   {
     title: "Loadcell & Accessories",
@@ -37,12 +37,12 @@ const categories = [
 export default function Categories() {
   return (
     <div className="bg-white mt-24">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-full">
         <div className="grid auto-rows-fr grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-5">
           {categories.map((item, index) => (
             <article
               key={index}
-              className={`relative isolate flex flex-col justify-end overflow-hidden bg-gray-900 px-8 pb-8 pt-32 ${
+              className={`relative isolate flex flex-col justify-end overflow-hidden bg-white px-8 pb-8 pt-48 ${
                 index === 0 ? "col-span-2 lg:col-span-1" : ""
               } zoom-article`}
             >
