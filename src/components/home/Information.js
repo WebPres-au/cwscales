@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 const industries = [
   "Industrial",
@@ -73,34 +72,6 @@ export default function Information() {
           </ul>
         </div>
       </div>
-      <Association />
     </>
-  );
-}
-
-function Association() {
-  return (
-    <motion.div
-      className="bg-white px-6 pb-16 lg:px-8"
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: 1, duration: 1 }}
-    >
-      <div className="mx-auto max-w-6xl text-center">
-        <h2 className="mt-2 text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
-          Correct Weight Scales is a Proud member of the Weighing Industry
-          Association of Australia
-        </h2>
-        <div className="mx-auto">
-          <Image
-            height={400}
-            width={400}
-            src="wiaa.jpg"
-            alt="Image"
-            className="mx-auto w-[300px] mt-12 mb-6"
-          />
-        </div>
-      </div>
-    </motion.div>
   );
 }

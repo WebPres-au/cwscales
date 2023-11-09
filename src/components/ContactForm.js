@@ -140,13 +140,24 @@ export default function ContactForm() {
               </dd>
             </div>
           </dl>
-          <Image
-            src="/servicewithtick.jpg"
-            width={300}
-            height={200}
-            alt="Service with a tick"
-            className="mx-auto mt-12"
-          />
+          <div>
+            <Image
+              src="/servicewithtick.jpg"
+              width={300}
+              height={200}
+              alt="Service with a tick"
+              className="mx-auto mt-12"
+            />
+            <div className="mx-auto">
+              <Image
+                height={400}
+                width={400}
+                src="wiaa.jpg"
+                alt="Image"
+                className="mx-auto w-[300px] mt-12 mb-6"
+              />
+            </div>
+          </div>
         </div>
         <div className="col-span-2 lg:col-span-1 h-full">
           <form
