@@ -11,7 +11,8 @@ export async function POST(request) {
       body;
     const data = await resend.emails.send({
       from: "No reply <no-reply@cwscales.com.au>",
-      to: `Louis <${process.env.CONTACT_EMAIL}>`,
+      to: `Louis <hello@simonbeirouti.com>`,
+      // to: `Louis <louis@cwscales.com.au>`,
       subject: `New ${enquiryType} enquiry from ${firstName}`,
       react: Welcome({
         firstName,
