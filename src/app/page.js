@@ -73,7 +73,7 @@ function Information() {
             Food Processing
           </li>
           <li className="p-1 bg-green/90 hover:bg-green/60 rounded-md w-full mx-auto">
-            Weighbridge
+            Food Packaging
           </li>
         </ul>
       </div>
