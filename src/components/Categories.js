@@ -44,12 +44,12 @@ export default function Categories() {
               key={index}
               className={`relative isolate flex flex-col justify-end overflow-hidden bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80 ${
                 index === 0 ? "col-span-2 lg:col-span-1" : ""
-              }`}
+              } zoom-article`}
             >
               <Image
                 src={item.imageUrl}
                 alt={item.description}
-                className="absolute inset-0 -z-10 h-full w-full object-cover"
+                className="zoom-image absolute inset-0 -z-10 h-full w-full object-cover"
                 fill={true}
               />
               <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/10" />
