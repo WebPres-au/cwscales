@@ -9,6 +9,7 @@ A website make over for Correct Weight Scales.
 - [Supabase](https://supabase.com/)
 - [Resend](https://resend.com/)
 - [React Email](https://react.email)
+- [Framer Motion](https://framer.com/motion)
 
 ## Current ToDos
 
