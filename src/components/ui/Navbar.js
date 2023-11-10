@@ -22,6 +22,7 @@ export default function Navbar({ navigation }) {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [autoComplete, setAutoComplete] = useState([]);
@@ -333,9 +334,16 @@ export default function Navbar({ navigation }) {
 
                   {navigation.pages.map((page) => (
                     <Link
+                      onMouseEnter={() => setIsHovered(page.name)}
+                      onMouseLeave={() => setIsHovered(null)}
                       key={page.name}
                       href={page.href}
-                      className="flex items-center text-center text-sm font-medium text-white hover:text-gray-200"
+                      className={classNames(
+                        isHovered === page.name
+                          ? "border-b-4 border-white/80"
+                          : "border-b-4 border-transparent",
+                        "flex items-center text-center text-sm font-medium text-white"
+                      )}
                     >
                       {page.name}
                     </Link>
@@ -391,8 +399,23 @@ export default function Navbar({ navigation }) {
 }
 
 function HoverPopover({ category }) {
-  console.log(category);
   const [isHovered, setIsHovered] = useState(false);
+  const [openTimeout, setOpenTimeout] = useState(null);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    clearTimeout(openTimeout);
+  };
+
+  const handleMouseLeave = () => {
+    setOpenTimeout(setTimeout(() => setIsHovered(false), 4000));
+  };
+
+  useEffect(() => {
+    if (isHovered) {
+      setOpenTimeout(setTimeout(() => setIsHovered(false), 4000));
+    }
+  }, [isHovered]);
 
   const midIndex = Math.floor(category.subcategories.length / 2);
   const firstGroup = category.subcategories.slice(0, midIndex);
@@ -402,13 +425,17 @@ function HoverPopover({ category }) {
     <Popover className="flex">
       {({ open }) => (
         <>
-          <div className="relative flex">
+          <div
+            className="relative flex h-16"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
             <Popover.Button
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
               className={classNames(
-                open ? "border-white/80" : "border-transparent",
-                "text-white relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                open || isHovered
+                  ? "border-b-4 border-white/80"
+                  : "border-b-4 border-transparent",
+                "text-white relative z-10 -mb-px flex items-center h-full pt-px text-sm font-medium transition-colors duration-200 ease-out"
               )}
             >
               {category.name}
@@ -438,75 +465,87 @@ function HoverPopover({ category }) {
               <div className="relative bg-white">
                 <div className="mx-auto max-w-7xl px-8">
                   <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
-                    <div className="col-start-2 grid grid-cols-2 gap-x-8">
-                      {category.featured.map((item) => (
-                        <div
-                          key={item.name}
-                          className="group relative text-base sm:text-sm"
-                        >
-                          <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                            <Image
-                              src={item.imageSrc}
-                              alt={item.imageAlt}
-                              className="object-cover object-center"
-                              width={200}
-                              height={200}
-                            />
-                          </div>
-                          <Popover.Button
-                            as={Link}
-                            href={item.href}
-                            className="mt-6 block font-medium text-gray-900"
+                    {/* Featured products */}
+                    <div>
+                      <h1 className="mb-6 block font-medium text-gray-900">
+                        Featured Products
+                      </h1>
+                      <div className="col-start-2 grid grid-cols-2 gap-x-8">
+                        {category.featured.map((item) => (
+                          <div
+                            key={item.name}
+                            className="group relative text-base sm:text-sm"
                           >
-                            <span
-                              className="absolute inset-0 z-10"
-                              aria-hidden="true"
-                            />
-                            {item.name}
-                          </Popover.Button>
-                          <p aria-hidden="true" className="mt-1">
-                            Browse now
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="row-start-1 grid grid-cols-2 gap-x-8 gap-y-10 text-sm">
-                      <div>
-                        <ul
-                          role="list"
-                          className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                        >
-                          {firstGroup.map((item) => (
-                            <li key={item.name} className="flex">
-                              <Popover.Button
-                                as={Link}
-                                href={item.href}
-                                className="hover:text-gray-800"
-                              >
-                                {item.name}
-                              </Popover.Button>
-                            </li>
-                          ))}
-                        </ul>
+                            <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                              <Image
+                                src={item.imageSrc}
+                                alt={item.imageAlt}
+                                className="object-cover object-center"
+                                width={200}
+                                height={200}
+                              />
+                            </div>
+                            <Popover.Button
+                              as={Link}
+                              href={item.href}
+                              className="mt-6 block font-medium text-gray-900"
+                            >
+                              <span
+                                className="absolute inset-0 z-10"
+                                aria-hidden="true"
+                              />
+                              {item.name}
+                            </Popover.Button>
+                            <p aria-hidden="true" className="mt-1">
+                              Browse now
+                            </p>
+                          </div>
+                        ))}
                       </div>
+                    </div>
+                    {/* Product Categories */}
+                    <div>
+                      <h1 className="mb-6 block font-medium text-gray-900">
+                        Product Categories
+                      </h1>
+                      <div className="row-start-1 grid grid-cols-2 gap-x-8 gap-y-10 text-sm">
+                        <div>
+                          <ul
+                            role="list"
+                            className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
+                          >
+                            {firstGroup.map((item) => (
+                              <li key={item.name} className="flex">
+                                <Popover.Button
+                                  as={Link}
+                                  href={item.href}
+                                  className="hover:text-gray-800"
+                                >
+                                  {item.name}
+                                </Popover.Button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
 
-                      <div>
-                        <ul
-                          role="list"
-                          className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                        >
-                          {secondGroup.map((item) => (
-                            <li key={item.name} className="flex">
-                              <Popover.Button
-                                as={Link}
-                                href={item.href}
-                                className="hover:text-gray-800"
-                              >
-                                {item.name}
-                              </Popover.Button>
-                            </li>
-                          ))}
-                        </ul>
+                        <div>
+                          <ul
+                            role="list"
+                            className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
+                          >
+                            {secondGroup.map((item) => (
+                              <li key={item.name} className="flex">
+                                <Popover.Button
+                                  as={Link}
+                                  href={item.href}
+                                  className="hover:text-gray-800"
+                                >
+                                  {item.name}
+                                </Popover.Button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
