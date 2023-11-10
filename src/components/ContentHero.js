@@ -128,7 +128,7 @@ export default function ContentHero({
                 <div className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75">
                   {item.image && (
                     <Image
-                      key={index}
+                      key={index + 1}
                       className="h-auto w-full object-cover"
                       width={400}
                       height={400}
