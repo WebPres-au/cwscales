@@ -16,7 +16,7 @@ export default async function Footer() {
         <h2 id="footer-heading" className="sr-only">
           Footer
         </h2>
-        <div className="mx-auto w-full px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
+        <div className="mx-auto w-[95%] px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
           <div className="space-y-8 mb-8">
             <Image
               width={300}
