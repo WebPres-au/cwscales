@@ -400,22 +400,6 @@ export default function Navbar({ navigation }) {
 
 function HoverPopover({ category }) {
   const [isHovered, setIsHovered] = useState(false);
-  const [openTimeout, setOpenTimeout] = useState(null);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    clearTimeout(openTimeout);
-  };
-
-  const handleMouseLeave = () => {
-    setOpenTimeout(setTimeout(() => setIsHovered(false), 4000));
-  };
-
-  useEffect(() => {
-    if (isHovered) {
-      setOpenTimeout(setTimeout(() => setIsHovered(false), 4000));
-    }
-  }, [isHovered]);
 
   const midIndex = Math.floor(category.subcategories.length / 2);
   const firstGroup = category.subcategories.slice(0, midIndex);
@@ -427,8 +411,8 @@ function HoverPopover({ category }) {
         <>
           <div
             className="relative flex h-16"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
             <Popover.Button
               className={classNames(
@@ -437,6 +421,7 @@ function HoverPopover({ category }) {
                   : "border-b-4 border-transparent",
                 "text-white relative z-10 -mb-px flex items-center h-full pt-px text-sm font-medium transition-colors duration-200 ease-out"
               )}
+              onClick={() => setIsHovered(!isHovered)}
             >
               {category.name}
               {category.subcategories.length > 0 && (
@@ -455,7 +440,11 @@ function HoverPopover({ category }) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Popover.Panel className="absolute inset-x-0 top-full text-sm text-gray-500">
+            <Popover.Panel
+              className={`absolute inset-x-0 top-full text-sm text-gray-500`}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
               {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
               <div
                 className="absolute inset-0 top-1/2 bg-white shadow"
