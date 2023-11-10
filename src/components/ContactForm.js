@@ -84,6 +84,7 @@ export default function ContactForm() {
   return (
     <div id="contact">
       <div className="grid grid-cols-2 gap-4 m-12 pt-12 border border-black/10 rounded-md shadow-2xl h-full">
+        {/* Company information */}
         <div className="col-span-2 lg:col-span-1 h-full p-12">
           <h2 className="text-3xl mb-4 font-bold tracking-tight text-gray-900">
             Get in touch
@@ -152,13 +153,14 @@ export default function ContactForm() {
               <Image
                 height={400}
                 width={400}
-                src="wiaa.jpg"
+                src="/wiaa.jpg"
                 alt="Image"
                 className="mx-auto w-[300px] mt-12 mb-6"
               />
             </div>
           </div>
         </div>
+        {/* Contact form */}
         <div className="col-span-2 lg:col-span-1 h-full">
           <form
             onSubmit={sendEmail}

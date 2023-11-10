@@ -41,7 +41,7 @@ export default async function TagPage({ params }) {
   return (
     <div>
       <ContentHero category={tag} content={products} />
-      <div className="mt-32" />
+      <div className="mt-32 pb-2" />
     </div>
   );
 }
