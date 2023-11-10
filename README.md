@@ -14,7 +14,6 @@ A website make over for Correct Weight Scales.
 ## Current ToDos
 
 - [] Fix description issue with editing products
-- [] Fix nav so the hover works
 - [] Load product image on product tags
 
 ## Getting Started
