@@ -61,7 +61,7 @@ export default function Welcome({
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
                   <b>Suburb: </b>
-                  {suburb}
+                  {suburb === "" ? "No suburb chosen" : suburb}
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
                   <b>Number: </b>
