@@ -56,7 +56,7 @@ export default function Hero() {
   const currentImage = images[currentImageIndex];
 
   return (
-    <div className="relative bg-gray-900 mt-32" style={{ height: "70vh" }}>
+    <div className="relative bg-gray-900 mt-32 h-[50vh] sm:h-[70vh]">
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
         <Image
           src={currentImage.image}
