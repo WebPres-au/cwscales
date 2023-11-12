@@ -374,17 +374,32 @@ export default function Popover({ open, setOpen, intialProduct }) {
 
   const deleteExistingImage = async (index) => {
     try {
+      if (
+        !intialProduct ||
+        !intialProduct.images ||
+        !intialProduct.images[index]
+      ) {
+        throw new Error("Invalid product or image data");
+      }
+
+      const imagePath = intialProduct.images[index].image_path;
+      const imageId = intialProduct.images[index].image_id;
+
+      if (!imagePath || !imageId) {
+        throw new Error("Invalid image path or ID");
+      }
+
       setExistingImages((prev) => prev.filter((_, i) => i !== index));
+
       const { error } = await supabase.storage
         .from("product-images")
-        .remove([intialProduct.images[index].image_path]);
+        .remove([imagePath]);
       if (error) throw error;
 
       const { error: deleteRecordError } = await supabase
         .from("product_images")
         .delete()
-        .eq("id", intialProduct.images[index].id);
-
+        .eq("id", imageId);
       if (deleteRecordError) throw deleteRecordError;
     } catch (error) {
       setExistingImages((prev) => [...prev, intialProduct.images[index]]);
