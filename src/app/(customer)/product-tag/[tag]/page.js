@@ -38,6 +38,11 @@ export default async function TagPage({ params }) {
     };
   });
 
+  if (products.length > 0) {
+    const randomProduct = products[Math.floor(Math.random() * products.length)];
+    tag.image = randomProduct.image;
+  }
+
   return (
     <div>
       <ContentHero category={tag} content={products} />
