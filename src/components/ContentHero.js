@@ -130,8 +130,11 @@ export default function ContentHero({
             }}
           >
             {content.map((item, index) => (
-              <Link href={item.href} key={index} legacyBehavior passHref>
-                <div style={{ breakInside: "avoid", padding: 0, margin: 0 }}>
+              <Link href={item.href} key={index}>
+                <div
+                  style={{ breakInside: "avoid", padding: 0, margin: 0 }}
+                  className="cursor-pointer"
+                >
                   <div className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75">
                     {item.image && (
                       <Image
