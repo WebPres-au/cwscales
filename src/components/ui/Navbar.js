@@ -30,7 +30,7 @@ export default function Navbar({ navigation }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 128) {
+      if (window.scrollY > 174) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -339,6 +339,7 @@ export default function Navbar({ navigation }) {
                     <Link
                       onMouseEnter={() => setIsHovered(page.name)}
                       onMouseLeave={() => setIsHovered(null)}
+                      onClick={() => setIsHovered(null)}
                       key={page.name}
                       href={page.href}
                       className={classNames(
