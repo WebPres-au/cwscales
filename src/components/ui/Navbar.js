@@ -290,6 +290,9 @@ export default function Navbar({ navigation }) {
             </a>
           </div>
         </div>
+        <div className="w-full flex pt-1 pb-2 sm:pt-2 sm:pb-4 text-xl sm:text-2xl text-center font-semibold">
+          <div className="mx-auto">WEIGHING, PACKAGING & FILLING SOLUTIONS</div>
+        </div>
       </div>
 
       {/* Input form and menu on mobile */}
