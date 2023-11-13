@@ -16,7 +16,7 @@ export default async function DashboardLayout({ children }) {
 
   navigation.push(
     ...categories.map((category) => {
-      category.subcategories = category.subcategories.map((subcategory) => {
+      category.subcategories = [...category.featured, ...category.subcategories].map((subcategory) => {
         delete subcategory.href;
         delete subcategory.imageSrc;
         delete subcategory.imageAlt;
