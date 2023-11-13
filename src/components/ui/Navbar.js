@@ -283,7 +283,7 @@ export default function Navbar({ navigation }) {
               aria-hidden="true"
             />
             <a
-              href="mailto:louis@cwscales.com.au"
+              href={`mailto:louis@cwscales.com.au?subject=Enquiry from Website&body=Hi Louis, I am enquiring about `}
               className="hidden sm:block pt-0.5 text-sm font-medium text-black"
             >
               louis@cwscales.com.au
