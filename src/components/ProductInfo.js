@@ -1,31 +1,29 @@
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
-export default function ProductInfo({ categoryName, product, type, isOne}) {
-  if(isOne){
-    return(
+export default function ProductInfo({ categoryName, product, type, isOne }) {
+  if (isOne) {
+    return (
       <div className="product-info">
-      <h2>{product.name}</h2>
-      <h3 className="product-code">Product Description:</h3>
+        <h2>{product.name}</h2>
+        <h3 className="product-code">Product Description:</h3>
 
-      <p>
-        {product.description.split("\n").map((item, key) => {
-          return (
-            <span key={key}>
-              {item}
-              <br />
-            </span>
-          );
-        
-        }
-        )}
-      </p>
-    </div>
-    )
+        <p>
+          {product.description.split("\n").map((item, key) => {
+            return (
+              <span key={key}>
+                {item}
+                <br />
+              </span>
+            );
+          })}
+        </p>
+      </div>
+    );
   }
   return (
     <div className="product-info">
-      <h2>{categoryName}</h2>
+      {/* <h2>{categoryName}</h2> */}
       <h3 className="product-code">{product.name}</h3>
       {/* <p>
         {product.short_description}
@@ -36,5 +34,4 @@ export default function ProductInfo({ categoryName, product, type, isOne}) {
       </Link>
     </div>
   );
-
 }
