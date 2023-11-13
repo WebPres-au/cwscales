@@ -4,6 +4,10 @@ A website make over for Correct Weight Scales. The focus on the new site has bee
 
 Another focus was removing wordpress and replacing that with a custom solution that includes Supabase and NextJs.
 
+## ToDos
+
+- Onclick close nav
+
 ## Tech stack
 
 - [NextJs](https://nextjs.org/)
