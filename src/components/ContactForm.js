@@ -157,6 +157,9 @@ export default function ContactForm() {
                 alt="Image"
                 className="mx-auto w-[300px] mt-12 mb-6"
               />
+              <div className="mx-auto text-center text-lg">
+                CWS is a proud member of the Weighing Industry Association
+              </div>
             </div>
           </div>
         </div>
