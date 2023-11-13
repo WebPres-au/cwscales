@@ -58,14 +58,14 @@ export const getProductsFromCategory = async (
       delete product.isPublic;
       delete product.description;
 
-      const images = await Promise.all(
-        product.images.map(async (image, index) => {
+      const images = product?.images? await Promise.all(
+        product?.images?.map(async (image, index) => {
           return {
             ...image,
             signedUrl: await getSignedUrl(image, "product-images"),
           };
         })
-      );
+      ) : null;
 
       return {
         id,
