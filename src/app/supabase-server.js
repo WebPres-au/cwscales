@@ -51,11 +51,11 @@ export const getProductsFromCategory = async (
       const id = product.product_id;
       const name = product.product_name;
       const description = product.description;
-      const isPublic = product.ispublic;
+      const isPublic = product.isPublic;
       const href = `/product/${snake_case_string(product.product_name)}`;
       delete product.product_id;
       delete product.product_name;
-      delete product.ispublic;
+      delete product.isPublic;
       delete product.description;
 
       const images = await Promise.all(
