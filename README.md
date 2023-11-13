@@ -1,6 +1,8 @@
 # Correct Weight Scales
 
-A website make over for Correct Weight Scales.
+A website make over for Correct Weight Scales. The focus on the new site has been to improve page load performance so that customers visiting will get the information they're looking for almost instantly.
+
+Another focus was removing wordpress and replacing that with a custom solution that includes Supabase and NextJs.
 
 ## Tech stack
 
@@ -10,11 +12,9 @@ A website make over for Correct Weight Scales.
 - [Resend](https://resend.com/)
 - [React Email](https://react.email)
 - [Framer Motion](https://framer.com/motion)
-
-## Current ToDos
-
-- [] Fix description issue with editing products
-- [] Load product image on product tags
+- [React Hot Toast](https://github.com/timolins/react-hot-toast)
+- [Google Recaptcha](https://github.com/dozoisch/react-google-recaptcha)
+- [Hero Icons](https://github.com/tailwindlabs/heroicons)
 
 ## Getting Started
 
@@ -27,3 +27,5 @@ yarn dev
 # or
 pnpm dev
 ```
+
+Head over to `src/app/page.js` to start editing the site!
