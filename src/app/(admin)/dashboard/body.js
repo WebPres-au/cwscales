@@ -8,6 +8,7 @@ import LogoutButton from "./LogoutButton";
 import Popover from "@/components/Popover";
 import { useCallback, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function Body({ children, navigation }) {
   const searchParams = useSearchParams();
@@ -53,20 +54,24 @@ export default function Body({ children, navigation }) {
                 <div className="flex h-16 justify-between">
                   <div className="flex">
                     <div className="flex flex-shrink-0 items-center">
-                      <Image
-                        className="block h-6 w-auto lg:hidden"
-                        src="/CWS_logo.png"
-                        alt="Your Company"
-                        width={100}
-                        height={100}
-                      />
-                      <Image
-                        className="hidden h-6 w-auto lg:block"
-                        src="/CWS_logo.png"
-                        alt="Your Company"
-                        width={100}
-                        height={100}
-                      />
+                      <Link href="/">
+                        <Image
+                          className="block h-6 w-auto lg:hidden"
+                          src="/CWS_logo.png"
+                          alt="Your Company"
+                          width={100}
+                          height={100}
+                        />
+                      </Link>
+                      <Link href="/">
+                        <Image
+                          className="hidden h-6 w-auto lg:block"
+                          src="/CWS_logo.png"
+                          alt="Your Company"
+                          width={100}
+                          height={100}
+                        />
+                      </Link>
                     </div>
                     <div className="hidden sm:-my-px sm:ml-6 overflow-x-auto sm:flex sm:space-x-8">
                       {navigation.map((item) => (
