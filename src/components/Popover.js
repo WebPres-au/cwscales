@@ -26,6 +26,8 @@ export default function Popover({ open, setOpen, intialProduct }) {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
+  const [youtubeLink, setYoutubeLink] = useState(intialProduct?.youtube_link ?? "");
+
   const [categorySearch, setCategorySearch] = useState("");
   const [tagSearch, setTagSearch] = useState("");
 
@@ -95,6 +97,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
             description: description,
             short_description: shortDescription,
             isPublic: selectedOption === "public",
+            youtube_link: youtubeLink,
           },
         ])
         .select()
@@ -230,6 +233,7 @@ export default function Popover({ open, setOpen, intialProduct }) {
           description: description,
           short_description: shortDescription,
           isPublic: selectedOption === "public",
+          youtube_link: youtubeLink,
         })
         .eq("id", productId);
 
@@ -745,6 +749,28 @@ export default function Popover({ open, setOpen, intialProduct }) {
                                 </div>
                               </div>
                             </div>
+
+                            <div>
+                              <label
+                                htmlFor="youtubeLink"
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                              >
+                                Youtube Link
+                              </label>
+                              <div className="mt-2">
+                                <input
+                                  type="url"
+                                  name="youtubeLink"
+                                  id="youtubeLink"
+                                  value={youtubeLink}
+                                  onChange={(e) =>
+                                    setYoutubeLink(e.target.value)
+                                  }
+                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                              </div>
+                            </div>
+
                             <fieldset>
                               <legend className="text-sm font-medium leading-6 text-gray-900">
                                 Privacy
