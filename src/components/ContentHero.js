@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import ProductInfo from "./ProductInfo";
+import Link from "next/link";
 
 export default function ContentHero({
   category,
@@ -129,31 +130,28 @@ export default function ContentHero({
             }}
           >
             {content.map((item, index) => (
-              <div
-                key={index}
-                style={{ breakInside: "avoid", padding: 0, margin: 0 }}
-              >
-                <div className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75">
-                  {item.image && (
-                    <Image
-                      key={index + 1}
-                      className="h-auto w-full object-cover"
-                      width={400}
-                      height={400}
-                      src={item.image}
-                      alt={item.name}
+              <Link href={item.href} key={index} legacyBehavior passHref>
+                <div style={{ breakInside: "avoid", padding: 0, margin: 0 }}>
+                  <div className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75">
+                    {item.image && (
+                      <Image
+                        className="h-auto w-full object-cover"
+                        width={400}
+                        height={400}
+                        src={item.image}
+                        alt={item.name}
+                        style={{ padding: 0, margin: 0 }}
+                      />
+                    )}
+                    <ProductInfo
+                      categoryName={category.name}
+                      product={item}
                       style={{ padding: 0, margin: 0 }}
+                      type={type}
                     />
-                  )}
-                  <ProductInfo
-                    key={index}
-                    categoryName={category.name}
-                    product={item}
-                    style={{ padding: 0, margin: 0 }}
-                    type={type}
-                  />
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
