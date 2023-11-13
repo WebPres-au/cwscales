@@ -32,7 +32,11 @@ export default function ContentHero({
           <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black grid grid-rows-4">
             <div className="row-span-3 relative w-full h-full">
               <Image
-                src={category.image ?? "/bakery.jpg"}
+                src={category.image || "/placeholder.jpeg"}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/placeholder.jpeg";
+                }}
                 className="object-cover opacity-50 w-full h-full"
                 alt=""
                 fill={true}
@@ -94,7 +98,11 @@ export default function ContentHero({
         <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black grid grid-rows-4">
           <div className="row-span-3 relative w-full h-full">
             <Image
-              src={category.image ?? "/bakery.jpg"}
+              src={category.image || "/placeholder.jpeg"}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/placeholder.jpeg";
+              }}
               className="object-cover opacity-50 w-full h-full"
               alt=""
               fill={true}
