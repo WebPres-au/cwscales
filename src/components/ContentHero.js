@@ -29,7 +29,7 @@ export default function ContentHero({
   if (isOne)
     return (
       <>
-        <div className="relative mt-32 -mb-32">
+        <div className="relative mt-44 -mb-32">
           <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black grid grid-rows-4">
             <div className="row-span-3 relative w-full h-full">
               <Image
@@ -44,8 +44,8 @@ export default function ContentHero({
                 sizes="(max-width: 600px) 100vw, 600px"
               />
             </div>
-            <div className="p-12 z-10 text-black bg-green row-span-1">
-              <h1 className="capitalize text-xl text-white font-semibold sm:text-4xl md:text-5xl line-clamp-6 pb-1">
+            <div className="p-6 z-10 text-black bg-green row-span-1">
+              <h1 className="capitalize text-xl text-white font-semibold sm:text-2xl md:text-4xl line-clamp-6 pb-1">
                 {category.name}
               </h1>
               <p className="pt-4 text-white">{category.short_description}</p>
@@ -95,7 +95,7 @@ export default function ContentHero({
 
   return (
     <>
-      <div className="relative mt-32 -mb-32">
+      <div className="relative mt-44 -mb-32">
         <div className="relative lg:sticky w-full lg:w-1/2 h-screen inset-0 bg-black grid grid-rows-4">
           <div className="row-span-3 relative w-full h-full">
             <Image
@@ -130,7 +130,7 @@ export default function ContentHero({
             }}
           >
             {content.map((item, index) => (
-              <Link href={item.href} key={index} legacyBehavior passHref>
+              <Link href={item.href} key={index}>
                 <div style={{ breakInside: "avoid", padding: 0, margin: 0 }}>
                   <div className="h-full w-full group hover:border hover:border-gray-400 border border-white delay-75">
                     {item.image && (
