@@ -26,6 +26,11 @@ export default async function SubCategoryPage({ params }) {
 
   let products = await getProductsFromCategory(params.subCategory);
 
+  if (products.length > 0) {
+    const randomProduct = products[Math.floor(Math.random() * products.length)];
+    category.image = randomProduct.image;
+  }
+
   return (
     <div>
       <ContentHero category={category} content={products} />

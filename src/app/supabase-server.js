@@ -50,11 +50,13 @@ export const getProductsFromCategory = async (
       // Await all the signed URLs and create the images array
       const id = product.product_id;
       const name = product.product_name;
+      const description = product.description;
       const isPublic = product.ispublic;
       const href = `/product/${snake_case_string(product.product_name)}`;
       delete product.product_id;
       delete product.product_name;
       delete product.ispublic;
+      delete product.description;
 
       const images = await Promise.all(
         product.images.map(async (image, index) => {
@@ -68,6 +70,7 @@ export const getProductsFromCategory = async (
       return {
         id,
         name,
+        description,
         image: images ? images[0]?.signedUrl : null,
         ...product,
         href,
