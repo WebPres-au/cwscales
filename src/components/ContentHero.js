@@ -48,9 +48,9 @@ export default function ContentHero({
               <h1 className="capitalize text-xl text-white font-semibold sm:text-2xl md:text-4xl line-clamp-6 pb-1">
                 {category.name}
               </h1>
-              <p className="pt-4 text-white">{category.short_description}</p>
+              <p className="pt-2 text-white">{category.short_description}</p>
               <a href="#contact">
-                <button className="px-4 py-2 bg-white hover:bg-black/60 text-black hover:text-white rounded-md mt-4">
+                <button className="px-4 py-2 bg-white hover:bg-black/60 text-black hover:text-white rounded-md mt-2">
                   Enquire now
                 </button>
               </a>
