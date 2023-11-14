@@ -42,7 +42,10 @@ export default async function CategoryPage({ params }) {
   } else {
     products = await getProductsFromCategory(params.category);
   }
-
+  if (products.length > 0) {
+    const randomProduct = products[Math.floor(Math.random() * products.length)];
+    category.image = randomProduct.image;
+  }
   return (
     <div>
       <ContentHero
