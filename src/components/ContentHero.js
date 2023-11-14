@@ -44,11 +44,11 @@ export default function ContentHero({
                 sizes="(max-width: 600px) 100vw, 600px"
               />
             </div>
-            <div className="p-2 z-10 text-black bg-green row-span-1">
+            <div className="p-4 z-10 bg-green row-span-1">
               <h1 className="capitalize text-xl text-white font-semibold sm:text-2xl md:text-4xl line-clamp-6 pb-1">
                 {category.name}
               </h1>
-              <p className="pt-2 text-white">{category.short_description}</p>
+              <p className="py-1 text-white">{category.short_description}</p>
               <a href="#contact">
                 <button className="px-4 py-2 bg-white hover:bg-black/60 text-black hover:text-white rounded-md mt-2">
                   Enquire now
@@ -110,11 +110,11 @@ export default function ContentHero({
               sizes="(max-width: 600px) 100vw, 600px"
             />
           </div>
-          <div className="p-2 z-10 text-black bg-green row-span-1">
+          <div className="p-4 z-10 bg-green row-span-1">
             <h1 className="capitalize text-xl text-white font-semibold sm:text-4xl md:text-5xl line-clamp-6 pb-1">
               {category.name}
             </h1>
-            <p className="pt-2 text-white">{category.description}</p>
+            <p className="py-1 text-white">{category.description}</p>
             <a href="#contact">
               <button className="px-4 py-2 bg-white hover:bg-black/60 text-black hover:text-white rounded-md mt-2">
                 Enquire now
