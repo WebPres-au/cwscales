@@ -425,7 +425,6 @@ function HoverPopover({ category }) {
                   : "border-b-4 border-transparent",
                 "text-white relative z-10 -mb-px flex items-center h-full pt-px text-sm font-medium transition-colors duration-200 ease-out"
               )}
-              onClick={() => setIsHovered(!isHovered)}
             >
               {category.name}
               {category.subcategories.length > 0 && (
@@ -468,6 +467,7 @@ function HoverPopover({ category }) {
                           <div
                             key={item.name}
                             className="group relative text-base sm:text-sm"
+                            onClick={() => setIsHovered(false)}
                           >
                             <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
                               <Image
@@ -513,6 +513,7 @@ function HoverPopover({ category }) {
                                   as={Link}
                                   href={item.href}
                                   className="hover:text-gray-800"
+                                  onClick={() => setIsHovered(false)}
                                 >
                                   {item.name}
                                 </Popover.Button>
@@ -532,6 +533,7 @@ function HoverPopover({ category }) {
                                   as={Link}
                                   href={item.href}
                                   className="hover:text-gray-800"
+                                  onClick={() => setIsHovered(false)}
                                 >
                                   {item.name}
                                 </Popover.Button>
