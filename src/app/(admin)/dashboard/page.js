@@ -14,11 +14,11 @@ export default async function ProductList({ searchParams }) {
 
   let products;
   if (subcategory) {
-    products = await getProductsFromCategory(subcategory, null, true);
+    products = await getProductsFromCategory(subcategory, true);
   } else if (category) {
-    products = await getProductsFromCategory(category, null, true);
+    products = await getProductsFromCategory(category, true);
   } else {
-    products = await getProductsFromCategory("", null, true);
+    products = await getProductsFromCategory("", true);
   }
 
   return (

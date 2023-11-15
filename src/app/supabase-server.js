@@ -33,16 +33,25 @@ export const getSignedUrl = async (image, bucket) => {
 
 export const getProductsFromCategory = async (
   categoryName,
-  subCategories = null,
   includesDrafts = false
 ) => {
   try {
+    let subcategories = [];
+
+    if(categoryName) {
+      const categoryReq = await supabase.from("categories").select("id, parent_category").eq("snake_case_name", categoryName).single();
+      const subcategoriesReq = await supabase.from("categories").select("snake_case_name").eq("parent_category", categoryReq.data.id);
+      if(subcategoriesReq.data.length > 0){
+        subcategories = [...subcategories, subcategoriesReq.data.map((subcategory) => subcategory.snake_case_name) ];
+      }
+    }
+
     const { data, error } = await supabase.rpc("getproductsfromcategory", {
       categoryname: categoryName,
-      subcategories: subCategories,
+      subcategories: subcategories,
       includesdrafts: includesDrafts,
     });
-
+    
     if (error) throw error;
 
     // Create an array of Promises that resolve to the transformed product objects
