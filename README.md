@@ -7,6 +7,7 @@ Another focus was removing wordpress and replacing that with a custom solution t
 ## ToDos
 
 - Onclick close nav
+  test
 
 ## Tech stack
 
