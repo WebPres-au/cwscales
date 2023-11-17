@@ -386,7 +386,7 @@ export default function Navbar({ navigation }) {
         </nav>
       </header>
       {autoComplete?.[0] && (
-        <div className="absolute max-h-[400px] w-[98%] lg:w-60 overflow-scroll top-[130px] ml-1 lg:right-6 bg-gray-50 rounded-lg py-4 px-2 border">
+        <div className="absolute max-h-[400px] w-[98%] lg:w-60 overflow-scroll top-[180px] ml-1 lg:right-6 bg-gray-50 rounded-lg py-4 px-2 border">
           {autoComplete.map((category) => (
             <ul
               onClick={() => clickAutocomplete(category.name, category.tag)}
