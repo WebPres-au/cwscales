@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { validateEmail, validatePhoneNumber } from "@/lib/functions";
 import {
   BuildingOffice2Icon,
@@ -10,8 +10,11 @@ import {
 import ReCAPTCHA from "react-google-recaptcha";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function ContactForm() {
+  const URLpath = usePathname()
+  const [path, setPath] = useState("")
   const [data, setData] = useState({
     firstName: "",
     email: "",
@@ -22,6 +25,10 @@ export default function ContactForm() {
     message: "",
   });
   const [captcha, setCaptcha] = useState(false);
+
+  useEffect(() => {
+    setPath(URLpath);
+  }, [URLpath]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,10 +51,10 @@ export default function ContactForm() {
       toast.error("Please enter a valid phone number (04XXXXXXXX)");
       return false;
     }
-    if (!captcha) {
-      toast.error("Please complete the captcha");
-      return false;
-    }
+    // if (!captcha) {
+    //   toast.error("Please complete the captcha");
+    //   return false;
+    // }
     return true;
   };
 
@@ -58,12 +65,17 @@ export default function ContactForm() {
       return;
     }
 
+    const dataWithUrl = {
+      ...data,
+      URLpath,
+    };
+
     const response = await fetch("/api/send", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(dataWithUrl),
     });
     if (response.status === 200) {
       setData({
