@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { validateEmail, validatePhoneNumber } from "@/lib/functions";
 import {
   BuildingOffice2Icon,
@@ -14,7 +14,6 @@ import { usePathname } from "next/navigation";
 
 export default function ContactForm() {
   const URLpath = usePathname()
-  const [path, setPath] = useState("")
   const [data, setData] = useState({
     firstName: "",
     email: "",
@@ -25,10 +24,6 @@ export default function ContactForm() {
     message: "",
   });
   const [captcha, setCaptcha] = useState(false);
-
-  useEffect(() => {
-    setPath(URLpath);
-  }, [URLpath]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,10 +46,10 @@ export default function ContactForm() {
       toast.error("Please enter a valid phone number (04XXXXXXXX)");
       return false;
     }
-    // if (!captcha) {
-    //   toast.error("Please complete the captcha");
-    //   return false;
-    // }
+    if (!captcha) {
+      toast.error("Please complete the captcha");
+      return false;
+    }
     return true;
   };
 
