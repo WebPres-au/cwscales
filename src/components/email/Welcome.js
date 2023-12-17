@@ -21,6 +21,7 @@ export default function Welcome({
   number,
   suburb,
   message,
+  URLpath
 }) {
   return (
     <Html>
@@ -71,6 +72,11 @@ export default function Welcome({
                 <Text style={{ ...paragraph, marginTop: -5 }}>
                   <b>Message: </b>
                   {message}
+                </Text>
+                
+                <Text style={{ ...paragraph, marginTop: -5 }}>
+                  <b>Page: </b>
+                  https://cwscales.com.au{URLpath}
                 </Text>
               </Column>
             </Row>
