@@ -5,7 +5,7 @@ export default function RepairCTA() {
         <div
           className="relative isolate overflow-hidde px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16"
           style={{
-            backgroundImage: "url('/categories/servicing.png')",
+            backgroundImage: "url('/categories/servicing.jpg')",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",

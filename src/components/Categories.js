@@ -30,7 +30,7 @@ const categories = [
     title: "Service Repairs & Calibration",
     href: "/service-repairs-calibration/",
     description: "Image of car that we use to do services and repairs",
-    imageUrl: "/categories/servicing.png",
+    imageUrl: "/categories/servicing.jpg",
   },
 ];
 
