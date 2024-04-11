@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import Script from "next/script";
 import SupabaseProvider from "./supabase-provider";
+import { Analytics } from "@vercel/analytics/react"
 
 export const dynamic = "force-dynamic";
 
@@ -83,6 +84,7 @@ export default function RootLayout({ children }) {
         <SupabaseProvider>
           <Toaster position="bottom-right" toastOptions={{ duration: 3000 }} />
           {children}
+          <Analytics />
         </SupabaseProvider>
       </body>
     </html>
