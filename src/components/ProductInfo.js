@@ -7,7 +7,7 @@ export default function ProductInfo({ product, type, isOne }) {
         <h2>{product.name}</h2>
         <h3 className="product-code">Product Description:</h3>
 
-        <p>
+        <p className="text-lg leading-8 text-gray-800">
           {product.description.split("\n").map((item, key) => {
             return (
               <span key={key}>
