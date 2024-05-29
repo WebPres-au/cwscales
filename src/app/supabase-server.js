@@ -1,13 +1,38 @@
+// import { snake_case_string } from "@/lib/functions";
+// import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+// import { cookies } from "next/headers";
+// import { cache } from "react";
+
+// export const createServerSupabaseClient = cache(() =>
+//   createServerComponentClient({ cookies })
+// );
+
+// const supabase = createServerSupabaseClient();
+
 import { snake_case_string } from "@/lib/functions";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { cache } from "react";
 
-export const createServerSupabaseClient = cache(() =>
-  createServerComponentClient({ cookies })
-);
+// Modified function to accept request object
+export const createServerSupabaseClient = (req) => {
+  const cookies = req.headers.cookie; // Extract cookies directly from the request
+  return createServerComponentClient({ cookies });
+};
 
-const supabase = createServerSupabaseClient();
+// Example usage in getServerSideProps
+export async function getServerSideProps(context) {
+  const supabase = createServerSupabaseClient(context.req);
+
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    return { props: { session } };
+  } catch (error) {
+    console.error("Error:", error);
+    return { props: { error: error.message } };
+  }
+}
+
 
 export async function getSession() {
   try {
