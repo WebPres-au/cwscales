@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getNavItems } from "@/app/supabase-server";
 import Link from "next/link";
 import ClientContact from "./ClientContact";
+import DialogPopUp from "./DialogPopUp"
 
 export default async function Footer() {
   const navigation = await getNavItems(true);
@@ -132,6 +133,7 @@ export default async function Footer() {
           </div>
         </div>
       </footer>
+      <DialogPopUp />
     </>
   );
 }
