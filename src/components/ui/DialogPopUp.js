@@ -31,7 +31,7 @@ import {
 
 export default function DialogPopUp() {
   const [ open, setOpen ] = useState(false);
-  const idle = useIdle(5000);
+  const idle = useIdle(60000);
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
   useEffect(() => {
