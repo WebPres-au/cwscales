@@ -9,7 +9,7 @@ import { X } from "lucide-react";
 export default function InactivityPopup() {
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
-  const idle = useIdle(1000);
+  const idle = useIdle(30000);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function InactivityPopup() {
         {/* Content */}
         <div>
           <h3 className="text-lg font-bold text-gray-900 mb-3">
-            We're Here to Help! 👋
+            We are here to help! 👋
           </h3>
           <div className="space-y-3 mb-5">
             <p className="text-sm text-gray-700 leading-relaxed">
