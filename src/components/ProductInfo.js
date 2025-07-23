@@ -1,4 +1,3 @@
-import Player from 'next-video/player';
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 
 // Utility function to convert YouTube URL to embed format
