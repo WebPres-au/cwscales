@@ -20,10 +20,12 @@ function getYouTubeEmbedUrl(url) {
   else if (url.includes('youtu.be/')) {
     videoId = url.split('youtu.be/')[1].split('?')[0];
   }
+  
   // YouTube Shorts URL: https://youtube.com/shorts/VIDEO_ID or https://www.youtube.com/shorts/VIDEO_ID
   else if (url.includes('/shorts/')) {
     videoId = url.split('/shorts/')[1].split('?')[0];
   }
+  
   // Mobile URL: https://m.youtube.com/watch?v=VIDEO_ID
   else if (url.includes('m.youtube.com/watch?v=')) {
     videoId = url.split('watch?v=')[1].split('&')[0];
