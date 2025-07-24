@@ -404,10 +404,26 @@ export default function Navbar({ navigation }) {
 
 function HoverPopover({ category }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [clickCooldown, setClickCooldown] = useState(false);
+  const router = useRouter();
 
   const midIndex = Math.floor(category.subcategories.length / 2);
   const firstGroup = category.subcategories.slice(0, midIndex);
   const secondGroup = category.subcategories.slice(midIndex);
+
+  const handleCategoryClick = () => {
+    const categoryUrl = `/product-category/${snake_case_string(category.name)}`;
+    
+    // Set cooldown to prevent hover for 3 seconds
+    setClickCooldown(true);
+    setIsHovered(false);
+    
+    setTimeout(() => {
+      setClickCooldown(false);
+    }, 1500);
+    
+    router.push(categoryUrl);
+  };
 
   return (
     <Popover className="flex">
@@ -415,22 +431,23 @@ function HoverPopover({ category }) {
         <>
           <div
             className="relative flex h-16"
-            onMouseEnter={() => setIsHovered(true)}
+            onMouseEnter={() => !clickCooldown && setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <Popover.Button
+            <button
+              onClick={handleCategoryClick}
               className={classNames(
                 open || isHovered
                   ? "border-b-4 border-white/80"
                   : "border-b-4 border-transparent",
-                "text-white relative z-10 -mb-px flex items-center h-full pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                "text-white relative z-10 -mb-px flex items-center h-full pt-px text-sm font-medium transition-colors duration-200 ease-out cursor-pointer hover:text-white/90"
               )}
             >
               {category.name}
               {category.subcategories.length > 0 && (
                 <ChevronDownIcon className="h-6 w-6 ml-1" />
               )}
-            </Popover.Button>
+            </button>
           </div>
 
           <Transition
@@ -445,7 +462,7 @@ function HoverPopover({ category }) {
           >
             <Popover.Panel
               className={`absolute inset-x-0 top-full text-sm text-gray-500`}
-              onMouseEnter={() => setIsHovered(true)}
+              onMouseEnter={() => !clickCooldown && setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
               {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
