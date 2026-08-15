@@ -1,6 +1,6 @@
 'use client';
 
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
+import { createBrowserClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
 
@@ -8,7 +8,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const Context = createContext(undefined);
 
 export default function SupabaseProvider({children}) {
-  const [supabase] = useState(() => createPagesBrowserClient());
+  const [supabase] = useState(() => createBrowserClient());
   const router = useRouter();
 
   useEffect(() => {

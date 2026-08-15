@@ -41,6 +41,7 @@ export default function ContentHero({
                 className="object-cover opacity-50 w-full h-full"
                 alt=""
                 fill={true}
+                loading="eager"
                 sizes="(max-width: 600px) 100vw, 600px"
               />
             </div>
@@ -107,6 +108,7 @@ export default function ContentHero({
               className="object-cover opacity-50 w-full h-full"
               alt=""
               fill={true}
+              loading="eager"
               sizes="(max-width: 600px) 100vw, 600px"
             />
           </div>

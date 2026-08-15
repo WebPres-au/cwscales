@@ -4,9 +4,13 @@ import {
   getProductsFromCategory,
 } from "@/app/supabase-server";
 import ContentHero from "@/components/ContentHero";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
-  const category = await getCategory(params.category);
+  const { category: slug } = await params;
+  const category = await getCategory(slug);
+
+  if (!category) return { title: "Category not found" };
 
   return {
     title: category.name,
@@ -27,7 +31,10 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function CategoryPage({ params }) {
-  const data = await getCategoryWithSubcategories(params.category);
+  const { category: slug } = await params;
+  const data = await getCategoryWithSubcategories(slug);
+
+  if (!data) notFound();
 
   let category = { ...data };
   delete category.subcategories;
@@ -40,7 +47,7 @@ export default async function CategoryPage({ params }) {
   if (isParent) {
     products = [];
   } else {
-    products = await getProductsFromCategory(params.category);
+    products = await getProductsFromCategory(slug);
   }
   // if (products.length > 0) {
   //   const randomProduct = products[Math.floor(Math.random() * products.length)];

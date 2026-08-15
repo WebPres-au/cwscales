@@ -1,42 +1,35 @@
-import { getNavItems, getSession } from "@/app/supabase-server";
+import { getNavItems } from "@/app/supabase-server";
+import { requireAdmin } from "@/lib/supabase/auth";
 import Body from "./body";
 import { snake_case_string } from "@/lib/functions";
-import { redirect } from "next/navigation";
 
 export default async function DashboardLayout({ children }) {
-  const session = await getSession();
-
-  if (!session) {
-    return redirect("/auth/login");
-  }
+  await requireAdmin({ redirectTo: "/auth/login" });
 
   let navigation = [{ name: "All", href: "/dashboard/" }];
 
-  const { categories, pages } = await getNavItems(false);
+  const { categories = [], pages = [] } = (await getNavItems(false)) || {};
 
   navigation.push(
     ...categories.map((category) => {
-      category.subcategories = [...category.featured, ...category.subcategories].map((subcategory) => {
-        delete subcategory.href;
-        delete subcategory.imageSrc;
-        delete subcategory.imageAlt;
-        if (subcategory.name != "Browse All") return subcategory;
-      });
-      delete category.featured;
-      delete category.href;
+      const subcategories = [
+        ...(category.featured || []),
+        ...(category.subcategories || []),
+      ]
+        .filter((subcategory) => subcategory?.name !== "Browse All")
+        .map(({ name }) => ({ name }));
+
       return {
-        ...category,
         name: category.name,
         href: `/dashboard?category=${snake_case_string(category.name)}`,
+        subcategories,
       };
     })
   );
 
   navigation.push(
     ...pages.map((page) => {
-      delete page.href;
       return {
-        ...page,
         name: page.name,
         href: `/dashboard?category=${snake_case_string(page.name)}`,
       };

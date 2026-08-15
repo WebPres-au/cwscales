@@ -4,10 +4,10 @@
 //   getServerTags,
 // } from "./supabase-server";
 import { snake_case_string } from "@/lib/functions";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServerClient } from "@/lib/supabase/server";
 
 export default async function sitemap() {
-  const supabase = createClientComponentClient();
+  const supabase = await createServerClient();
 
   const domain = process.env.VERCEL_URL || "https://cwscales.com.au";
 

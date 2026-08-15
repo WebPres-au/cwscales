@@ -29,6 +29,11 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
+.env.supabase
+/supabase/.temp/
+
+# backups
+local-backups/
 
 .vscode
 

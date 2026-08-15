@@ -1,11 +1,11 @@
 import Image from "next/image";
 import LoginForm from "./LoginForm";
-import { getSession } from "@/app/supabase-server";
+import { getAdminIdentity } from "@/lib/supabase/auth";
 import { redirect } from "next/navigation";
 
 
 export default async function LoginPage() {
-  const session = await getSession();
+  const session = await getAdminIdentity();
 
   if (session) {
     return redirect('/dashboard');
@@ -20,8 +20,9 @@ export default async function LoginPage() {
             className="mx-auto h-10 w-auto"
             src="/CWS_logo.png"
             alt="Logo of Correct Weight Scales"
-            width={200}
-            height={200}
+            width={322}
+            height={55}
+            loading="eager"
           />
         </div>
 

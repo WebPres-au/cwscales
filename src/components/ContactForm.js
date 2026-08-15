@@ -152,9 +152,9 @@ export default function ContactForm() {
             <Image
               src="/servicewithtick.jpg"
               width={300}
-              height={200}
+              height={121}
               alt="Service with a tick"
-              className="mx-auto mt-12"
+              className="mx-auto mt-12 h-auto"
             />
             <div className="mx-auto">
               <Image

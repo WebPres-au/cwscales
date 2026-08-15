@@ -22,8 +22,8 @@ export default async function Footer() {
           <div className="space-y-8 mb-8">
             <Image
               width={300}
-              height={300}
-              className="mx-auto"
+              height={51}
+              className="mx-auto h-auto"
               src="/CWS_logo.png"
               alt="Company name"
             />

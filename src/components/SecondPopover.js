@@ -2,13 +2,12 @@
 
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { snake_case_string } from "@/lib/functions";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import { createCategory, createTag } from "@/app/actions/admin";
 
 export default function SecondPopover({
   open,
@@ -32,71 +31,27 @@ export default function SecondPopover({
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-2);
 
-  const supabase = createClientComponentClient();
-
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let rollbackData = [];
-
     try {
       setIsLoading(true);
 
       if (isCategory) {
-        const { data, error } = await supabase
-          .from("categories")
-          .insert([
-            {
-              name: productName,
-              parent_category: parentCategory,
-              snake_case_name: snake_case_string(productName),
-              description,
-              isFeatured,
-            },
-          ])
-          .select()
-          .single();
-        if (error) throw error;
-
-        rollbackData.push({
-          action: "insert",
-          table: "categories",
-          data: data,
+        const { data, error } = await createCategory({
+          name: productName,
+          parentCategory,
+          description,
+          isFeatured,
+          file: file?.file,
         });
-
-        const path = `categories/${data.id}/${file.file.name}_${Date.now()}`;
-        const { error: uploadError } = await supabase.storage
-          .from("category-images")
-          .upload(path, file.file);
-        if (uploadError) throw uploadError;
-
-        rollbackData.push({
-          action: "upload",
-          table: "category-images",
-          data: path,
-        });
-
-        const { error: imageError } = await supabase
-          .from("categories")
-          .update({ image: path })
-          .eq("id", data.id);
-        if (imageError) throw imageError;
+        if (error) throw new Error(error);
 
         setCategories((prev) => [...prev, data]);
       } else if (isTag) {
-        const { data, error } = await supabase
-          .from("tags")
-          .insert([{ name: productName, snake_case_name: snake_case_string(productName) }])
-          .select()
-          .single();
-        if (error) throw error;
-
-        rollbackData.push({
-          action: "insert",
-          table: "tags",
-          data: data,
-        });
+        const { data, error } = await createTag(productName);
+        if (error) throw new Error(error);
 
         setTags((prev) => [...prev, data]);
       }
@@ -114,19 +69,6 @@ export default function SecondPopover({
       );
     } catch (error) {
       toast.error(error.message);
-
-      // Rollback Logic
-      for (const rb of rollbackData.reverse()) {
-        try {
-          if (rb.action === "insert") {
-            await supabase.from(rb.table).delete().match({ id: rb.data.id });
-          } else if (rb.action === "upload") {
-            await supabase.storage.from(rb.table).remove([rb.data]);
-          }
-        } catch (rollbackError) {
-          console.error("Error during rollback", rollbackError);
-        }
-      }
     } finally {
       setIsLoading(false);
     }
@@ -432,6 +374,7 @@ export default function SecondPopover({
 
                                       <button
                                         type="button"
+                                        role="switch"
                                         onClick={() =>
                                           setIsFeatured((prev) => !prev)
                                         }
@@ -440,7 +383,7 @@ export default function SecondPopover({
                                             ? "bg-indigo-600"
                                             : "bg-gray-200"
                                         } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2`}
-                                        aria-checked="false"
+                                        aria-checked={isFeatured}
                                         aria-labelledby="availability-label"
                                         aria-describedby="availability-description"
                                       >

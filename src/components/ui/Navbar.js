@@ -4,7 +4,7 @@ import { Fragment, useState, useEffect, useRef } from "react";
 import { classNames, snake_case_string } from "@/lib/functions";
 import Image from "next/image";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createBrowserClient } from "@/lib/supabase/client";
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
@@ -26,7 +26,7 @@ export default function Navbar({ navigation }) {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [autoComplete, setAutoComplete] = useState([]);
-  const supabase = createClientComponentClient();
+  const supabase = createBrowserClient();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,7 +71,7 @@ export default function Navbar({ navigation }) {
     } else {
       setAutoComplete([]);
     }
-  }, [searchQuery]);
+  }, [searchQuery, supabase]);
 
   useEffect(() => {
     if (!searchQuery && autoComplete[0]) {
@@ -273,7 +273,8 @@ export default function Navbar({ navigation }) {
               src="/CWS_logo.png"
               alt="Logo for CW Scales"
               width={200}
-              height={200}
+              height={34}
+              className="h-auto"
             />
           </Link>
 

@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createBrowserClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function LoginForm() {
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createBrowserClient();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,18 +14,16 @@ export default function LoginForm() {
   const handleSignIn = async (e) => {
     e.preventDefault();
 
-    if (email === "louis@cwscales.com.au") {
-      try {
-        await supabase.auth.signInWithPassword({
+    try {
+        const { error } = await supabase.auth.signInWithPassword({
           email: email,
           password: password,
         });
+        if (error) throw error;
         router.push("/dashboard");
-      } catch (error) {
-        toast.error(error.message);
-      }
-    } else {
-      toast.error("Email not allowed");
+        router.refresh();
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 

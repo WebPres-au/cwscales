@@ -120,13 +120,13 @@ export default function Body({ children, navigation }) {
               {
                 // show subcategories of current category
                 category &&
-                  navigation.find((item) => isRouteActive(item.name)) && (
+                  selectedCategory && (
                     <div className="my-4 flex flex-wrap items-center gap-6 px-4 sm:px-6 lg:px-8">
-                      {navigation
-                        .find((item) => isRouteActive(item.name))
-                        .subcategories?.map((subcategory, index) => (
+                      {selectedCategory.subcategories
+                        ?.filter(Boolean)
+                        .map((subcategory) => (
                           <button
-                            key={index}
+                            key={subcategory.name}
                             onClick={() =>
                               router.push(
                                 pathname +

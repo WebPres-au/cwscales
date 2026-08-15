@@ -1,7 +1,14 @@
 import { getCategory, getProductsFromCategory } from "@/app/supabase-server";
 import ContentHero from "@/components/ContentHero";
+import { notFound } from "next/navigation";
+
 export async function generateMetadata({ params }) {
-  const subCategory = await getCategory(params.subCategory);
+  const { subCategory: slug } = await params;
+  const subCategory = await getCategory(slug);
+
+  if (!subCategory) {
+    return { title: "Category not found" };
+  }
 
   return {
     title: subCategory.name,
@@ -22,9 +29,12 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function SubCategoryPage({ params }) {
-  const category = await getCategory(params.subCategory);
+  const { subCategory: slug } = await params;
+  const category = await getCategory(slug);
 
-  let products = await getProductsFromCategory(params.subCategory);
+  if (!category) notFound();
+
+  const products = await getProductsFromCategory(slug);
 
   if (products.length > 0) {
     const randomProduct = products[Math.floor(Math.random() * products.length)];

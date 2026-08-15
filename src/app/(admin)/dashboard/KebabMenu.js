@@ -5,13 +5,12 @@ import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { classNames } from "@/lib/functions";
 import Popover from "@/components/Popover";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { deleteProduct, setProductPublished } from "@/app/actions/admin";
 
 export default function KebabMenu({ product }) {
   const [isEditPopoverOpen, setIsEditPopoverOpen] = useState(false);
-  const supabase = createClientComponentClient();
   const router = useRouter();
 
   return (
@@ -48,20 +47,14 @@ export default function KebabMenu({ product }) {
               {({ active }) => (
                 <button
                   onClick={async () => {
-                    const { data, error } = await supabase
-                      .from("products")
-                      .update({ isPublic: !product.isPublic })
-                      .eq("id", product.id);
+                    const { error } = await setProductPublished(product.id, !product.isPublic);
+                    if (error) return toast.error(error);
                     router.refresh();
                     toast.success(
                       `Product ${
                         product.isPublic ? "paused" : "activated"
                       } successfully!`
                     );
-                    if (error) {
-                      console.error(error.message);
-                      return;
-                    }
                   }}
                   className={classNames(
                     active ? "bg-gray-100" : "",
@@ -77,18 +70,11 @@ export default function KebabMenu({ product }) {
               {({ active }) => (
                 <button
                   onClick={async () => {
-                    const { data, error } = await supabase
-                      .from("products")
-                      .delete()
-                      .eq("id", product.id);
+                    const { error } = await deleteProduct(product.id);
+                    if (error) return toast.error(error);
                     router.refresh();
 
                     toast.success("Product deleted successfully!");
-                    if (error) {
-                      console.error(error.message);
-                      toast.error(error.message);
-                      return;
-                    }
                   }}
                   className={classNames(
                     active ? "bg-gray-50" : "",

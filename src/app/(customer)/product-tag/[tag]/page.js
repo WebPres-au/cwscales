@@ -1,10 +1,14 @@
 import { getProductsByTag, getServerTags } from "@/app/supabase-server";
 import ContentHero from "@/components/ContentHero";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
+  const { tag: slug } = await params;
   const tags = await getServerTags();
 
-  const tag = tags.find((tag) => tag.snake_case_name == params.tag);
+  const tag = tags.find((tag) => tag.snake_case_name === slug);
+
+  if (!tag) return { title: "Tag not found" };
 
   return {
     title: tag.name,
@@ -25,9 +29,12 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function TagPage({ params }) {
+  const { tag: slug } = await params;
   const tags = await getServerTags();
 
-  const tag = tags.find((tag) => tag.snake_case_name == params.tag);
+  const tag = tags.find((tag) => tag.snake_case_name === slug);
+
+  if (!tag) notFound();
 
   let products = await getProductsByTag(tag.id);
   products = products.map((product) => {

@@ -1,10 +1,13 @@
 import { getProductDetails } from "@/app/supabase-server";
 import ContentHero from "@/components/ContentHero";
 import { snake_case_string } from "@/lib/functions";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
-  const product = await getProductDetails(params.name);
+  const { name } = await params;
+  const product = await getProductDetails(name);
+
+  if (!product) return { title: "Product not found" };
 
   return {
     title: product.name,
@@ -25,13 +28,13 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ProductPage({ params }) {
-  const product = await getProductDetails(params.name);
+  const { name } = await params;
+  const product = await getProductDetails(name);
+
+  if (!product || !product.isPublic) notFound();
+
   product.href = `/product/${snake_case_string(product.name)}`;
   product.image = product?.images[0]?.signedUrl;
-
-  if (!product.isPublic) {
-    redirect("/404");
-  }
 
   return (
     <div>

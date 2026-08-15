@@ -10,7 +10,13 @@ const statuses = {
 };
 
 export default async function ProductList({ searchParams }) {
-  const { category, subcategory } = searchParams;
+  const resolvedSearchParams = await searchParams;
+  const category = Array.isArray(resolvedSearchParams.category)
+    ? resolvedSearchParams.category[0]
+    : resolvedSearchParams.category;
+  const subcategory = Array.isArray(resolvedSearchParams.subcategory)
+    ? resolvedSearchParams.subcategory[0]
+    : resolvedSearchParams.subcategory;
 
   let products;
   if (subcategory) {

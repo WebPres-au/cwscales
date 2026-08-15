@@ -4,12 +4,12 @@ import { Fragment, useEffect, useState, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
-import { classNames, snake_case_string } from "@/lib/functions";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { classNames } from "@/lib/functions";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import SecondPopover from "./SecondPopover";
 import Image from "next/image";
+import { createProduct, deleteProductImage, getAdminTaxonomy, updateProduct } from "@/app/actions/admin";
 
 export default function Popover({ open, setOpen, intialProduct }) {
   const imageUploadRef = useRef(null);
@@ -48,33 +48,15 @@ export default function Popover({ open, setOpen, intialProduct }) {
 
   const [loading, setLoading] = useState(false);
 
-  const supabase = createClientComponentClient();
-
   const [isAddNewCategoryOpen, setIsAddNewCategoryOpen] = useState(false);
   const [isAddNewTagOpen, setIsAddNewTagOpen] = useState(false);
 
   useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const { data, error } = await supabase.from("categories").select();
-        if (error) throw error;
-        setCategories(data);
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-
-    const getTags = async () => {
-      try {
-        const { data, error } = await supabase.from("tags").select();
-        if (error) throw error;
-        setTags(data);
-      } catch (error) {
-        toast.error(error.message);
-      }
-    };
-    getCategories();
-    getTags();
+    getAdminTaxonomy().then(({ data, error }) => {
+      if (error) return toast.error(error);
+      setCategories(data.categories);
+      setTags(data.tags);
+    });
   }, []);
 
   const router = useRouter();
@@ -82,102 +64,17 @@ export default function Popover({ open, setOpen, intialProduct }) {
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
-    let rollbackData = [];
-
     try {
-      if (chosenCategories.length < 1)
-        throw new Error("Please select at least one category");
-      // Insert new product to products table
-      const { data: productData, error: productError } = await supabase
-        .from("products")
-        .insert([
-          {
-            name: productName,
-            snake_case_name: snake_case_string(productName),
-            description: description,
-            short_description: shortDescription,
-            isPublic: selectedOption === "public",
-            youtube_link: youtubeLink,
-          },
-        ])
-        .select()
-        .single();
-
-      if (productError) throw productError;
-
-      rollbackData.push({
-        action: "insert",
-        table: "products",
-        data: productData,
+      const { error } = await createProduct({
+        name: productName, description, shortDescription,
+        isPublic: selectedOption === "public", youtubeLink,
+        categoryIds: chosenCategories, tagIds: chosenTags,
+        files: files.map(({ file }) => file),
       });
-
-      // The ID of the newly inserted product
-      const productId = productData.id;
-
-      // Preparing the array to insert into product_categories table
-      const categoryInserts = chosenCategories.map((categoryId) => ({
-        product_id: productId,
-        category_id: categoryId,
-      }));
-
-      // Inserting categories related to the product in the product_categories table
-      const { error: categoryError } = await supabase
-        .from("product_categories")
-        .insert(categoryInserts);
-
-      if (categoryError) throw categoryError;
-
-      rollbackData.push({
-        action: "insert",
-        table: "product_categories",
-        data: categoryInserts,
-      });
-
-      // Preparing the array to insert into product_tags table
-      const tagInserts = chosenTags.map((tagId) => ({
-        product_id: productId,
-        tag_id: tagId,
-      }));
-
-      // Inserting tags related to the product in the product_tags table
-      const { error: tagError } = await supabase
-        .from("product_tags")
-        .insert(tagInserts);
-
-      if (tagError) throw tagError;
-
-      rollbackData.push({
-        action: "insert",
-        table: "product_tags",
-        data: tagInserts,
-      });
-
-      // Uploading images to Supabase Storage and inserting to product_images table
-      const imageInserts = [];
-      for (const { file } of files) {
-        const path = `product_images/${productId}/${file.name}`;
-        const { error: uploadError } = await supabase.storage
-          .from("product-images")
-          .upload(path, file);
-        if (uploadError) throw uploadError;
-        imageInserts.push({ product_id: productId, image_path: path });
-      }
-
-      const { error: imageError } = await supabase
-        .from("product_images")
-        .insert(imageInserts);
-
-      if (imageError) throw imageError;
-
-      rollbackData.push({
-        action: "insert",
-        table: "product_images",
-        data: imageInserts,
-      });
+      if (error) throw new Error(error);
 
       router.refresh();
 
-      // reset form values
       setProductName("");
       setDescription("");
       setChosenCategories([]);
@@ -186,173 +83,34 @@ export default function Popover({ open, setOpen, intialProduct }) {
       toast.success("Product added successfully");
     } catch (error) {
       toast.error(error.message);
-
-      for (const rb of rollbackData.reverse()) {
-        try {
-          if (rb.action === "insert") {
-            await supabase.from(rb.table).delete().match({ id: rb.data.id });
-          }
-        } catch (rollbackError) {
-          console.error("Error during rollback", rollbackError);
-        }
-      }
     } finally {
       setLoading(false);
     }
   };
 
   const handleEdit = async (e) => {
-    setLoading(true);
     e.preventDefault();
-    const productId = intialProduct.id;
-    let rollbackData = [];
-
+    setLoading(true);
     try {
-      // Get and store the original product data for potential rollback
-      const { data: originalProductData, error: originalProductError } =
-        await supabase
-          .from("products")
-          .select("*")
-          .eq("id", productId)
-          .single();
-
-      if (originalProductError) throw originalProductError;
-
-      rollbackData.push({
-        action: "update",
-        table: "products",
-        data: originalProductData,
+      const { error } = await updateProduct({
+        id: intialProduct.id,
+        name: productName,
+        description,
+        shortDescription,
+        isPublic: selectedOption === "public",
+        youtubeLink,
+        categoryIds: chosenCategories,
+        tagIds: chosenTags,
+        files: files.map(({ file }) => file),
       });
-
-      // Update product in products table
-      const { data: updatedProductData, error: productError } = await supabase
-        .from("products")
-        .update({
-          name: productName,
-          snake_case_name: snake_case_string(productName),
-          description: description,
-          short_description: shortDescription,
-          isPublic: selectedOption === "public",
-          youtube_link: youtubeLink,
-        })
-        .eq("id", productId);
-
-      if (productError) throw productError;
-
-      // Fetch and store existing categories and tags for rollback
-      const { data: existingCategories, error: existingCategoriesError } =
-        await supabase
-          .from("product_categories")
-          .select("*")
-          .eq("product_id", productId);
-      if (existingCategoriesError) throw existingCategoriesError;
-
-      const { data: existingTags, error: existingTagsError } = await supabase
-        .from("product_tags")
-        .select("*")
-        .eq("product_id", productId);
-      if (existingTagsError) throw existingTagsError;
-
-      // Delete existing categories and tags
-      await supabase
-        .from("product_categories")
-        .delete()
-        .eq("product_id", productId);
-      await supabase.from("product_tags").delete().eq("product_id", productId);
-
-      rollbackData.push({
-        action: "delete",
-        table: "product_tags",
-        data: existingTags,
-      });
-
-      rollbackData.push({
-        action: "delete",
-        table: "product_categories",
-        data: existingCategories,
-      });
-
-      // Inserting new categories related to the product in the product_categories table
-      const categoryInserts = chosenCategories.map((categoryId) => ({
-        product_id: productId,
-        category_id: categoryId,
-      }));
-      const { error: categoryError } = await supabase
-        .from("product_categories")
-        .insert(categoryInserts);
-
-      if (categoryError) throw categoryError;
-
-      rollbackData.push({
-        action: "insert",
-        table: "product_categories",
-        data: categoryInserts,
-      });
-
-      // Inserting new tags related to the product in the product_tags table
-      const tagInserts = chosenTags.map((tagId) => ({
-        product_id: productId,
-        tag_id: tagId,
-      }));
-      const { error: tagError } = await supabase
-        .from("product_tags")
-        .insert(tagInserts);
-
-      if (tagError) throw tagError;
-
-      rollbackData.push({
-        action: "insert",
-        table: "product_tags",
-        data: tagInserts,
-      });
-
-      // Uploading images to Supabase Storage and inserting to product_images table
-      const imageInserts = [];
-      for (const { file } of files) {
-        const path = `product_images/${productId}/${file.name}`;
-        const { error: uploadError } = await supabase.storage
-          .from("product-images")
-          .upload(path, file);
-
-        if (uploadError) throw uploadError;
-
-        imageInserts.push({ product_id: productId, image_path: path });
-      }
-
-      const { error: imageError } = await supabase
-        .from("product_images")
-        .insert(imageInserts);
-
-      if (imageError) throw imageError;
-
-      rollbackData.push({
-        action: "insert",
-        table: "product_images",
-        data: imageInserts,
-      });
-
+      if (error) throw new Error(error);
       router.refresh();
       setOpen(false);
-      setLoading(false);
       toast.success("Product edited successfully");
     } catch (error) {
-      setLoading(false);
       toast.error(error.message);
-
-      // Perform Rollbacks
-      for (const rb of rollbackData.reverse()) {
-        try {
-          if (rb.action === "update") {
-            await supabase.from(rb.table).update(rb.data).eq("id", productId);
-          } else if (rb.action === "insert") {
-            await supabase.from(rb.table).delete().eq("id", rb.data[0].id);
-          } else if (rb.action === "delete") {
-            await supabase.from(rb.table).insert(rb.data);
-          }
-        } catch (rollbackError) {
-          console.error("Error during rollback", rollbackError);
-        }
-      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -395,16 +153,8 @@ export default function Popover({ open, setOpen, intialProduct }) {
 
       setExistingImages((prev) => prev.filter((_, i) => i !== index));
 
-      const { error } = await supabase.storage
-        .from("product-images")
-        .remove([imagePath]);
-      if (error) throw error;
-
-      const { error: deleteRecordError } = await supabase
-        .from("product_images")
-        .delete()
-        .eq("id", imageId);
-      if (deleteRecordError) throw deleteRecordError;
+      const { error } = await deleteProductImage({ imageId, imagePath });
+      if (error) throw new Error(error);
     } catch (error) {
       setExistingImages((prev) => [...prev, intialProduct.images[index]]);
       toast.error(error.message);
