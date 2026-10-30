@@ -18,6 +18,11 @@ Another focus was removing wordpress and replacing that with a custom solution t
 
 ## Getting Started
 
+Copy `.env.example` to `.env.local` and configure the listed variables. Contact
+enquiries require a server-only `RESEND_API_KEY` with permission to send from the
+verified `cwscales.com.au` domain. Configure this variable in the hosting
+environment as well when deploying. Enquiries are sent to `louis@cwscales.com.au`.
+
 First, run the development server:
 
 ```bash
@@ -29,4 +34,7 @@ pnpm dev
 ```
 
 Head over to `src/app/page.js` to start editing the site!
+
+Run `npm run test:email` to check the email template, API failure handling and
+shared form submission client. These tests mock network calls and send no email.
 

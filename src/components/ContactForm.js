@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { validateEmail, validatePhoneNumber } from "@/lib/functions";
+import { ENQUIRY_SEND_ERROR, sendEnquiry } from "@/lib/send-enquiry";
 import {
   BuildingOffice2Icon,
   EnvelopeIcon,
@@ -24,6 +25,8 @@ export default function ContactForm() {
     message: "",
   });
   const [captcha, setCaptcha] = useState(false);
+  const sending = useRef(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,7 +59,7 @@ export default function ContactForm() {
   const sendEmail = async (e) => {
     e.preventDefault();
 
-    if (!validateData(data)) {
+    if (sending.current || !validateData(data)) {
       return;
     }
 
@@ -65,14 +68,10 @@ export default function ContactForm() {
       URLpath,
     };
 
-    const response = await fetch("/api/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataWithUrl),
-    });
-    if (response.status === 200) {
+    sending.current = true;
+    setIsSending(true);
+    try {
+      await sendEnquiry(dataWithUrl);
       setData({
         firstName: "",
         email: "",
@@ -83,8 +82,11 @@ export default function ContactForm() {
         message: "",
       });
       toast.success(`Message sent successfully!`);
-    } else {
-      toast.error("Oops! Something went wrong. Please try again");
+    } catch {
+      toast.error(ENQUIRY_SEND_ERROR);
+    } finally {
+      sending.current = false;
+      setIsSending(false);
     }
   };
 
@@ -331,9 +333,10 @@ export default function ContactForm() {
               <div className="mt-8 flex justify-end">
                 <button
                   type="submit"
+                  disabled={isSending}
                   className="rounded-md bg-green px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-green/90"
                 >
-                  Send message
+                  {isSending ? "Sending…" : "Send message"}
                 </button>
               </div>
             </div>

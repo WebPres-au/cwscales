@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useIdle } from "@uidotdev/usehooks";
 import { useMediaQuery } from 'usehooks-ts'
 
 import { validateEmail, validatePhoneNumber } from "@/lib/functions";
+import { ENQUIRY_SEND_ERROR, sendEnquiry } from "@/lib/send-enquiry";
 import ReCAPTCHA from "react-google-recaptcha";
 import { toast } from "react-hot-toast";
 import { usePathname } from "next/navigation";
@@ -31,6 +32,7 @@ import {
 
 export default function DialogPopUp() {
   const [ open, setOpen ] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const idle = useIdle(60000);
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
@@ -50,7 +52,7 @@ export default function DialogPopUp() {
               We&quot;re just a message away if you need anything. Send a message and we&quot;ll get back to you within 24 hours.
             </DialogDescription>
           </DialogHeader>
-          <ContactForm setOpen={setOpen} />
+          <ContactForm setOpen={setOpen} setIsSending={setIsSending} />
           <DialogFooter className="flex flex-row items-center justify-center space-x-4">
             <DialogClose asChild>
               <button type="button" onClick={() => setOpen(false)} className="w-1/2 rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-black shadow-sm border border-gray-200">
@@ -59,10 +61,11 @@ export default function DialogPopUp() {
             </DialogClose>
             <button
               type="submit"
+              disabled={isSending}
               className="w-1/2 rounded-md bg-green px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-green/90"
-              onClick={() => document.getElementById('contactForm').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }))}
+              onClick={() => document.getElementById('contactForm').requestSubmit()}
             >
-              Send message
+              {isSending ? "Sending…" : "Send message"}
             </button>
           </DialogFooter>
         </DialogContent>
@@ -80,7 +83,7 @@ export default function DialogPopUp() {
           </DrawerDescription>
         </DrawerHeader>
         <div className="px-4">
-          <ContactForm setOpen={setOpen} />
+          <ContactForm setOpen={setOpen} setIsSending={setIsSending} />
         </div>
         <DrawerFooter className="flex flex-row items-center justify-center space-x-4">
           <DrawerClose asChild>
@@ -90,10 +93,11 @@ export default function DialogPopUp() {
           </DrawerClose>
           <button
             type="submit"
+            disabled={isSending}
             className="w-1/2 rounded-md bg-green px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-green/90"
-            onClick={() => document.getElementById('contactForm').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }))}
+            onClick={() => document.getElementById('contactForm').requestSubmit()}
           >
-            Send message
+            {isSending ? "Sending…" : "Send message"}
           </button>
         </DrawerFooter>
       </DrawerContent>
@@ -101,7 +105,7 @@ export default function DialogPopUp() {
   )
 }
 
-function ContactForm({ setOpen }) {
+function ContactForm({ setOpen, setIsSending }) {
   const URLpath = usePathname()
   const [data, setData] = useState({
     firstName: "",
@@ -113,6 +117,7 @@ function ContactForm({ setOpen }) {
     message: "",
   });
   const [captcha, setCaptcha] = useState(false);
+  const sending = useRef(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -145,7 +150,7 @@ function ContactForm({ setOpen }) {
   const sendEmail = async (e) => {
     e.preventDefault();
 
-    if (!validateData(data)) {
+    if (sending.current || !validateData(data)) {
       return;
     }
 
@@ -154,14 +159,10 @@ function ContactForm({ setOpen }) {
       URLpath,
     };
 
-    const response = await fetch("/api/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataWithUrl),
-    });
-    if (response.status === 200) {
+    sending.current = true;
+    setIsSending(true);
+    try {
+      await sendEnquiry(dataWithUrl);
       setData({
         firstName: "",
         email: "",
@@ -173,8 +174,11 @@ function ContactForm({ setOpen }) {
       });
       setOpen(false);
       toast.success(`Message sent successfully!`);
-    } else {
-      toast.error("Oops! Something went wrong. Please try again");
+    } catch {
+      toast.error(ENQUIRY_SEND_ERROR);
+    } finally {
+      sending.current = false;
+      setIsSending(false);
     }
   };
 
